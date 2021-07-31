@@ -1,1 +1,1 @@
-# cycle8
+# An API for a web-based Event Management System
