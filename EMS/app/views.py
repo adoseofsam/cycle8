@@ -153,21 +153,62 @@ def api_events():
     jwt token for postman -
     eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM
     '''
-    events = [
-        {
-            "Title": "title",
-            "Start_date": "start_date",
-            "End_date": "end_date",
-            "Description": "description",
-            "Venue": "venue",
-            "Image": "Image",
-            "Url": "Url",
-            "Status": "status",
-            "Uid": "uid",
-            "Created_at": "created_at"
+    events = Events.query.all()
+    event_lst = []
+    print(events[0].title)
+
+    for e in events:
+        event = {
+            "Title": e.title,
+            "Start_date": e.start_date,
+            "End_date": e.end_date,
+            "Description": e.description,
+            "Venue": e.venue,
+            "Image": e.photo,
+            "Url": e.website_url,
+            "Status": e.status,
+            "Uid": e.uid,
+            "Created_at": e.created_at
         }
-    ]
-    return jsonify(error = None,data={"events": events}, message="Success")
+
+        event_lst.append(event)
+
+    return jsonify(error = None,data={"events": event_lst}, message="Success")
+
+
+
+@app.route('/api/events/<int:uid>', methods=['GET'])
+@requires_auth
+def api_events_by_uid(uid):
+    # This data was retrieved from the payload of the JSON Web Token
+    # take a look at the requires_auth decorator code to see how we decoded
+    # the information from the JWT.
+
+    '''
+    jwt token for postman -
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM
+    '''
+    events = Events.query.filter_by(uid = uid).all()
+    event_lst = []
+    print(events[0].title)
+
+    for e in events:
+        event = {
+            "Title": e.title,
+            "Start_date": e.start_date,
+            "End_date": e.end_date,
+            "Description": e.description,
+            "Venue": e.venue,
+            "Image": e.photo,
+            "Url": e.website_url,
+            "Status": e.status,
+            "Uid": e.uid,
+            "Created_at": e.created_at
+        }
+
+        event_lst.append(event)
+
+    return jsonify(error = None,data={"events": event_lst}, message="Success")
 # --------------- END OF APIs FUNCTIONS/ROUTES ---------------------
 
 ###
@@ -182,8 +223,18 @@ def define_db():
     date = datetime.datetime.now()
     print("Date - ", date)
     admin = User("Admin User","Admin@example.com","Adminpassword","admin_pic.png",roles["admin"],date)
+    regular = User("Regular User","Regular@example.com","Regularpassword","admin_pic.png",roles["regular"],date)
+
+    newEvent = Events(title = "Event 1", start_date=date,end_date=date,description="description 1",venue="At home 1",photo="event_pic.png",website_url="google.com",status="Published",uid = 2,date=date)
+    newEvent2 = Events(title = "Event 2", start_date=date,end_date=date,description="description 2",venue="At home 2",photo="event_pic.png",website_url="google.com",status="Pending",uid = 2,date=date)
+    newEvent3 = Events(title = "Event 3", start_date=date,end_date=date,description="description 3",venue="At home 3",photo="event_pic.png",website_url="google.com",status="Pending",uid = 1,date=date)
 
     db.session.add(admin)
+    db.session.add(regular)
+    db.session.add(newEvent)
+    db.session.add(newEvent2)
+    db.session.add(newEvent3)
+
     db.session.commit()
 
 

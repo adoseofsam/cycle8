@@ -14,8 +14,7 @@ class Events(db.Model):
     uid = db.Column(db.Integer)
     created_at = db.Column(db.DateTime())
 
-    def __init__(self,id,title,start_date,end_date,description,venue,photo,website_url,status,uid,date):
-        self.id = id
+    def __init__(self,title,start_date,end_date,description,venue,photo,website_url,status,uid,date):
         self.title = title
         self.start_date = start_date
         self.end_date = end_date
