@@ -1,0 +1,17 @@
+# Files Github should ignore when adding and committing to the repository 
+
+.DS_Store
+Thumbs.db
+
+*.py[cod]
+*$py.class
+
+# virtualenv
+.venv/
+venv/
+
+# PyCharm
+.idea
+
+# VS Code Settings
+.vscode
