@@ -1,9 +1,9 @@
 Click==7.0
-Flask==1.1.1
+Flask==1.1.4
 Flask-WTF==0.14.3
 Flask-SQLAlchemy
-Flask-Migrate
-Flask-Script
+Flask-Migrate==2.5.3
+Flask-Script==2.0.6
 Flask-Login
 gunicorn==20.0.4
 itsdangerous==1.1.0
@@ -12,5 +12,5 @@ MarkupSafe==1.1.0
 Werkzeug==1.0.0
 WTForms==2.2.1
 mariadb
-mysql-connector-python==8.0.26
+mysql-connector-python
 python-dotenv
