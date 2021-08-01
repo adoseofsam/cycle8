@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-#from flask_migrate import Migrate
+from flask_migrate import Migrate
 
 
 # Config Values
@@ -18,12 +18,13 @@ app = Flask(__name__)
 
 # Flask-SQLAlchemy
 app.config['SECRET_KEY'] = SECRET_KEY
-app.config['SQLALCHEMY_DATABASE_URI'] = "mariadb+mariadbconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
-#app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True # added just to suppress a warning
+# app.config['SQLALCHEMY_DATABASE_URI'] = "mariadb+mariadbconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
+# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://root:!believ3@localhost/emsdb" 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # added just to suppress a warning
 
 db = SQLAlchemy(app)
-#migrate = Migrate(app, db)
+migrate = Migrate(app, db)
 
 # Flask-Login login manager
 login_manager = LoginManager()

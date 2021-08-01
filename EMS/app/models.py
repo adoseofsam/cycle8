@@ -1,7 +1,42 @@
 from app import db
 from werkzeug.security import generate_password_hash
 
+class Events(db.Model):
+    __tablename__ = 'events'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50))
+    start_date = db.Column(db.DateTime())
+    end_date = db.Column(db.DateTime())
+    description = db.Column(db.String(300))
+    venue = db.Column(db.String(50))
+    image = db.Column(db.String(255))
+    website_url = db.Column(db.String(100))
+    status = db.Column(db.String(10))
+    uid = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime())
 
+    def __init__(self,id,title,start_date,end_date,description,venue,image,website_url,status,uid,date):
+        self.id = id
+        self.title = title
+        self.start_date = start_date
+        self.end_date = end_date
+        self.description = description
+        self.venue = venue
+        self.image = image
+        self.website_url = website_url
+        self.status = status
+        self.uid = uid
+        self.created_at = date
+
+    def get_id(self):
+        try:
+            return unicode(self.id) 
+        except NameError:
+            return str(self.id)  
+
+    def __repr__(self):
+        return '<Description %r>' % self.description
+        
 
 class User(db.Model):
     __tablename__ = 'users'
