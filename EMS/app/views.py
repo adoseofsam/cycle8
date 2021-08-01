@@ -50,6 +50,40 @@ def event():
     return render_template('event.html')
 
 
+@app.route('/signup', methods = ['GET','POST'])
+def signup():
+    signupForm = SignUpForm()
+    if request.method == "POST":
+        if signupForm.validate_on_submit():
+            role = signupForm.role.data
+            FullName = signupForm.FullName.data
+            email = signupForm.email.data
+            password = signupForm.password.data
+            Profile_Photo = signupForm.Profile_Photo.data
+            filename = secure_filename(Profile_Photo.filename)
+            Profile_Photo.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+
+            date = datetime.datetime.now()
+            user = User(FullName,email,password,filename,role,date)
+
+
+            try:
+                db.session.add(user)
+                db.session.commit()
+
+                flash('Account created successfully.','success')
+                return redirect(url_for("login"))
+
+            except Exception as e:
+                flash('Account was not created successfully.','danger')
+                return redirect(url_for("login"))
+
+
+    return render_template("signup.html", form=signupForm)
+
+
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     
