@@ -5,11 +5,16 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 import os
+import datetime
 from app import app, db, login_manager
-from app.forms import LoginForm
+from app.forms import *
+from app.models import *
 from flask import render_template, request, redirect, url_for, flash, session, abort
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
+from werkzeug.security import check_password_hash
+
+roles = {'admin' : "Admin", 'regular': "Regular"}
 
 
 
@@ -17,9 +22,25 @@ from werkzeug.utils import secure_filename
 # Routing for your application.
 ###
 
+#default data/Users
+def define_db():
+    global roles
+    db.drop_all()
+    db.create_all()
+    date = datetime.datetime.now()
+    print("Date - ", date)
+    admin = User("Admin User","Admin@example.com","Adminpassword","admin_pic.png",roles["admin"],date)
+
+    db.session.add(admin)
+    db.session.commit()
+
+
+
+
 @app.route('/')
 def home():
     """Render website's home page."""
+    define_db()
     return render_template('home.html')
 
 
@@ -31,13 +52,11 @@ def event():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-
-    '''
     
     if current_user.is_authenticated:
         
         return redirect(url_for('home'))
-    '''
+
     form = LoginForm()
     if request.method == "POST":
         # change this to actually validate the entire form submission
@@ -45,12 +64,8 @@ def login():
         #if form.username.data:
         
         if form.validate_on_submit():
-            # Get the username and password values from the form.
-            # un - paul
-            # pw - password2121
 
-            '''
-            username = request.form['username']
+            email = request.form['email']
             password = form.password.data
             
             
@@ -62,7 +77,7 @@ def login():
 
 
 
-            user = UserProfile.query.filter_by(username=username).first()
+            user = User.query.filter_by(email=email).first()
 
             if user is not None and check_password_hash(user.password,password):
                 
@@ -73,12 +88,10 @@ def login():
                 session['is_authenticated'] = True #current_user.is_authenticated
                 
                 flash('Logged in successfully.','success')
-                return redirect(url_for("secure_page"))
-                #return redirect(url_for("home"))  # they should be redirected to a secure-page route instead
-            '''
-            session['is_authenticated'] = True #current_user.is_authenticated   
-            flash('Logged in successfully.','success')
-            return redirect(url_for("home"))
+                return redirect(url_for("home"))
+            
+            flash('Invalid credentials.','danger')
+            
 
     return render_template("login.html", form=form)
 
@@ -95,7 +108,7 @@ def logout():
 # the user ID stored in the session
 @login_manager.user_loader
 def load_user(id):
-    return 1
+    return User.query.get(int(id))
 
 
 
