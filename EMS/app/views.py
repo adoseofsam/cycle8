@@ -1,9 +1,20 @@
+"""
+Flask Documentation:     http://flask.pocoo.org/docs/
+Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
+Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
+This file creates your application.
+"""
+# Using JWT
+import jwt
+from flask import _request_ctx_stack
+from functools import wraps
+
 import os
 import datetime
 from app import app, db, login_manager
 from app.forms import *
 from app.models import *
-from flask import render_template, request, redirect, url_for, flash, jsonify, g, send_from_directory
+from flask import render_template, request, redirect, url_for, flash, jsonify, g, send_from_directory,session, abort
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash,generate_password_hash
@@ -72,6 +83,92 @@ def createEvent():
 
 
 
+secret_key = "CodeTitiansSup3r$3cretkey"
+
+# --------------- JWT FUNCTIONS ---------------------
+
+# Create a JWT @requires_auth decorator
+# This decorator can be used to denote that a specific route should check
+# for a valid JWT token before displaying the contents of that route.
+def requires_auth(f):
+  @wraps(f)
+  def decorated(*args, **kwargs):
+    global secret_key
+    auth = request.headers.get('Authorization', None)
+    if not auth:
+      return jsonify({'code': 'authorization_header_missing', 'description': 'Authorization header is expected'}), 401
+
+    parts = auth.split()
+
+    if parts[0].lower() != 'bearer':
+      return jsonify({'code': 'invalid_header', 'description': 'Authorization header must start with Bearer'}), 401
+    elif len(parts) == 1:
+      return jsonify({'code': 'invalid_header', 'description': 'Token not found'}), 401
+    elif len(parts) > 2:
+      return jsonify({'code': 'invalid_header', 'description': 'Authorization header must be Bearer + \s + token'}), 401
+
+    token = parts[1]
+    try:
+         payload = jwt.decode(token, secret_key)
+
+    except jwt.ExpiredSignature:
+        return jsonify({'code': 'token_expired', 'description': 'token is expired'}), 401
+    except jwt.DecodeError:
+        return jsonify({'code': 'token_invalid_signature', 'description': 'Token signature is invalid'}), 401
+
+    g.current_user = user = payload
+    return f(*args, **kwargs)
+
+  return decorated
+
+
+
+# This route is just used to demonstrate a JWT being generated.
+@app.route('/token')
+def generate_token():
+    global secret_key
+    # Under normal circumstances you would generate this token when a user
+    # logs into your web application and you send it back to the frontend
+    # where it can be stored in localStorage for any subsequent API requests.
+    payload = {'sub': '12345', 'name': 'John Doe'}
+    token = jwt.encode(payload, secret_key, algorithm='HS256').decode('utf-8')
+
+    return jsonify(error=None, data={'token': token}, message="Token Generated")
+
+
+# --------------- END OF JWT FUNCTIONS ---------------------
+
+
+# --------------- APIs FUNCTIONS/ROUTES ---------------------
+
+# This route requires a JWT in order to work. Note the @reques_auth
+@app.route('/api/events', methods=['GET'])
+@requires_auth
+def api_events():
+    # This data was retrieved from the payload of the JSON Web Token
+    # take a look at the requires_auth decorator code to see how we decoded
+    # the information from the JWT.
+
+    '''
+    jwt token for postman -
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM
+    '''
+    events = [
+        {
+            "Title": "title",
+            "Start_date": "start_date",
+            "End_date": "end_date",
+            "Description": "description",
+            "Venue": "venue",
+            "Image": "Image",
+            "Url": "Url",
+            "Status": "status",
+            "Uid": "uid",
+            "Created_at": "created_at"
+        }
+    ]
+    return jsonify(error = None,data={"events": events}, message="Success")
+# --------------- END OF APIs FUNCTIONS/ROUTES ---------------------
 
 ###
 # Routing for your application.
@@ -94,8 +191,9 @@ def define_db():
 
 @app.route('/')
 def home():
+    if not current_user.is_authenticated:
+        define_db()
     """Render website's home page."""
-    define_db()
     return render_template('home.html')
 
 
