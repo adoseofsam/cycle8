@@ -9,6 +9,8 @@ import jwt
 from flask import _request_ctx_stack
 from functools import wraps
 
+#from datetime import datetime
+
 import os
 import datetime
 from app import app, db, login_manager
@@ -39,7 +41,9 @@ def createEvent():
         if form.validate_on_submit():
             title = form.title.data
             start_date = form.start_date.data
+            s = datetime.datetime.strptime(start_date, '%Y-%m-%d')
             end_date = form.end_date.data
+            e = datetime.datetime.strptime(end_date, '%Y-%m-%d')
             description = form.description.data
             venue = form.venue.data
             photo = form.photo.data
@@ -49,11 +53,13 @@ def createEvent():
             date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             
             event1 = Events.query.filter_by(title=title).first()
+
+            #print(event1.venue)
            
             if event1 is None:
                 
                 photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                newEvent = Events(title = title, start_date=start_date,end_date=end_date,description=description,venue=venue,photo=photo,website_url=website_url,status=status,date=date)
+                newEvent = Events(title = title, start_date=s,end_date=e,description=description,venue=venue,photo=filename,website_url=website_url,status=status,uid = "1",date=date)
                 
                 db.session.add(newEvent)
                 db.session.commit()
@@ -73,7 +79,7 @@ def createEvent():
                         'photo' : "./app/static/uploads/"+filename,
                         'website_url' : website_url,
                         'status' : status,
-                        'uid' : users.id,
+                        'uid' : 1, #current_user.id,
                         'date' : date
                 }]
                 return jsonify(data=data)

@@ -24,6 +24,8 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://root:!believ3@localhost/emsdb"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # added just to suppress a warning
 
+app.config['WTF_CSRF_ENABLED'] = False
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
