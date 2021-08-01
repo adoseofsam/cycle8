@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 """
 Flask Documentation:     http://flask.pocoo.org/docs/
 Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
@@ -11,23 +9,17 @@ import jwt
 from flask import _request_ctx_stack
 from functools import wraps
 
->>>>>>> Chanderpaul: added initial jwt funcationality
 import os
 import datetime
 from app import app, db, login_manager
 from app.forms import *
 from app.models import *
-<<<<<<< HEAD
-from flask import render_template, request, redirect, url_for, flash, jsonify, g, send_from_directory
-=======
-from flask import render_template, request, redirect, url_for, flash, session, abort, jsonify, g
->>>>>>> Chanderpaul: added initial jwt funcationality
+from flask import render_template, request, redirect, url_for, flash, jsonify, g, send_from_directory,session, abort,
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash,generate_password_hash
 
 roles = {'admin' : "Admin", 'regular': "Regular"}
-<<<<<<< HEAD
 
 
 #########################
@@ -91,7 +83,6 @@ def createEvent():
 
 
 
-=======
 secret_key = "CodeTitiansSup3r$3cretkey"
 
 # --------------- JWT FUNCTIONS ---------------------
@@ -178,7 +169,6 @@ def api_events():
     ]
     return jsonify(error = None,data={"events": events}, message="Success")
 # --------------- END OF APIs FUNCTIONS/ROUTES ---------------------
->>>>>>> Chanderpaul: added initial jwt funcationality
 
 ###
 # Routing for your application.
