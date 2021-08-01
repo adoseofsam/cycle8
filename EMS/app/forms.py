@@ -24,7 +24,7 @@ class EventForm(FlaskForm):
     description = TextAreaField('Description', validators=[DataRequired()])
     Photo = FileField('Photo', validators=[FileRequired(), FileAllowed(['jpg','jpeg', 'png', 'Images only!'])])
     website_url = StringField('URL', validators=[DataRequired()])
-    status = SelectField('Status', [DataRequired()], choices=["Pending", "Published"])
+    status = SelectField('Status', [DataRequired()], choices=[("Pending","Pending"), ("Published","Published")])
     date = StringField('Date created', validators=[DataRequired()])
  
 

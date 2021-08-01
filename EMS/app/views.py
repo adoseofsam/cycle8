@@ -14,7 +14,7 @@ import datetime
 from app import app, db, login_manager
 from app.forms import *
 from app.models import *
-from flask import render_template, request, redirect, url_for, flash, jsonify, g, send_from_directory,session, abort,
+from flask import render_template, request, redirect, url_for, flash, jsonify, g, send_from_directory,session, abort
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash,generate_password_hash
