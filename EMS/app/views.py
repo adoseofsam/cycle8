@@ -1,20 +1,75 @@
-"""
-Flask Documentation:     http://flask.pocoo.org/docs/
-Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
-Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
-This file creates your application.
-"""
 import os
 import datetime
 from app import app, db, login_manager
 from app.forms import *
 from app.models import *
-from flask import render_template, request, redirect, url_for, flash, session, abort
+from flask import render_template, request, redirect, url_for, flash, jsonify, g, send_from_directory
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash,generate_password_hash
 
 roles = {'admin' : "Admin", 'regular': "Regular"}
+
+
+#########################
+#                       #
+# ENDPOINTS FOR WEB APP #
+#                       #
+#########################
+@app.route('/api/createEvent', methods=['POST'])
+def createEvent():
+    # #initializes cursor
+    # cur = mysql.connection.cursor()
+
+    form = EventForm()
+    errors = []
+    # event = session ["events"]
+    if request.method == "POST":
+        if form.validate_on_submit():
+            title = form.title.data
+            start_date = form.start_date.data
+            end_date = form.end_date.data
+            description = form.description.data
+            venue = form.venue.data
+            photo = form.photo.data
+            filename = secure_filename(photo.filename)
+            website_url = form.website_url.data
+            status = form.status.data
+            date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            
+            event1 = Events.query.filter_by(title=title).first()
+           
+            if event1 is None:
+                
+                photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                newEvent = Events(title = title, start_date=start_date,end_date=end_date,description=description,venue=venue,photo=photo,website_url=website_url,status=status,date=date)
+                
+                db.session.add(newEvent)
+                db.session.commit()
+                
+                flash('Event successfully created!','success')
+                
+                event = Events.query.filter_by(title=title).first()
+                
+                data = [
+                    {
+                        'id' : event.id,
+                        'title' : title,
+                        'start_date' : start_date,
+                        'end_date' : end_date,
+                        'description': description,
+                        'venue' : venue,
+                        'photo' : "./app/static/uploads/"+filename,
+                        'website_url' : website_url,
+                        'status' : status,
+                        'uid' : users.id,
+                        'date' : date
+                }]
+                return jsonify(data=data)
+            else:
+                errors.append("Title already exists")
+        return jsonify(errors=form_errors(form)+errors)
+
 
 
 
@@ -44,10 +99,10 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/event')
-def event():
-    """Render website's home page."""
-    return render_template('event.html')
+# @app.route('/event')
+# def event():
+#     """Render website's home page."""
+#     return render_template('event.html')
 
 
 @app.route('/signup', methods = ['GET','POST'])
@@ -154,13 +209,18 @@ def load_user(id):
 ###
 
 # Flash errors from the form if validation fails
-def flash_errors(form):
+def form_errors(form):
+    error_messages = []
+    """Collects form errors"""
     for field, errors in form.errors.items():
         for error in errors:
-            flash(u"Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-), 'danger')
+            message = u"Error in the %s field - %s" % (
+                    getattr(form, field).label.text,
+                    error
+                )
+            error_messages.append(message)
+
+    return error_messages
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
