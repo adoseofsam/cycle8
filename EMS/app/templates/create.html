@@ -1,65 +1,48 @@
 {% extends "base.html" %}
 {% block main %}
 
+
 <h1 class="heading">Add New Event</h1>
 <br>
 <form action="{{url_for('create')}}" method='POST' enctype = "multipart/form-data"> 
     {{ form.csrf_token }} 
-    <form class="formc">
-        <div class="row">
-     <div class="col-8">
-         {{ form.title.label }} 
-         {{ form.title(class='form-control') }} 
-         
-     </div> 
-     <br>
-     
+    <div class="form-group">
+        {{ form.title.label }} <br>
+        {{ form.title (size=57) }}
+      </div>
+  
 
-     <div class="col-sm-8">
-         {{ form.start_date.label }}
-         {{ form.start_date(class='form-control',placeholder="2021-08-05") }}
-         
-         
-     </div> 
-    </div>
-    <br>
-     
-     <div class="row">
-     <div class="col-md-4">
-         {{ form.end_date.label }} 
-         {{ form.end_date(class='form-control',placeholder='2020-08-05')}}
-     </div> 
-     <br>
-     <div class="col-md-4">
-         {{ form.description.label }}
-         {{ form.description(class='form-control') }}
-     </div> 
-     </div>
-     <br>
-     <div class="row">
-     <div class="col-md-4">
-         {{ form.venue.label }} 
-         {{ form.venue(class='form-control',placeholder='Chillin ') }}
-     </div> 
-     </div>
-     <br>
+  <div class="form-group">
+    {{ form.description.label }} <br>
+    {{ form.description (rows=6, cols=60) }}
+  </div>
 
-     {%raw%}
-     <!-- <div class="col-md-4">
-         {{ form.status.label }}
-         {{ form.status( class='form-control', placeholder= "Select Type") }}
-     </div>  -->  
-     {%endraw%} 
+  <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+            {{ form.start_date.label }} <br>
+            {{ form.start_date (size=15, placeholder='2020-08-05') }}
+          </div>
+      </div>
+      <br>
 
-     <br>
-     <div class="row">
-     <div class="col-md-4">
-        {{ form.photo.label }}
-        {{ form.photo(class='form-control') }}    
-     </div>
-     </div>
-    <br> 
+      <div class="col-md-6">
+        <div class="form-group">
+            {{ form.end_date.label }} <br>
+            {{ form.end_date (size=18, placeholder='2021-08-23') }}
+          </div>
+      </div>
+  </div>
+  
+  <div class="form-group">
+    {{ form.venue.label }} <br>
+    {{ form.venue (size=15, placeholder='2021 Mona Road')}}
+  </div>
+  <div class="form-group">
+    {{ form.photo.label }} <br>
+    {{ form.photo (id='photo') }}
+  </div>
 
-    <button type="submit" name="submit" class="btn btn-primary">Add Event</button>
+  <button type="submit" name="submit" class="btn btn-primary">Add Event</button>
 </form>
 {% endblock %}

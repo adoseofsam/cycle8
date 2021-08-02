@@ -36,67 +36,7 @@ def test():
     """Render website's home page."""
     return render_template('create.html', form = form)
 
-@app.route('/api/create', methods=['POST'])
-def create():
-    # #initializes cursor
-    # cur = mysql.connection.cursor()
 
-    form = EventForm()
-    errors = []
-    #errors.append(int(current_user.get_id()))
-    # event = session ["events"]
-    if request.method == "POST":
-        if form.validate_on_submit():
-            title = form.title.data
-            start_date = form.start_date.data
-            s = datetime.datetime.strptime(start_date, '%Y-%m-%d')
-            end_date = form.end_date.data
-            e = datetime.datetime.strptime(end_date, '%Y-%m-%d')
-            description = form.description.data
-            venue = form.venue.data
-            photo = form.photo.data
-            filename = secure_filename(photo.filename)
-            website_url = form.website_url.data
-            status = "Pending" #placeholder until further notice
-            date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            
-            event1 = Events.query.filter_by(title=title).first()
-            #print(event1.venue)
-           
-            if event1 is None:
-                
-                photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                newEvent = Events(title = title, start_date=s,end_date=e,description=description,venue=venue,photo=filename,website_url=website_url,status=status,uid = "1",date=date)
-                
-                db.session.add(newEvent)
-                db.session.commit()
-                
-                flash('Event successfully created!','success')
-                
-                event = Events.query.filter_by(title=title).first()
-                
-                data = [
-                    {
-                        'id' : event.id,
-                        'title' : title,
-                        'start_date' : start_date,
-                        'end_date' : end_date,
-                        'description': description,
-                        'venue' : venue,
-                        'photo' : filename,
-                        'website_url' : website_url,
-                        'status' : status,
-                        'uid' : current_user.get_id(),
-                        'date' : date
-                }]
-                return jsonify(data=data)
-            else:
-                errors.append("Title already exists")
-        return jsonify(errors=form_errors(form)+errors)
-
-
-
-secret_key = "CodeTitiansSup3r$3cretkey"
 
 # --------------- JWT FUNCTIONS ---------------------
 
@@ -155,6 +95,71 @@ def generate_token():
 # --------------- APIs FUNCTIONS/ROUTES ---------------------
 
 # This route requires a JWT in order to work. Note the @reques_auth
+@app.route('/api/create', methods=['POST','GET'])
+# @requires_auth
+def create():
+    # #initializes cursor
+    # cur = mysql.connection.cursor()
+
+    form = EventForm()
+    errors = []
+    #errors.append(int(current_user.get_id()))
+    # event = session ["events"]
+    if request.method == "POST":
+        if form.validate_on_submit():
+            title = form.title.data
+            start_date = form.start_date.data
+            s = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+            end_date = form.end_date.data
+            e = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+            description = form.description.data
+            venue = form.venue.data
+            photo = form.photo.data
+            filename = secure_filename(photo.filename)
+            website_url = form.website_url.data
+            status = "Pending" #placeholder until further notice
+            date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            
+            event1 = Events.query.filter_by(title=title).first()
+            #print(event1.venue)
+           
+            if event1 is None:
+                
+                photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                newEvent = Events(title = title, start_date=s,end_date=e,description=description,venue=venue,photo=filename,website_url=website_url,status=status,uid = "1",date=date)
+                
+                db.session.add(newEvent)
+                db.session.commit()
+                
+                flash('Event successfully created!','success')
+                
+                event = Events.query.filter_by(title=title).first()
+                
+                data = [
+                    {
+                        'id' : event.id,
+                        'title' : title,
+                        'start_date' : start_date,
+                        'end_date' : end_date,
+                        'description': description,
+                        'venue' : venue,
+                        'photo' : filename,
+                        'website_url' : website_url,
+                        'status' : status,
+                        'uid' : current_user.get_id(),
+                        'date' : date
+                }]
+                return jsonify(data=data)
+            else:
+                errors.append("Title already exists")
+        return jsonify(errors=form_errors(form)+errors)
+    return render_template('create.html', form=form)
+
+
+
+secret_key = "CodeTitiansSup3r$3cretkey"
+
+
 @app.route('/api/events', methods=['GET'])
 @requires_auth
 def api_events():
