@@ -28,6 +28,13 @@ roles = {'admin' : "Admin", 'regular': "Regular"}
 # ENDPOINTS FOR WEB APP #
 #                       #
 #########################
+@app.route('/test')
+def test():
+    # if not current_user.is_authenticated:
+    #     define_db()
+    """Render website's home page."""
+    return render_template('create.html')
+
 @app.route('/api/create', methods=['POST'])
 def create():
     # #initializes cursor
