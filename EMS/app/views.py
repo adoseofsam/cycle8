@@ -28,9 +28,6 @@ roles = {'admin' : "Admin", 'regular': "Regular"}
 # ENDPOINTS FOR WEB APP #
 #                       #
 #########################
-@app.route('/test')
-def test():
-    return render_template('test.html')
 @app.route('/api/create', methods=['POST'])
 def create():
     # #initializes cursor
