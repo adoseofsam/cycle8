@@ -9,7 +9,6 @@ import jwt
 from flask import _request_ctx_stack
 from functools import wraps
 
-#from datetime import datetime
 
 import os
 import datetime
@@ -29,8 +28,8 @@ roles = {'admin' : "Admin", 'regular': "Regular"}
 # ENDPOINTS FOR WEB APP #
 #                       #
 #########################
-@app.route('/api/createEvent', methods=['POST'])
-def createEvent():
+@app.route('/api/create', methods=['POST'])
+def create():
     # #initializes cursor
     # cur = mysql.connection.cursor()
 
@@ -53,7 +52,6 @@ def createEvent():
             date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             
             event1 = Events.query.filter_by(title=title).first()
-
             #print(event1.venue)
            
             if event1 is None:
@@ -79,7 +77,7 @@ def createEvent():
                         'photo' : "./app/static/uploads/"+filename,
                         'website_url' : website_url,
                         'status' : status,
-                        'uid' : 1, #current_user.id,
+                        'uid' : current_user.get_id(),
                         'date' : date
                 }]
                 return jsonify(data=data)
@@ -98,7 +96,7 @@ secret_key = "CodeTitiansSup3r$3cretkey"
 # for a valid JWT token before displaying the contents of that route.
 def requires_auth(f):
   @wraps(f)
-  def decorated(*args, **kwargs):
+  def obtainedToken(*args, **kwargs):
     global secret_key
     auth = request.headers.get('Authorization', None)
     if not auth:
@@ -125,7 +123,7 @@ def requires_auth(f):
     g.current_user = user = payload
     return f(*args, **kwargs)
 
-  return decorated
+  return obtainedToken
 
 
 
