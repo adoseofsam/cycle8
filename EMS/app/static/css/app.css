@@ -36,3 +36,12 @@ h1{
   font-weight: bold;
 }
 
+#mainContainer {
+  margin: auto;
+  width: 75%;
+}
+
+#jumbotronDiv {
+  padding: 7%;
+}
+
