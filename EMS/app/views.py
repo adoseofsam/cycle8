@@ -74,7 +74,7 @@ def create():
                         'end_date' : end_date,
                         'description': description,
                         'venue' : venue,
-                        'photo' : "./app/static/uploads/"+filename,
+                        'photo' : filename,
                         'website_url' : website_url,
                         'status' : status,
                         'uid' : current_user.get_id(),
