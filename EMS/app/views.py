@@ -30,10 +30,11 @@ roles = {'admin' : "Admin", 'regular': "Regular"}
 #########################
 @app.route('/test')
 def test():
+    form = EventForm()
     # if not current_user.is_authenticated:
     #     define_db()
     """Render website's home page."""
-    return render_template('create.html')
+    return render_template('create.html', form = form)
 
 @app.route('/api/create', methods=['POST'])
 def create():
@@ -42,6 +43,7 @@ def create():
 
     form = EventForm()
     errors = []
+    #errors.append(int(current_user.get_id()))
     # event = session ["events"]
     if request.method == "POST":
         if form.validate_on_submit():
@@ -55,7 +57,7 @@ def create():
             photo = form.photo.data
             filename = secure_filename(photo.filename)
             website_url = form.website_url.data
-            status = pending #placeholder until further notice
+            status = "Pending" #placeholder until further notice
             date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             
             event1 = Events.query.filter_by(title=title).first()
@@ -253,6 +255,9 @@ def define_db():
 
 @app.route('/')
 def home():
+    print(current_user)
+    print(current_user.get_id())
+
     if not current_user.is_authenticated:
         define_db()
     """Render website's home page."""
