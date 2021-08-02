@@ -32,12 +32,26 @@
             {{ form.end_date (size=18, placeholder='2021-08-23') }}
           </div>
       </div>
+
   </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+          {{ form.venue.label }} <br>
+          {{ form.venue (size=15, placeholder='2021 Mona Road') }}
+        </div>
+    </div>
+    <br>
+
+    <div class="col-md-6">
+      <div class="form-group">
+          {{ form.website_url.label }} <br>
+          {{ form.website_url (size=18, placeholder='www.google.com') }}
+        </div>
+    </div>
+</div>
   
-  <div class="form-group">
-    {{ form.venue.label }} <br>
-    {{ form.venue (size=15, placeholder='2021 Mona Road')}}
-  </div>
+  
   <div class="form-group">
     {{ form.photo.label }} <br>
     {{ form.photo (id='photo') }}

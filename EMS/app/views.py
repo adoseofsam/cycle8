@@ -96,7 +96,7 @@ def generate_token():
 
 # This route requires a JWT in order to work. Note the @reques_auth
 @app.route('/api/create', methods=['POST','GET'])
-# @requires_auth
+@requires_auth
 def create():
     # #initializes cursor
     # cur = mysql.connection.cursor()

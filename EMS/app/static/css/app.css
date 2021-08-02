@@ -32,6 +32,12 @@ button {
   width: 150px;
   margin-top: 10px;
 }
+.btn{
+  color: white;
+  width: 150px;
+  margin-top: 10px;
+
+}
 h1{
   font-weight: bold;
 }
