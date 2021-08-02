@@ -48,7 +48,7 @@ def create():
             photo = form.photo.data
             filename = secure_filename(photo.filename)
             website_url = form.website_url.data
-            status = form.status.data
+            status = pending #placeholder until further notice
             date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             
             event1 = Events.query.filter_by(title=title).first()
