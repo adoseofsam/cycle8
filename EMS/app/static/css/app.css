@@ -2,29 +2,30 @@ html{
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, "Noto Sans", sans-serif;
 }
 body {
-    padding-top: 3.5rem;
-    width: 100%;
-    height: 100%;
-    margin: 0px;
-    background-color: rgba(247, 247, 247, 0.938);
-  }
-  nav.bg-primary {
-    background-color: #202938 !important;
-  }
-  .nav-header {
-    font-size: 15px;
-  }
-  .form-group{
-    font-weight: bold;
-  }
-  form{
-    background-color: #ffffff;
-    padding: 10px 100px 20px 30px;
-    width: 800px;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  padding-top: 3.5rem;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  background-color: rgba(247, 247, 247, 0.938);
+}
+nav.bg-primary {
+  background-color: #202938 !important;
+}
+.nav-header {
+  font-size: 15px;
+}
+
+.form-group{
+  font-weight: bold;
+}
+form{
+  background-color: #ffffff;
+  padding: 10px 100px 20px 30px;
+  width: 800px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 button {
 
@@ -39,6 +40,11 @@ button {
 
 }
 h1{
+  font-weight: bold;
+  text-align: center;
+
+}
+.small{
   font-weight: bold;
 }
 

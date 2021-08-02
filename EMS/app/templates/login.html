@@ -3,7 +3,7 @@
 {% block main %}
   <div class="login-form center-block">
     {% include 'flash_messages.html' %}
-    <h2>Log in</h2>
+    <h1>Log in</h1>
     <!--{% include 'flash_messages.html' %}-->
     <form action="{{ url_for('login') }}" method="post">
       {{ form.csrf_token }}
