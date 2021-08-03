@@ -281,6 +281,23 @@ def titleSearch():
             return jsonify(error = None,data={"events": output}, message="Success")
         return jsonify(error = None,data={"events": output}, message="No Events Found")
 
+
+@app.route("/api/events/publish/<int:id>", methods=["PATCH"])
+def publishEvent():
+    if request.method == "PATCH":
+        event = Events.query.filter_by(id = 'id').first()
+        event.status = 'published'
+        db.session.commit()
+
+@app.route("/api/events/cancel/<int:id>", methods=["PATCH"])
+def publishEvent():
+    if request.method == "PATCH":
+        event = Events.query.filter_by(id = 'id').first()
+        event.status = 'cancelled'
+        db.session.commit()
+
+
+
 # --------------- END OF APIs FUNCTIONS/ROUTES ---------------------
 
 ###
