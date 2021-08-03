@@ -27,5 +27,3 @@ class EventForm(FlaskForm):
     website_url = StringField('URL', validators=[DataRequired()])
     # status = SelectField('Status', [DataRequired()], choices=[("Pending","Published")])
     # date = StringField('Date created', validators=[DataRequired()])
- 
-

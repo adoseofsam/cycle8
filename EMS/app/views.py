@@ -136,7 +136,7 @@ def create():
 
 
 
-secret_key = "CodeTitiansSup3r$3cretkey"
+secret_key = "CodeTitiansSup3r$3cretkey"   
 
 
 @app.route('/api/events', methods=['GET'])
@@ -223,6 +223,40 @@ def dateSearch():
         output=[]
         if results is not None and results!=[]:
             for result in results:
+                event={
+                        'id' : result.id,
+                        'title' : result.title,
+                        'start_date' : result.start_date,
+                        'end_date' : result.end_date,
+                        'description': result.description,
+                        'venue' : result.venue,
+                        'photo' : result.photo,
+                        'website_url' : result.website_url,
+                        'status' : result.status,
+                        'uid' : result.uid,
+                        'created' : result.created_at
+                    }
+                output.append(event)
+            return jsonify(error = None,data={"events": output}, message="Success")
+        return jsonify(error = None,data={"events": output}, message="No Events Found")
+
+
+"""
+Search by Event Title API Endpoint
+
+"""
+@app.route("/api/events/search/title", methods=["GET"])
+def titleSearch():
+    if request.method == "GET":
+        try:
+            searchTitle = request.form["title"]            
+        except ValueError:
+             return jsonify(error = "Invalid Title ",data={"events": []}, message="Error")
+        resultsList = Events.query.filter(Events.title.ilike(searchTitle)).all() 
+        
+        output=[]
+        if resultsList is not None and resultsList!=[]:
+            for result in resultsList:
                 event={
                         'id' : result.id,
                         'title' : result.title,
