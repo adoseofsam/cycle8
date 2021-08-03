@@ -229,7 +229,10 @@ def api_events_by_uid(uid):
 
     return jsonify(error = None,data={"events": event_lst}, message="Success")
 
+"""
+Search by Date API Endpoint
 
+"""
 @app.route("/api/events/search/date", methods=["POST"])
 def dateSearch():
     if request.method == "POST":
