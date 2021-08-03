@@ -212,20 +212,20 @@ def api_events_by_uid(uid):
 
         event_lst.append(event)
 
-    return jsonify(error = None,data={"events": event_lst}, message="Success")
+    return make_response(jsonify(error = None,data={"events": event_lst}, message="Success"),200)
 
 """
 Search by Date API Endpoint
 
 """
-@app.route("/api/events/search/date", methods=["POST"])
-def dateSearch():
-    if request.method == "POST":
+@app.route("/api/events/search/date/<string:date>", methods=["GET"])
+def dateSearch(date):
+    if request.method == "GET":
         try:
-            date=request.form["date"]
+            #date=request.form["date"]
             date=datetime.datetime.strptime(date, "%Y-%m-%d")
         except ValueError:
-             return jsonify(error = "Invalid Date Format ",data={"events": []}, message="Error")
+             return make_response(jsonify(error = "Invalid Date Format ",data={"events": []}, message="Error"),400)
         results=Events.query.filter(cast(Events.start_date,Date)<=date.date()).filter(cast(Events.end_date,Date)>=date.date()).all()
         output=[]
         if results is not None and results!=[]:
@@ -278,8 +278,8 @@ def titleSearch():
                         'created' : result.created_at
                     }
                 output.append(event)
-            return jsonify(error = None,data={"events": output}, message="Success")
-        return jsonify(error = None,data={"events": output}, message="No Events Found")
+            return make_response(jsonify(error = None,data={"events": output}, message="Success"),200)
+        return make_response(jsonify(error = None,data={"events": output}, message="No Events Found"),200)
 
 
 @app.route("/api/events/publish/<int:id>", methods=["POST"])
