@@ -15,7 +15,7 @@ import datetime
 from app import app, db, login_manager
 from app.forms import *
 from app.models import *
-from flask import render_template, request, redirect, url_for, flash, jsonify, g, send_from_directory,session, abort
+from flask import render_template, request, redirect, url_for, flash, jsonify, g, send_from_directory,session, abort, make_response
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash,generate_password_hash
@@ -192,7 +192,7 @@ def api_events():
 
         event_lst.append(event)
 
-    return jsonify(error = None,data={"events": event_lst}, message="Success")
+    return make_response(jsonify(error = None,data={"events": event_lst}, message="Success"),200)
 
 
 
@@ -309,6 +309,10 @@ def home():
 #     """Render website's home page."""
 #     return render_template('event.html')
 
+
+@app.route('/viewEvents')
+def viewEvents():
+    return render_template('viewEvents.html')
 
 @app.route('/signup', methods = ['GET','POST'])
 def signup():
