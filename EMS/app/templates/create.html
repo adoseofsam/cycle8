@@ -4,59 +4,83 @@
 
 <h1 class="heading">Add New Event</h1>
 <br>
-<form action="{{url_for('eventForm')}}" method='POST' enctype = "multipart/form-data"> 
-    {{ form.csrf_token }} 
-    <div class="form-group">
-        {{ form.title.label }} <br>
-        {{ form.title (size=57) }}
+<div class="container maincontainer">
+  <div class="add_event m-4 ">
+<form method="POST" class="form" action="" id="event-form" @submit.prevent="addEvent()">
+  <div class="mt-sm-1 mb-sm-1 d-flex flex-area1">
+      <div>
+          <label class="" for="title">Title</label><br>
+          <input type="text" class="form-control form-field" name="title" required>
       </div>
-  
-
-  <div class="form-group">
-    {{ form.description.label }} <br>
-    {{ form.description (rows=6, cols=60) }}
   </div>
-
-  <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-            {{ form.start_date.label }} <br>
-            {{ form.start_date (size=15, placeholder='2020-08-05') }}
-          </div>
-      </div>
-      <br>
-
-      <div class="col-md-6">
-        <div class="form-group">
-            {{ form.end_date.label }} <br>
-            {{ form.end_date (size=18, placeholder='2021-08-23') }}
-          </div>
-      </div>
-
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-          {{ form.venue.label }} <br>
-          {{ form.venue (size=15, placeholder='2021 Mona Road') }}
-        </div>
-    </div>
-    <br>
-
-    <div class="col-md-6">
-      <div class="form-group">
-          {{ form.website_url.label }} <br>
-          {{ form.website_url (size=18, placeholder='www.google.com') }}
-        </div>
-    </div>
+  <div class="mt-sm-3 mb-sm-1">
+    <label class="" for="description">Description</label><br>
+    <textarea name="description" class="form-control" rows="4" required></textarea><br>
 </div>
-  
-  
-  <div class="form-group">
-    {{ form.photo.label }} <br>
-    {{ form.photo (id='photo') }}
+  <div class="mt-sm-3 mb-sm-1 d-flex flex-area1">
+      <div>
+          <label class="" for="start_date">Start Date</label><br>
+          <input type="text" class="form-control form-field" placeholder="yyyy-mm-dd" name="start_date" required>
+      </div>
+      <div>
+          <label class="" for="end_date">End Date</label><br>
+          <input type="text" class="form-control form-field" placeholder= "yyyy-mm-dd" name="end_date" required>
+      </div>
   </div>
+  <div class="mt-sm-3 mb-sm-1 d-flex flex-area1">
+      <div>
+          <label class="" for="venue">Venue</label><br>
+          <input type="text" class="form-control form-field" placeholder="2021 Mona Grad-way" name="venue" required>
+      </div>
+      <div>
+          <label class="" for="website_url">Website URL</label><br>
+          <input type="text" class="form-control form-field" placeholder="https://wwww.google.com" name="website_url" required>
 
+      </div>
+  </div>
+  
+  <div class="">
+      <label class="" for="photo">Upload Photo</label><br>
+      <input type="file" class="form-control form-field" name="photo" accept=".jpeg, .jpg, .png" required>
+  </div>
   <button type="submit" name="submit" class="btn btn-primary">Add Event</button>
 </form>
+</div>
+</div>
 {% endblock %}
+
+{% block js %}
+<script>
+  function addEvent(){
+    let self = this;
+    let eventForm = document.getElementById('event-form');
+    let form_data = new FormData(eventForm);
+
+    fetch("/api/create", {
+                method: 'POST',
+                body: form_data,
+                headers: {
+                    'X-CSRFToken': token,
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                },
+                credentials: 'same-origin'        
+            })
+            .then(function(response) {
+                console.log(response);
+                return response.json();
+            })
+            .then(function(jsonResponse) {
+                if(jsonResponse.data){
+                  window.location = "http://127.0.0.1:5000/viewEvents"
+                  swal({title: "Add Event",text: jsonResponse.message,icon: "success",button: "Proceed"});
+                }else{
+                    swal({title: "Add Event",text: jsonResponse.errors[0],icon: "error",button: "Try Again"});
+                }
+                
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+          }
+</script>
+{% endblock%}
