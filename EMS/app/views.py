@@ -19,6 +19,7 @@ from flask import render_template, request, redirect, url_for, flash, jsonify, g
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash,generate_password_hash
+from sqlalchemy import Date, cast
 
 roles = {'admin' : "Admin", 'regular': "Regular"}
 
@@ -227,6 +228,37 @@ def api_events_by_uid(uid):
         event_lst.append(event)
 
     return jsonify(error = None,data={"events": event_lst}, message="Success")
+
+
+@app.route("/api/events/search/date", methods=["POST"])
+def dateSearch():
+    if request.method == "POST":
+        try:
+            date=request.form["date"]
+            date=datetime.datetime.strptime(date, "%Y-%m-%d")
+        except ValueError:
+             return jsonify(error = "Invalid Date Format ",data={"events": []}, message="Error")
+        results=Events.query.filter(cast(Events.start_date,Date)<=date.date()).filter(cast(Events.end_date,Date)>=date.date()).all()
+        output=[]
+        if results is not None and results!=[]:
+            for result in results:
+                event={
+                        'id' : result.id,
+                        'title' : result.title,
+                        'start_date' : result.start_date,
+                        'end_date' : result.end_date,
+                        'description': result.description,
+                        'venue' : result.venue,
+                        'photo' : result.photo,
+                        'website_url' : result.website_url,
+                        'status' : result.status,
+                        'uid' : result.uid,
+                        'created' : result.created_at
+                    }
+                output.append(event)
+            return jsonify(error = None,data={"events": output}, message="Success")
+        return jsonify(error = None,data={"events": output}, message="No Events Found")
+
 # --------------- END OF APIs FUNCTIONS/ROUTES ---------------------
 
 ###
