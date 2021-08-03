@@ -23,22 +23,6 @@ from sqlalchemy import Date, cast
 
 roles = {'admin' : "Admin", 'regular': "Regular"}
 
-
-#########################
-#                       #
-# ENDPOINTS FOR WEB APP #
-#                       #
-#########################
-@app.route('/test')
-def test():
-    form = EventForm()
-    # if not current_user.is_authenticated:
-    #     define_db()
-    """Render website's home page."""
-    return render_template('create.html', form = form)
-
-
-
 # --------------- JWT FUNCTIONS ---------------------
 
 # Create a JWT @requires_auth decorator
@@ -95,19 +79,14 @@ def generate_token():
 
 # --------------- APIs FUNCTIONS/ROUTES ---------------------
 
-# This route requires a JWT in order to work. Note the @reques_auth
-@app.route('/api/create', methods=['POST','GET'])
+# This route requires a JWT in order to work. Note the @requires_auth
+
+@app.route('/api/create', methods=['POST'])
 # @requires_auth
 def create():
-    # #initializes cursor
-    # cur = mysql.connection.cursor()
-
     form = EventForm()
     errors = []
-    #errors.append(int(current_user.get_id()))
-    # event = session ["events"]
-    if request.method == "POST":
-        if form.validate_on_submit():
+    if request.method == 'POST' and form.validate_on_submit():
             title = form.title.data
             start_date = form.start_date.data
             s = datetime.datetime.strptime(start_date, '%Y-%m-%d')
@@ -122,12 +101,11 @@ def create():
             date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             
             event1 = Events.query.filter_by(title=title).first()
-            #print(event1.venue)
            
             if event1 is None:
                 
                 photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                newEvent = Events(title = title, start_date=s,end_date=e,description=description,venue=venue,photo=filename,website_url=website_url,status=status,uid = "1",date=date)
+                newEvent = Events(title = title, start_date=s,end_date=e,description=description,venue=venue,photo=filename,website_url=website_url,status=status,uid = current_user.get_id(),date=date)
                 
                 db.session.add(newEvent)
                 db.session.commit()
@@ -153,8 +131,8 @@ def create():
                 return jsonify(data=data)
             else:
                 errors.append("Title already exists")
-        return jsonify(errors=form_errors(form)+errors)
-    return render_template('create.html', form=form)
+    return jsonify(errors=form_errors(form)+errors)
+    
 
 
 
@@ -345,7 +323,10 @@ def signup():
 
     return render_template("signup.html", form=signupForm)
 
-
+@app.route('/eventForm',methods=['GET'])
+def eventForm():
+    form = EventForm()
+    return render_template('create.html', form=form)
 
 
 @app.route("/login", methods=["GET", "POST"])

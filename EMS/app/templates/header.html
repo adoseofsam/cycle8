@@ -12,7 +12,7 @@
       
       {% if current_user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('create') }}">New Events</a>
+        <a class="nav-link" href="{{ url_for('eventForm') }}">New Events</a>
       </li>
     </ul>
     {% endif %}
