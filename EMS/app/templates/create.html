@@ -83,8 +83,7 @@
             .then(function(jsonResponse) {
                 if(jsonResponse.data){
                     // alert("Congratulations! new event created");
-                  swal({title: "Add Event",text: jsonResponse.message,icon: "success",button: "Proceed"});
-                  window.location = "http://127.0.0.1:5000/viewEvents"
+                    success(jsonResponse.message);
                   
                 }else{
                     // alert("Oh no! something went wrong :(");
@@ -96,5 +95,18 @@
                 console.log(error);
             });
           }
+
+          function sleep(ms) {
+                alert("in sleep");
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        async function success(message){
+
+            swal({title: "Add Event",text: message,icon: "success",button: "Proceed"});
+            await sleep(1500);
+            window.location = "http://127.0.0.1:5000/viewEvents"
+
+        }
+        
 </script>
 {% endblock%}
