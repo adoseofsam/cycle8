@@ -346,14 +346,15 @@ def define_db():
 
 @app.route('/')
 def home():
-    print(current_user)
-    print(current_user.get_id())
-
     if not current_user.is_authenticated:
         define_db()
     """Render website's home page."""
     return render_template('home.html')
 
+@app.route('/about')
+def about():
+    """Render website's home page."""
+    return render_template('about.html')
 
 # @app.route('/event')
 # def event():
