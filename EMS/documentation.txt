@@ -1,0 +1,68 @@
+openapi: 3.1.0
+info:
+  title: What's Happening Events Manager
+  version: 1.0.0
+  description: An events manager web application for local parties and events
+paths:
+  api/events/search/title:
+    get:
+      summary: Searches for events based on Title
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string    
+                
+                start_date:
+                    type: datetime
+                end_date:
+                    type: datetime
+                description: 
+                    type: string
+                venue: 
+                    type: string
+                photo:
+                    type: string
+                website_url:
+                    type: string
+                status:
+                    type: string
+                uid:
+                    type: integer
+                created:
+                    type: datetime           
+              
+              example:   # Sample object
+                id: 10
+                name: Jessica Smith            
+                
+      responses:
+        '200':
+          description: OK
+
+    /api/events/publish:
+        post:
+            summary: Changes the status of an event to published
+
+            requestBody:
+            content:
+            application/json:
+                schema:      # Request body contents
+                type: object
+                properties:
+                    id:
+                    type: integer
+                    name:
+                    type: string
+                example:   # Sample object
+                    id: 10
+                    name: Jessica Smith
+            responses:
+                '200':
+                description: OK
