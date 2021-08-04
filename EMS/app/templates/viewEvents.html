@@ -4,6 +4,18 @@
 
 <div>
     <p>Nothing to see here :) yet</p>
+    <!-- Search form for api-->
+    <form id = "searchForm">
+        <label for="search_event" >Choose a search type:</label>
+        <select id="search_event" name="search_event" >
+          <option value="Title"selected>Title</option>
+          <option value="Date">Date</option>
+          <option value="UID" >ID</option>
+        </select>
+        <input id = "search_input" type  = "text" placeholder="Enter the event title">
+        <input type="submit" onclick="searchEvent();">
+      </form>
+
 </div>
 
 
@@ -59,6 +71,7 @@
     }
     // create and call viewEvents function
     function viewEvents(){
+        // https://www.youtube.com/watch?v=QKcVjdLEX_s&list=PLF2JzgCW6-YY_TZCmBrbOpgx5pSNBD0_L&index=11
         event_output = document.getElementById("event");
         output = document.getElementById("result");
         fetch(`${window.origin}/api/events`, {
@@ -119,8 +132,8 @@
                                 <div class="card" style="width: 18rem;">
                                 <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
                                 <div class="card-body">
-                                <h5 class="card-title">${result.events[event].Title}</h5>
-                                <p class="card-text">${result.events[event].Description}.</p>
+                                <h5 class="card-title">${result.events[event].title}</h5>
+                                <p class="card-text">${result.events[event].description}.</p>
                                 <a href="#" class="btn btn-primary">Go somewhere</a>
                                 </div>
                             </div> </div> <br>`;
@@ -161,6 +174,405 @@
                 })
 
     }
+
+    // Search Event
+
+    // Search event by title
+    function searchEventByTitle(title){
+        event_output = document.getElementById("event");
+        output = document.getElementById("result");
+        formData = new FormData;
+        formData.append("title",title);
+        alert(title);
+        fetch(`${window.origin}/api/events/search/title/${title}`, {
+                method : 'GET',
+                'headers': {
+                    // Try it with the `Basic` schema and you will see it gives an error message.
+                    // 'Authorization': 'Basic ' + localStorage.getItem('token')
+
+                    // JWT requires the Authorization schema to be `Bearer` instead of `Basic`
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }//,
+                //'body' : formData
+            })
+                .then(function (response) {
+                    console.log(response.status);
+                    if (response.status !== 200){
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info');
+                        alert.classList.add('alert-danger');
+                        // unsuccessful response (ie. there was an error)
+                        output.innerHTML = `There was an error. Status code ${response.status}`;
+                        return ""
+                    }
+                    
+                    response.json().then(function (response) {
+                        // https://www.w3schools.com/js/js_object_display.asp
+                        // https://www.w3schools.com/js/js_json_arrays.asp
+                        // https://getbootstrap.com/docs/5.0/components/card/
+
+
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info', 'alert-danger');
+                        alert.classList.add('alert-success');
+                        console.log(response);
+                        if (response.data) {
+
+                            let result = response.data//JSON.parse(response);
+                            console.log(JSON.stringify(result.events[0]));
+
+                            // generating events
+                            /*
+                            <div class="col-sm-6"  >
+                            <div class="card" style="width: 18rem;">
+                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            </div>
+                            </div>
+
+
+                            */
+                            let text = "";
+                            for (let event = 0; event < result.events.length; event++) {
+                                console.log("event -", event)
+                                //text += JSON.stringify(result.events[event]) + " <br> ";
+                                text += `
+                                <div class="col-sm-3"  >
+                                <div class="card" style="width: 18rem;">
+                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">${result.events[event].title}</h5>
+                                <p class="card-text">${result.events[event].description}.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            </div> </div> <br>`;
+                            }
+                            console.log(text);
+                            // successful response
+                            output.innerHTML = `Congrats! You have now made a successful request with a JSON Web Token. Your result: <br> `;//${JSON.stringify(result)}.`;
+                            event_output.innerHTML = text;
+                        } else {
+                            let alert = document.querySelector('.alert');
+                            alert.classList.remove('alert-info');
+                            alert.classList.add('alert-danger');
+
+                            // unsuccessful response (ie. there was an error)
+                            output.innerHTML = `There was an error. ${response.description}`;                        
+                        }
+                    })
+                    .catch(function (error) {
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info');
+                        alert.classList.add('alert-danger');
+                        // unsuccessful response (ie. there was an error)
+                        output.innerHTML = `There was an error. ${error}`;
+                    })
+
+
+
+
+
+                    //-----------------------
+                })
+                .catch(function (error) {
+                    let alert = document.querySelector('.alert');
+                    alert.classList.remove('alert-info');
+                    alert.classList.add('alert-danger');
+                    // unsuccessful response (ie. there was an error)
+                    output.innerHTML = `There was an error. ${error}`;
+                })
+
+
+    }
+
+
+
+    // Search event by Date
+    function searchEventByDate(date){
+        event_output = document.getElementById("event");
+        output = document.getElementById("result");
+        formData = new FormData;
+        formData.append("date",date);
+        alert(date);
+        fetch(`${window.origin}/api/events/search/date/${date}`, {
+                method : 'GET',
+                'headers': {
+                    // Try it with the `Basic` schema and you will see it gives an error message.
+                    // 'Authorization': 'Basic ' + localStorage.getItem('token')
+
+                    // JWT requires the Authorization schema to be `Bearer` instead of `Basic`
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }//,
+                //'body' : formData
+            })
+                .then(function (response) {
+                    console.log(response.status);
+                    if (response.status !== 200){
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info');
+                        alert.classList.add('alert-danger');
+                        // unsuccessful response (ie. there was an error)
+                        output.innerHTML = `There was an error. Status code ${response.status}`;
+                        return ""
+                    }
+                    
+                    response.json().then(function (response) {
+                        // https://www.w3schools.com/js/js_object_display.asp
+                        // https://www.w3schools.com/js/js_json_arrays.asp
+                        // https://getbootstrap.com/docs/5.0/components/card/
+
+
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info', 'alert-danger');
+                        alert.classList.add('alert-success');
+                        console.log(response);
+                        if (response.data) {
+
+                            let result = response.data//JSON.parse(response);
+                            console.log(JSON.stringify(result.events[0]));
+
+                            // generating events
+                            /*
+                            <div class="col-sm-6"  >
+                            <div class="card" style="width: 18rem;">
+                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            </div>
+                            </div>
+
+
+                            */
+                            let text = "";
+                            for (let event = 0; event < result.events.length; event++) {
+                                console.log("event -", event)
+                                //text += JSON.stringify(result.events[event]) + " <br> ";
+                                text += `
+                                <div class="col-sm-3"  >
+                                <div class="card" style="width: 18rem;">
+                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">${result.events[event].title}</h5>
+                                <p class="card-text">${result.events[event].description}.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            </div> </div> <br>`;
+                            }
+                            console.log(text);
+                            // successful response
+                            output.innerHTML = `Congrats! You have now made a successful request with a JSON Web Token. Your result: <br> `;//${JSON.stringify(result)}.`;
+                            event_output.innerHTML = text;
+                        } else {
+                            let alert = document.querySelector('.alert');
+                            alert.classList.remove('alert-info');
+                            alert.classList.add('alert-danger');
+
+                            // unsuccessful response (ie. there was an error)
+                            output.innerHTML = `There was an error. ${response.description}`;                        
+                        }
+                    })
+                    .catch(function (error) {
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info');
+                        alert.classList.add('alert-danger');
+                        // unsuccessful response (ie. there was an error)
+                        output.innerHTML = `There was an error. ${error}`;
+                    })
+
+
+
+
+
+                    //-----------------------
+                })
+                .catch(function (error) {
+                    let alert = document.querySelector('.alert');
+                    alert.classList.remove('alert-info');
+                    alert.classList.add('alert-danger');
+                    // unsuccessful response (ie. there was an error)
+                    output.innerHTML = `There was an error. ${error}`;
+                })
+
+
+    }
+
+    // Search by UID
+    function searchEventByUID(uid){
+        event_output = document.getElementById("event");
+        output = document.getElementById("result");
+        formData = new FormData;
+        formData.append("uid",uid);
+        alert(uid);
+        fetch(`${window.origin}/api/events/${uid}`, {
+                method : 'GET',
+                'headers': {
+                    // Try it with the `Basic` schema and you will see it gives an error message.
+                    // 'Authorization': 'Basic ' + localStorage.getItem('token')
+
+                    // JWT requires the Authorization schema to be `Bearer` instead of `Basic`
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }//,
+                //'body' : formData
+            })
+                .then(function (response) {
+                    console.log(response.status);
+                    if (response.status !== 200){
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info');
+                        alert.classList.add('alert-danger');
+                        // unsuccessful response (ie. there was an error)
+                        output.innerHTML = `There was an error. Status code ${response.status}`;
+                        return ""
+                    }
+                    
+                    response.json().then(function (response) {
+                        // https://www.w3schools.com/js/js_object_display.asp
+                        // https://www.w3schools.com/js/js_json_arrays.asp
+                        // https://getbootstrap.com/docs/5.0/components/card/
+
+
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info', 'alert-danger');
+                        alert.classList.add('alert-success');
+                        console.log(response);
+                        if (response.data) {
+
+                            let result = response.data//JSON.parse(response);
+                            console.log(JSON.stringify(result.events[0]));
+
+                            // generating events
+                            /*
+                            <div class="col-sm-6"  >
+                            <div class="card" style="width: 18rem;">
+                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            </div>
+                            </div>
+
+
+                            */
+                            let text = "";
+                            for (let event = 0; event < result.events.length; event++) {
+                                console.log("event -", event)
+                                //text += JSON.stringify(result.events[event]) + " <br> ";
+                                text += `
+                                <div class="col-sm-3"  >
+                                <div class="card" style="width: 18rem;">
+                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">${result.events[event].title}</h5>
+                                <p class="card-text">${result.events[event].description}.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            </div> </div> <br>`;
+                            }
+                            console.log(text);
+                            // successful response
+                            output.innerHTML = `Congrats! You have now made a successful request with a JSON Web Token. Your result: <br> `;//${JSON.stringify(result)}.`;
+                            event_output.innerHTML = text;
+                        } else {
+                            let alert = document.querySelector('.alert');
+                            alert.classList.remove('alert-info');
+                            alert.classList.add('alert-danger');
+
+                            // unsuccessful response (ie. there was an error)
+                            output.innerHTML = `There was an error. ${response.description}`;                        
+                        }
+                    })
+                    .catch(function (error) {
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info');
+                        alert.classList.add('alert-danger');
+                        // unsuccessful response (ie. there was an error)
+                        output.innerHTML = `There was an error. ${error}`;
+                    })
+
+
+
+
+
+                    //-----------------------
+                })
+                .catch(function (error) {
+                    let alert = document.querySelector('.alert');
+                    alert.classList.remove('alert-info');
+                    alert.classList.add('alert-danger');
+                    // unsuccessful response (ie. there was an error)
+                    output.innerHTML = `There was an error. ${error}`;
+                })
+
+
+    }
+
+    // prevent form from reloading
+    searchForm = document.getElementById("searchForm");
+    searchForm.addEventListener('submit', e =>{
+        e.preventDefault();
+    });
+
+    function searchEvent(){
+        //https://ricardometring.com/getting-the-value-of-a-select-in-javascript
+        var select = document.getElementById('search_event');
+		var option = select.options[select.selectedIndex];
+        var type = option.value;
+        
+        var input = document.getElementById("search_input");
+
+        alert(`Searching ${option.value} :)`);
+        alert("Here 0");
+        console.log(input.value);
+
+        if (!(input.value === "")){
+            alert("Here 1");
+
+
+            alert("Here");
+            if (type === "Title"){
+                // searcg event by title
+
+                alert("Title was selected");
+                console.log(input.value);
+                searchEventByTitle(input.value);
+
+            }else if (type === "Date"){
+                alert("Date was selected");
+                // search event by date
+                searchEventByDate(input.value);
+
+
+            }else {
+                alert("UID was selected");
+                // search event by user ID
+                searchEventByUID(input.value);
+
+
+
+            }
+
+        }else{
+            input.setAttribute("placeholder","Please enter a value"); 
+        }
+
+        alert("Here 2");
+
+        
+
+        
+    }
+
+    //Display published button for admin
+    // https://www.youtube.com/watch?v=u0oDDZrDz9U&list=PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH&index=8
 
     window.onload = function(){
         getToken();

@@ -163,16 +163,16 @@ def api_events():
 
     for e in events:
         event = {
-            "Title": e.title,
-            "Start_date": e.start_date,
-            "End_date": e.end_date,
-            "Description": e.description,
-            "Venue": e.venue,
-            "Image": e.photo,
-            "Url": e.website_url,
-            "Status": e.status,
-            "Uid": e.uid,
-            "Created_at": e.created_at
+            "title": e.title,
+            "start_date": e.start_date,
+            "end_date": e.end_date,
+            "description": e.description,
+            "venue": e.venue,
+            "image": e.photo,
+            "url": e.website_url,
+            "status": e.status,
+            "uid": e.uid,
+            "created_at": e.created_at
         }
 
         event_lst.append(event)
@@ -192,22 +192,23 @@ def api_events_by_uid(uid):
     jwt token for postman -
     eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM
     '''
+    
     events = Events.query.filter_by(uid = uid).all()
     event_lst = []
     print(events[0].title)
 
     for e in events:
         event = {
-            "Title": e.title,
-            "Start_date": e.start_date,
-            "End_date": e.end_date,
-            "Description": e.description,
-            "Venue": e.venue,
-            "Image": e.photo,
-            "Url": e.website_url,
-            "Status": e.status,
-            "Uid": e.uid,
-            "Created_at": e.created_at
+            "title": e.title,
+            "start_date": e.start_date,
+            "end_date": e.end_date,
+            "description": e.description,
+            "venue": e.venue,
+            "image": e.photo,
+            "url": e.website_url,
+            "status": e.status,
+            "uid": e.uid,
+            "created_at": e.created_at
         }
 
         event_lst.append(event)
@@ -222,6 +223,7 @@ Search by Date API Endpoint
 def dateSearch(date):
     if request.method == "GET":
         try:
+            print("date was called")
             #date=request.form["date"]
             date=datetime.datetime.strptime(date, "%Y-%m-%d")
         except ValueError:
@@ -245,18 +247,18 @@ def dateSearch(date):
                     }
                 output.append(event)
             return jsonify(error = None,data={"events": output}, message="Success")
-        return jsonify(error = None,data={"events": output}, message="No Events Found")
+        return  make_response(jsonify(error = None,data={"events": output}, message="No Events Found"),200)
 
 
 """
 Search by Event Title API Endpoint
 
 """
-@app.route("/api/events/search/title", methods=["GET"])
-def titleSearch():
+@app.route("/api/events/search/title/<string:title>", methods=["GET"])
+def titleSearch(title):
     if request.method == "GET":
         try:
-            searchTitle = request.form["title"]            
+            searchTitle = title #request.form["title"]            
         except ValueError:
              return jsonify(error = "Invalid Title ",data={"events": []}, message="Error")
         resultsList = Events.query.filter(Events.title.ilike(searchTitle)).all() 
