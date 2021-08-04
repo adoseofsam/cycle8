@@ -81,37 +81,42 @@ def generate_token():
 
 # This route requires a JWT in order to work. Note the @requires_auth
 
-@app.route('/api/create', methods=['POST'])
-# @requires_auth
+@app.route("/api/create", methods=['POST'])
+@requires_auth
 def create():
     form = EventForm()
     errors = []
-    if request.method == 'POST' and form.validate_on_submit():
+    if request.method == 'POST':
+        if form.validate_on_submit():
+
             title = form.title.data
+
             start_date = form.start_date.data
             s = datetime.datetime.strptime(start_date, '%Y-%m-%d')
             end_date = form.end_date.data
             e = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+           
             description = form.description.data
             venue = form.venue.data
             photo = form.photo.data
-            filename = secure_filename(photo.filename)
             website_url = form.website_url.data
             status = "Pending" #placeholder until further notice
             date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+            filename = secure_filename(photo.filename)
+
             
             event1 = Events.query.filter_by(title=title).first()
            
             if event1 is None:
                 
                 photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
                 newEvent = Events(title = title, start_date=s,end_date=e,description=description,venue=venue,photo=filename,website_url=website_url,status=status,uid = current_user.get_id(),date=date)
                 
                 db.session.add(newEvent)
                 db.session.commit()
-                
-                flash('Event successfully created!','success')
-                
+                                
                 event = Events.query.filter_by(title=title).first()
                 
                 data = [
@@ -125,13 +130,15 @@ def create():
                         'photo' : filename,
                         'website_url' : website_url,
                         'status' : status,
-                        'uid' : current_user.get_id(),
+                        'uid' : g.current_user["id"],
                         'date' : date
                 }]
-                return jsonify(data=data)
+                message = 'Event successfully created!'
+
+                return jsonify(data=data, message = message)
             else:
                 errors.append("Title already exists")
-    return jsonify(errors=form_errors(form)+errors)
+    return jsonify(errors=form_errors(form))
     
 
 

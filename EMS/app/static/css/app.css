@@ -23,10 +23,14 @@ nav.bg-primary {
 
 .form-group{
   font-weight: bold;
+  width: 350px;
 }
 form{
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   background-color: #ffffff;
-  padding: 10px 100px 20px 30px;
+  /* padding: 10px 100px 20px 30px; */
   width: 800px;
   height: auto;
   display: flex;
@@ -37,6 +41,13 @@ form{
     margin-right: auto;
     text-align: left; */
 
+}
+#event-form {
+  width: 570px;
+  border:1px solid rgb(233, 233, 233);
+}
+.form-field {
+  width: 250px;
 }
 button, .btn {
 
@@ -53,7 +64,19 @@ h1{
 .small{
   font-weight: bold;
 }
+.maincontainer{
+  display:flex;
+  max-width: 75vw !important; 
+  justify-content: left; 
+  flex-direction: column;
+}
 
+.container{
+  display:flex; 
+  max-width: 82vw; 
+  justify-content: left; 
+  flex-direction: column;
+}
 #mainContainer {
   margin: auto;
   width: 75%;
@@ -62,4 +85,9 @@ h1{
 #jumbotronDiv {
   padding: 7%;
 }
-
+.heading{
+  text-align: center;
+}
+.add_event{
+  padding-left: 210px;
+}
