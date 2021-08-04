@@ -71,7 +71,7 @@ class User(db.Model):
             return str(self.id)  # python 3 support
 
     def __repr__(self):
-        return '<User %r>' % (self.username)
+        return '<User %r>' % (self.full_name)
 
 
 class Test(db.Model):

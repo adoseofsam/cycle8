@@ -3,7 +3,7 @@
 {% block main %}
   <div class="login-form center-block">
     {% include 'flash_messages.html' %}
-    <h2>Log in</h2>
+    <h1>Log in</h1>
     <!--{% include 'flash_messages.html' %}-->
     <form action="{{ url_for('login') }}" method="post">
       {{ form.csrf_token }}
@@ -17,6 +17,6 @@
       </div>
       <button type="submit" name="submit" class="btn btn-primary btn-block">Log in</button>
     </form>
-    <div class="text-center"><a class="small" href="{{ url_for('signup')}}">Create an Account!</a></div>
+    <div class="text-left"><a class="small" href="{{ url_for('signup')}}">Create an Account!</a></div>
   </div>
 {% endblock %}

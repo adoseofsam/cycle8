@@ -22,10 +22,8 @@ class EventForm(FlaskForm):
     start_date = StringField('Start Date', validators=[DataRequired()])
     end_date = StringField('End Date', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
-    venue = StringField('End Date', validators=[DataRequired()])
+    venue = StringField('Venue', validators=[DataRequired()])
     photo = FileField('Photo', validators=[FileRequired(), FileAllowed(['jpg','jpeg', 'png', 'Images only!'])])
     website_url = StringField('URL', validators=[DataRequired()])
     # status = SelectField('Status', [DataRequired()], choices=[("Pending","Published")])
-    date = StringField('Date created', validators=[DataRequired()])
- 
-
+    # date = StringField('Date created', validators=[DataRequired()])
