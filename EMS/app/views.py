@@ -283,19 +283,20 @@ def titleSearch():
 
 
 @app.route("/api/events/publish/<int:id>", methods=["POST"])
-def publishEvent():
+def publishEvent(id):
     if request.method == "POST":
-        event = Events.query.filter_by(id = 'id').first()
+        event = Events.query.filter_by(id = id).first()
         event.status = 'published'
         db.session.commit()
+        return make_response(jsonify(error = None, message="Success"),200)
 
-@app.route("/api/events/pending/<int:id>", methods=["POST"])
-def pendEvent():
+@app.route("/api/events/reject/<int:id>", methods=["POST"])
+def rejectEvent(id):
     if request.method == "POST":
-        event = Events.query.filter_by(id = 'id').first()
-        event.status = 'pending'
+        event = Events.query.filter_by(id = id).first()
+        event.status = 'rejected'
         db.session.commit()
-
+        return make_response(jsonify(error = None, message="Success"),200)
 
 
 # --------------- END OF APIs FUNCTIONS/ROUTES ---------------------
