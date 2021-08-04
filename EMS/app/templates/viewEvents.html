@@ -130,7 +130,7 @@
                                 text += `
                                 <div class="col-sm-3"  >
                                 <div class="card" style="width: 18rem;">
-                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                <img src="./static/uploads/${result.events[event].photo}" class="card-img-top" alt="Image not found" onerror="this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image';">
                                 <div class="card-body">
                                 <h5 class="card-title">${result.events[event].title}</h5>
                                 <p class="card-text">${result.events[event].description}.</p>
@@ -183,7 +183,7 @@
         output = document.getElementById("result");
         formData = new FormData;
         formData.append("title",title);
-        alert(title);
+        //alert(title);
         fetch(`${window.origin}/api/events/search/title/${title}`, {
                 method : 'GET',
                 'headers': {
@@ -243,7 +243,7 @@
                                 text += `
                                 <div class="col-sm-3"  >
                                 <div class="card" style="width: 18rem;">
-                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                <img src="./static/uploads/${result.events[event].photo}" class="card-img-top" alt="Image not found" onerror="this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image';">
                                 <div class="card-body">
                                 <h5 class="card-title">${result.events[event].title}</h5>
                                 <p class="card-text">${result.events[event].description}.</p>
@@ -297,7 +297,7 @@
         output = document.getElementById("result");
         formData = new FormData;
         formData.append("date",date);
-        alert(date);
+        //alert(date);
         fetch(`${window.origin}/api/events/search/date/${date}`, {
                 method : 'GET',
                 'headers': {
@@ -354,10 +354,11 @@
                             for (let event = 0; event < result.events.length; event++) {
                                 console.log("event -", event)
                                 //text += JSON.stringify(result.events[event]) + " <br> ";
+                                photo = result.events[event].photo //${result.events[event].photo}
                                 text += `
                                 <div class="col-sm-3"  >
                                 <div class="card" style="width: 18rem;">
-                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                <img src="./static/uploads/${photo}" class="card-img-top" alt="Image not found" onerror="this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image';">
                                 <div class="card-body">
                                 <h5 class="card-title">${result.events[event].title}</h5>
                                 <p class="card-text">${result.events[event].description}.</p>
@@ -409,7 +410,7 @@
         output = document.getElementById("result");
         formData = new FormData;
         formData.append("uid",uid);
-        alert(uid);
+        //alert(uid);
         fetch(`${window.origin}/api/events/${uid}`, {
                 method : 'GET',
                 'headers': {
@@ -469,7 +470,7 @@
                                 text += `
                                 <div class="col-sm-3"  >
                                 <div class="card" style="width: 18rem;">
-                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                <img src="./static/uploads/${result.events[event].photo}" class="card-img-top" alt="Image not found" onerror="this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image';">
                                 <div class="card-body">
                                 <h5 class="card-title">${result.events[event].title}</h5>
                                 <p class="card-text">${result.events[event].description}.</p>
@@ -529,30 +530,30 @@
         
         var input = document.getElementById("search_input");
 
-        alert(`Searching ${option.value} :)`);
-        alert("Here 0");
+        //alert(`Searching ${option.value} :)`);
+        //alert("Here 0");
         console.log(input.value);
 
         if (!(input.value === "")){
-            alert("Here 1");
+            //alert("Here 1");
 
 
-            alert("Here");
+            //alert("Here");
             if (type === "Title"){
                 // searcg event by title
 
-                alert("Title was selected");
+                //alert("Title was selected");
                 console.log(input.value);
                 searchEventByTitle(input.value);
 
             }else if (type === "Date"){
-                alert("Date was selected");
+                //alert("Date was selected");
                 // search event by date
                 searchEventByDate(input.value);
 
 
             }else {
-                alert("UID was selected");
+                //alert("UID was selected");
                 // search event by user ID
                 searchEventByUID(input.value);
 
@@ -564,7 +565,7 @@
             input.setAttribute("placeholder","Please enter a value"); 
         }
 
-        alert("Here 2");
+        //alert("Here 2");
 
         
 

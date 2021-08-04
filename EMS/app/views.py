@@ -74,6 +74,17 @@ def generate_token():
     return jsonify(error=None, data={'token': token}, message="Token Generated")
 
 
+def get_token():
+    global secret_key
+    # Under normal circumstances you would generate this token when a user
+    # logs into your web application and you send it back to the frontend
+    # where it can be stored in localStorage for any subsequent API requests.
+    payload = {'sub': '12345', 'name': 'John Doe'}
+    token = jwt.encode(payload, secret_key, algorithm='HS256').decode('utf-8')
+
+    return token
+
+
 # --------------- END OF JWT FUNCTIONS ---------------------
 
 
@@ -81,11 +92,12 @@ def generate_token():
 
 # This route requires a JWT in order to work. Note the @requires_auth
 
-@app.route("/api/create", methods=['POST'])
+@app.route("/api/create", methods=['GET','POST'])
 @requires_auth
 def create():
     form = EventForm()
     errors = []
+    print("Creating new events")
     if request.method == 'POST':
         if form.validate_on_submit():
 
@@ -130,7 +142,7 @@ def create():
                         'photo' : filename,
                         'website_url' : website_url,
                         'status' : status,
-                        'uid' : g.current_user["id"],
+                        'uid' : current_user.get_id(),
                         'date' : date
                 }]
                 message = 'Event successfully created!'
@@ -138,7 +150,7 @@ def create():
                 return jsonify(data=data, message = message)
             else:
                 errors.append("Title already exists")
-    return jsonify(errors=form_errors(form))
+    return jsonify(errors=form_errors(form) + errors)
     
 
 
@@ -168,7 +180,7 @@ def api_events():
             "end_date": e.end_date,
             "description": e.description,
             "venue": e.venue,
-            "image": e.photo,
+            "photo": e.photo,
             "url": e.website_url,
             "status": e.status,
             "uid": e.uid,
@@ -204,7 +216,7 @@ def api_events_by_uid(uid):
             "end_date": e.end_date,
             "description": e.description,
             "venue": e.venue,
-            "image": e.photo,
+            'photo' : e.photo,
             "url": e.website_url,
             "status": e.status,
             "uid": e.uid,
@@ -387,7 +399,7 @@ def signup():
 @app.route('/eventForm',methods=['GET'])
 def eventForm():
     form = EventForm()
-    return render_template('create.html', form=form)
+    return render_template('create.html', form=form, token = get_token())
 
 
 @app.route("/login", methods=["GET", "POST"])
