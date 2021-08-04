@@ -9,6 +9,12 @@
       <li class="nav-item active">
         <a class="nav-link" href="{{ url_for('home') }}">Home <span class="sr-only">(current)</span></a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('home') }}">About Us <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('home') }}">Contact<span class="sr-only">(current)</span></a>
+      </li>
       
       {% if current_user.is_authenticated %}
       <li class="nav-item">
@@ -17,13 +23,13 @@
     </ul>
     {% endif %}
 
-    <ul class="navbar-nav">
+    <ul class="navbar-nav ml-auto">
       {% if not session.is_authenticated%}
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('login') }}">Login</a>
       </li>
      {%else%}
-	<li class="nav-item">
+	    <li class="nav-item">
         <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
       </li>
      {%endif%}

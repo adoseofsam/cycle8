@@ -28,7 +28,20 @@
         Sorry, You have no events.
 </div>
 
-<!-- <div class="card" style="width: 18rem;">
+<!-- Button for top feature -->
+<!-- Return to Top -->
+<a href="javascript:" id="return-to-top"><i class="icon-chevron-up"></i></a>
+
+
+<!-- ICON NEEDS FONT AWESOME FOR CHEVRON UP ICON -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+  
+<!-- Test the scroll -->
+<div style="height:2000px;">
+  
+
+  <!-- <div class="card" style="width: 18rem;">
     <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">Card title</h5>
@@ -581,6 +594,21 @@
         removeToken();
     }
 
+//Below is the code for the top button function
+
+// ===== Scroll to Top ==== 
+$(window).scroll(function() {
+    if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
+        $('#return-to-top').fadeIn(200);    // Fade in the arrow
+    } else {
+        $('#return-to-top').fadeOut(200);   // Else fade out the arrow
+    }
+});
+$('#return-to-top').click(function() {      // When arrow is clicked
+    $('body,html').animate({
+        scrollTop : 0                       // Scroll to top of body
+    }, 500);
+});
 </script>
 
 
