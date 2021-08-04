@@ -305,7 +305,7 @@ def dateSearch(date):
                         'created' : result.created_at
                     }
                 output.append(event)
-            return jsonify(error = None,data={"events": output}, message="Success")
+            return make_response(jsonify(error = None,data={"events": output}, message="Success"),200)
         return  make_response(jsonify(error = None,data={"events": output}, message="No Events Found"),200)
 
 
