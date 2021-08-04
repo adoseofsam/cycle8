@@ -175,6 +175,7 @@ def api_events():
 
     for e in events:
         event = {
+            'id' : e.id,
             "title": e.title,
             "start_date": e.start_date,
             "end_date": e.end_date,
@@ -211,6 +212,7 @@ def api_events_by_uid(uid):
 
     for e in events:
         event = {
+            'id' : e.id,
             "title": e.title,
             "start_date": e.start_date,
             "end_date": e.end_date,
@@ -226,6 +228,51 @@ def api_events_by_uid(uid):
         event_lst.append(event)
 
     return make_response(jsonify(error = None,data={"events": event_lst}, message="Success"),200)
+
+
+@app.route('/api/events/<string:status>', methods=['GET'])
+@requires_auth
+def api_events_by_status(status):
+    # This data was retrieved from the payload of the JSON Web Token
+    # take a look at the requires_auth decorator code to see how we decoded
+    # the information from the JWT.
+    status = status.capitalize()
+
+    '''
+    jwt token for postman -
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM
+    '''
+    
+    events = Events.query.filter_by(status = status).all()
+    event_lst = []
+
+    if events is None or events ==[]:
+        print("no event")
+        return make_response(jsonify(error = None,data={"events": event_lst}, message="Success"),200)
+
+
+    else:
+
+        print(events[0].title)
+
+        for e in events:
+            event = {
+                'id' : e.id,
+                "title": e.title,
+                "start_date": e.start_date,
+                "end_date": e.end_date,
+                "description": e.description,
+                "venue": e.venue,
+                'photo' : e.photo,
+                "url": e.website_url,
+                "status": e.status,
+                "uid": e.uid,
+                "created_at": e.created_at
+            }
+
+            event_lst.append(event)
+
+        return make_response(jsonify(error = None,data={"events": event_lst}, message="Success"),200)
 
 """
 Search by Date API Endpoint
@@ -296,19 +343,19 @@ def titleSearch(title):
         return make_response(jsonify(error = None,data={"events": output}, message="No Events Found"),200)
 
 
-@app.route("/api/events/publish/<int:id>", methods=["POST"])
+@app.route("/api/events/publish/<int:id>", methods=["PUT"])
 def publishEvent(id):
-    if request.method == "POST":
+    if request.method == "PUT":
         event = Events.query.filter_by(id = id).first()
-        event.status = 'published'
+        event.status = 'Published'
         db.session.commit()
         return make_response(jsonify(error = None, message="Success"),200)
 
-@app.route("/api/events/reject/<int:id>", methods=["POST"])
+@app.route("/api/events/reject/<int:id>", methods=["PUT"])
 def rejectEvent(id):
-    if request.method == "POST":
+    if request.method == "PUT":
         event = Events.query.filter_by(id = id).first()
-        event.status = 'rejected'
+        event.status = 'Rejected'
         db.session.commit()
         return make_response(jsonify(error = None, message="Success"),200)
 
@@ -324,7 +371,7 @@ def define_db():
     global roles
     db.drop_all()
     db.create_all()
-    date = datetime.datetime.now()
+    date = datetime.datetime.now().strftime('%Y-%m-%d')
     print("Date - ", date)
     admin = User("Admin User","Admin@example.com","Adminpassword","admin_pic.png",roles["admin"],date)
     regular = User("Regular User","Regular@example.com","Regularpassword","admin_pic.png",roles["regular"],date)
@@ -348,8 +395,9 @@ def define_db():
 def home():
     if not current_user.is_authenticated:
         define_db()
+        return render_template('home.html')
     """Render website's home page."""
-    return render_template('home.html')
+    return render_template('viewEvents.html')
 
 @app.route('/about')
 def about():
@@ -363,8 +411,9 @@ def about():
 
 
 @app.route('/viewEvents')
+@login_required
 def viewEvents():
-    return render_template('viewEvents.html')
+    return render_template('viewEvents.html', user = current_user)
 
 @app.route('/signup', methods = ['GET','POST'])
 def signup():
