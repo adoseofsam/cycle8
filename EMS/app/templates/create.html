@@ -6,7 +6,7 @@
 <br>
 <div class="container maincontainer">
   <div class="add_event m-4 ">
-<form method="POST" class="form" action="" id="event-form" @submit.prevent="addEvent()">
+ <form method="GET" class="form" action="" id="event-form"> <!-- @submit.prevent="addEvent()" -->
   <div class="mt-sm-1 mb-sm-1 d-flex flex-area1">
       <div>
           <label class="" for="title">Title</label><br>
@@ -43,24 +43,35 @@
       <label class="" for="photo">Upload Photo</label><br>
       <input type="file" class="form-control form-field" name="photo" accept=".jpeg, .jpg, .png" required>
   </div>
-  <button type="submit" name="submit" class="btn btn-primary">Add Event</button>
+  <button type="button" name="submit" class="btn btn-primary" onclick="addEvent();">Add Event</button>
 </form>
 </div>
 </div>
 {% endblock %}
 
 {% block js %}
+<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> -->
 <script>
+    //var token = "{{ token }}";
+    //console.log(token)
+    // prevent form from reloading
+    createForm = document.getElementById("event-form");
+    createForm.addEventListener('submit', e =>{
+        e.preventDefault();
+    }); 
   function addEvent(){
+    alert("Here");
     let self = this;
     let eventForm = document.getElementById('event-form');
     let form_data = new FormData(eventForm);
+
+    console.log(form_data)
 
     fetch("/api/create", {
                 method: 'POST',
                 body: form_data,
                 headers: {
-                    'X-CSRFToken': token,
+                    //'X-CSRFToken': token,
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 },
                 credentials: 'same-origin'        
@@ -71,10 +82,13 @@
             })
             .then(function(jsonResponse) {
                 if(jsonResponse.data){
+                    alert("Congratulations! new event created");
+                  //swal({title: "Add Event",text: jsonResponse.message,icon: "success",button: "Proceed"});
                   window.location = "http://127.0.0.1:5000/viewEvents"
-                  swal({title: "Add Event",text: jsonResponse.message,icon: "success",button: "Proceed"});
+                  
                 }else{
-                    swal({title: "Add Event",text: jsonResponse.errors[0],icon: "error",button: "Try Again"});
+                    alert("Oh no! something went wrong :(");
+                    //swal({title: "Add Event",text: jsonResponse.errors[0],icon: "error",button: "Try Again"});
                 }
                 
             })
