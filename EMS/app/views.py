@@ -275,18 +275,18 @@ def titleSearch():
         return jsonify(error = None,data={"events": output}, message="No Events Found")
 
 
-@app.route("/api/events/publish/<int:id>", methods=["PATCH"])
+@app.route("/api/events/publish/<int:id>", methods=["POST"])
 def publishEvent():
-    if request.method == "PATCH":
+    if request.method == "POST":
         event = Events.query.filter_by(id = 'id').first()
         event.status = 'published'
         db.session.commit()
 
-@app.route("/api/events/cancel/<int:id>", methods=["PATCH"])
-def publishEvent():
-    if request.method == "PATCH":
+@app.route("/api/events/pending/<int:id>", methods=["POST"])
+def pendEvent():
+    if request.method == "POST":
         event = Events.query.filter_by(id = 'id').first()
-        event.status = 'cancelled'
+        event.status = 'pending'
         db.session.commit()
 
 
