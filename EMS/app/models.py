@@ -70,6 +70,9 @@ class User(db.Model):
         except NameError:
             return str(self.id)  # python 3 support
 
+    def get_role(self):
+        return str(self.role)
+
     def __repr__(self):
         return '<User %r>' % (self.full_name)
 
