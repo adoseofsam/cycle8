@@ -140,10 +140,10 @@ def create():
                         'description': description,
                         'venue' : venue,
                         'photo' : filename,
-                        'website_url' : website_url,
+                        'url' : website_url,
                         'status' : status,
                         'uid' : current_user.get_id(),
-                        'date' : date
+                        'created_at' : date
                 }]
                 message = 'Event successfully created!'
 
@@ -208,26 +208,29 @@ def api_events_by_uid(uid):
     
     events = Events.query.filter_by(uid = uid).all()
     event_lst = []
-    print(events[0].title)
+    # print(events[0].title)
 
-    for e in events:
-        event = {
-            'id' : e.id,
-            "title": e.title,
-            "start_date": e.start_date,
-            "end_date": e.end_date,
-            "description": e.description,
-            "venue": e.venue,
-            'photo' : e.photo,
-            "url": e.website_url,
-            "status": e.status,
-            "uid": e.uid,
-            "created_at": e.created_at
-        }
+    if events is not None and events!=[]:
 
-        event_lst.append(event)
+        for e in events:
+            event = {
+                'id' : e.id,
+                "title": e.title,
+                "start_date": e.start_date,
+                "end_date": e.end_date,
+                "description": e.description,
+                "venue": e.venue,
+                'photo' : e.photo,
+                "url": e.website_url,
+                "status": e.status,
+                "uid": e.uid,
+                "created_at": e.created_at
+            }
 
-    return make_response(jsonify(error = None,data={"events": event_lst}, message="Success"),200)
+            event_lst.append(event)
+
+        return make_response(jsonify(error = None,data={"events": event_lst}, message="Success"),200)
+    return make_response(jsonify(error = None,data={"events": event_lst}, message="No Event Found"),200)
 
 
 @app.route('/api/events/<string:status>', methods=['GET'])
@@ -346,18 +349,30 @@ def titleSearch(title):
 @app.route("/api/events/publish/<int:id>", methods=["PUT"])
 def publishEvent(id):
     if request.method == "PUT":
-        event = Events.query.filter_by(id = id).first()
-        event.status = 'Published'
-        db.session.commit()
-        return make_response(jsonify(error = None, message="Success"),200)
+        try:
+            event = Events.query.filter_by(id = id).first()
+            if event is not None and event!=[]:
+                event.status = 'Published'
+                db.session.commit()
+                return make_response(jsonify(error = None, message="Success"),200)
+
+            return make_response(jsonify(error = "No ID matched", message="No Events Found"),200)
+        except ValueError:
+            return make_response(jsonify(error = "Invalid ID ", message="Error"),404)
+
 
 @app.route("/api/events/reject/<int:id>", methods=["PUT"])
 def rejectEvent(id):
     if request.method == "PUT":
-        event = Events.query.filter_by(id = id).first()
-        event.status = 'Rejected'
-        db.session.commit()
-        return make_response(jsonify(error = None, message="Success"),200)
+        try:
+            event = Events.query.filter_by(id = id).first()
+            if event is not None and event!=[]:
+                event.status = 'Rejected'
+                db.session.commit()
+                return make_response(jsonify(error = None, message="Success"),200)
+            return make_response(jsonify(error = "No ID matched", message="No Events Found"),200)
+        except ValueError:
+            return make_response(jsonify(error = "Invalid ID ", message="Error"),404)
 
 @app.route('/api/events/<int:id>', methods=['DELETE'])
 def deleteEvent(id):

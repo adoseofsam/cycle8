@@ -39,6 +39,18 @@ paths:
                   message:
                     type: string
                     example : "success"
+        '204':
+                    
+          description: No event exist 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newEventCreated'
+                
+              examples:
+                No Result:
+                  $ref: '#/components/examples/noResult'
+
         '401':
           $ref: '#/components/responses/UnauthorizedError'
       tags:
@@ -46,10 +58,77 @@ paths:
         
     post:
       summary: create new events
+      description: 'This api is responsible for creating a new event'
+      operationId: createEvents
+      security:
+        - BearerAuth: []
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newEvent' 
+            examples:
+              new Event:
+                $ref: '#/components/examples/newEvent'
+        
+      parameters:
+        - in: query
+          name: title
+          description: The title of the event
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: start_date
+          description: The start date of the event (YYYY-MM-DD)
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: end_date
+          description: The end date of the event (YYYY-MM-DD)
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: description
+          description: Description of the event
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: venue
+          description: The venue of the event 
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: photo
+          description: Promotional Image of event (jpg, jpeg, png)
+          schema:
+            type: file
+          required: true
+        - in: query
+          name: url
+          description: URL to  event
+          schema:
+            type: string
+          required: true
       
       responses:
         '200':
           description: New Event was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newEventCreated'
+                
+              examples:
+                new Event:
+                  $ref: '#/components/examples/newEventCreated'
+              
+                
       tags:
         - Create
         
@@ -75,15 +154,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/Event'
               examples:
-                View Event:
+                UID = 1:
                   $ref: '#/components/examples/viewEvent'
+                  
+        '204':
+                    
+          description: No event with  UID Matched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newEventCreated'
+                
+              examples:
+                No Result:
+                  $ref: '#/components/examples/noResult'
       tags:
         - View
         
   /api/events/{event_id}:
     delete:
       summary: Delete event by event ID
-      description: ''
+      description: 'This api is responsible for deleting events by event id '
       operationId: deleteEventsByID
       security:
         - BearerAuth: []
@@ -97,6 +188,21 @@ paths:
       responses:
         '200':
           description: ""
+          content:
+            application/json:
+              examples:
+                UID = 5:
+                  $ref: '#/components/examples/Success'
+                  
+        '204':
+          description: "Event ID was not found"
+          content:
+            application/json:
+              examples:
+                No Match:
+                  $ref: '#/components/examples/failUpdate'  
+                
+                
           
       tags:
         - Delete
@@ -104,7 +210,7 @@ paths:
   /api/events/{status}:
     get:
       summary: Filter and view events by events status
-      description: ""
+      description: 'This api is responsible for viewing events by event status specified'
       operationId: ""
       security:
         - BearerAuth: []
@@ -118,7 +224,25 @@ paths:
           
       responses:
         '200':
-          description: ""
+          description: Events filtered by event status are loaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+              examples:
+                Published:
+                  $ref: '#/components/examples/viewEvent'
+        '204':
+                    
+          description: No event with status matched 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newEventCreated'
+                
+              examples:
+                No Result:
+                  $ref: '#/components/examples/noResult'
           
       
       tags:
@@ -127,7 +251,7 @@ paths:
   /api/events/search/date/{search_date}:
     get:
       summary: Searches for events taking place on the search date with format yyyy-mm-dd
-      description: 'Returns a list of events'
+      description: 'Returns a list of events by date specified'
       parameters:
       - name: "search_date"
         in: "path"
@@ -139,7 +263,25 @@ paths:
       
       responses:
         '200':
-          description: ""
+          description: "Date found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+              examples:
+                2021-08-05:
+                  $ref: '#/components/examples/viewEvent'
+        '204':
+          description: "No date matched"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+              examples:
+                Date not found:
+                  $ref: '#/components/examples/noDateFound'
+          
+          
           
         '400':
           description: Invalid Date format
@@ -150,7 +292,7 @@ paths:
   /api/events/search/title/{title}:
     get:
       summary: Searches for events based on Title
-      description: ''
+      description: 'Returns a list of events by title specified'
       parameters:
       - name: title
         in: "path"
@@ -195,6 +337,26 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+              examples:
+                Event 1:
+                  $ref: '#/components/examples/viewEvent'
+          
+          
+        '204':
+          description: "No title found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+              examples:
+                No Match:
+                  $ref: '#/components/examples/noTitleFound'
+          
+        
           
       tags:
         - Search
@@ -202,7 +364,7 @@ paths:
   /api/events/publish/{event_id}:
     put:
       summary: Changes the status of an event to published
-      description: ''
+      description: This api is responsible for updating event's status to published
       parameters:
       - name: event_id
         in: "path"
@@ -224,14 +386,26 @@ paths:
       #               name: Jessica Smith    
       responses:
         '200':
-          description: OK     
+          description: OK
+          content:
+            application/json:
+              examples:
+                UID = 1:
+                  $ref: '#/components/examples/Success'
+        '204':
+          description: "Event ID was not found"
+          content:
+            application/json:
+              examples:
+                No Match:
+                  $ref: '#/components/examples/failUpdate'
       tags:
         - Update
         
   /api/events/reject/{event_id}:
     put:
       summary: Changes the status of an event to rejected
-      description: ''
+      description: This api is responsible for updating event's status to rejected
       parameters:
       - name: event_id
         in: "path"
@@ -253,7 +427,19 @@ paths:
       #               name: Jessica Smith    
       responses:
         '200':
-          description: OK     
+          description: OK
+          content:
+            application/json:
+              examples:
+                UID = 1:
+                  $ref: '#/components/examples/Success'
+        '204':
+          description: "Event ID was not found"
+          content:
+            application/json:
+              examples:
+                No Match:
+                  $ref: '#/components/examples/failUpdate'  
       tags:
         - Update
       
@@ -286,6 +472,7 @@ components:
           type: string
         photo : 
           type: string
+          format: "jpg, jpeg, png"
         url : 
           type: string
         status:
@@ -300,12 +487,66 @@ components:
         created_at : 
           type: string
           format: "Datetime"
+    newEvent:
+      type: object
+      properties:
+        title:
+          type: string
+        start_date:
+          type: string
+          format: "Datetime"
+        end_date: 
+          type: string
+          format: "Datetime"
+        description : 
+          type: string
+        venue : 
+          type: string
+        photo : 
+          type: string
+        url : 
+          type: string
+        status:
+          type: "string"
+          
+    newEventCreated:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            events:
+              $ref: '#/components/schemas/newEvent'
+            
+        error:
+          example :
+                      
+        message:
+          type: string
+          example : "success"
+
           
   examples:
   
     viewEvent:
       value:
-        id : 1
+        data:
+          id : 1
+          title: "Event 1"
+          start_date: "Wed, 04 Aug 2021 00:00:00 GMT"
+          end_date: "Wed, 04 Aug 2021 00:00:00 GMT"
+          description : " description 1"
+          venue : "At home 1"
+          photo : "event_pic.png"
+          url : "youreventwebsite.com"
+          status : "Published"
+          uid: 2
+          created_at : "Wed, 04 Aug 2021 00:00:00 GMT"
+        error:
+        message: "Success"
+        
+    newEvent:
+      value:
         title: "Event 1"
         start_date: "Wed, 04 Aug 2021 00:00:00 GMT"
         end_date: "Wed, 04 Aug 2021 00:00:00 GMT"
@@ -313,9 +554,69 @@ components:
         venue : "At home 1"
         photo : "event_pic.png"
         url : "youreventwebsite.com"
-        status : "Published"
-        uid: 2
-        created_at : "Wed, 04 Aug 2021 00:00:00 GMT"
+        status : "Pending"
+        
+    newEventCreated:
+      value:
+        data:
+          title: "Event 1"
+          start_date: "Wed, 04 Aug 2021 00:00:00 GMT"
+          end_date: "Wed, 04 Aug 2021 00:00:00 GMT"
+          description : " description 1"
+          venue : "At home 1"
+          photo : "event_pic.png"
+          url : "youreventwebsite.com"
+          status : "Pending"
+          uid: 2
+          created_at : "Wed, 04 Aug 2021 00:00:00 GMT"
+        message: "Event successfully created!"
+        
+    Success:
+      value:
+        error:
+        message: "Success"
+        
+        
+    
+    failUpdate:
+      value:
+        error: "No ID Matched"
+        message: "No Event Found"
+        
+    noResult:
+      value:
+        data:
+          events: []
+        error:
+        message: "No Event Found"
+        
+    noResultDate:
+      value:
+        data:
+          events: []
+        error:
+        message: "No Date Found"
+      
+        
+    noDateFound:
+      value:
+        data:
+          events: []
+        error:
+        message: "No Date Found"
+        
+    noTitleFound:
+      value:
+        data:
+          events: []
+        error:
+        message: "No Title Matched"
+            
+          
+          
+          
+          
+      
 
   securitySchemes:
     BearerAuth:
