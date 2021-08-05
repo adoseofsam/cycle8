@@ -471,6 +471,7 @@ def signup():
 
             except Exception as e:
                 flash('Account was not created successfully.','danger')
+                print(e)
                 return redirect(url_for("login"))
 
 

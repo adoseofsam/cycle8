@@ -60,7 +60,7 @@
         e.preventDefault();
     }); 
   function addEvent(){
-    alert("Here");
+    //alert("Here");
     let self = this;
     let eventForm = document.getElementById('event-form');
     let form_data = new FormData(eventForm);
@@ -97,13 +97,13 @@
           }
 
           function sleep(ms) {
-                alert("in sleep");
+                //alert("in sleep");
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
         async function success(message){
 
             swal({title: "Add Event",text: message,icon: "success",button: "Proceed"});
-            await sleep(1500);
+            await sleep(1200);
             window.location = "http://127.0.0.1:5000/viewEvents"
 
         }

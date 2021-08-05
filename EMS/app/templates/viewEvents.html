@@ -49,7 +49,7 @@
     <div class="card-body">
       <h5 class="card-title">Card title</h5>
       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+      <a href="#" class="btn btn-primary">View Event</a>
     </div>
   </div> -->
 
@@ -73,11 +73,11 @@
     //                             <p class="card-text">${result.events[event].description}.</p>
     //                             <p class="card-text">${result.events[event].start_date}.</p>
     //                             <p class="card-text">${result.events[event].end_date}.</p>
-    //                             <a href="#" class="btn btn-primary">Go somewhere</a>
+    //                             <a href="#" class="btn btn-primary">View Event</a>
     //                             </div>
     //                         </div> </div> <br>`;
     
-    console.log(usr_role);
+    //console.log(usr_role);
     // create and call getToken function
     function getToken(){
         fetch(`${window.origin}/token`)
@@ -90,7 +90,7 @@
                     // We store this token in localStorage so that subsequent API requests
                     // can use the token until it expires or is deleted.
                     localStorage.setItem('token', token);
-                    console.info('Token generated and added to localStorage. Token' + token);
+                    //console.info('Token generated and added to localStorage. Token' + token);
                 })
 
     }
@@ -98,8 +98,8 @@
     // create remove token function
     function removeToken(){
         localStorage.removeItem('token');
-        console.info('Token removed from localStorage.');
-        alert('Token removed!');
+        //console.info('Token removed from localStorage.');
+        //alert('Token removed!');
 
     }
     // create and call viewEvents function
@@ -117,13 +117,18 @@
                 }
             })
                 .then(function (response) {
-                    console.log(response.status);
+                    //console.log(response.status);
                     if (response.status !== 200){
                         let alert = document.querySelector('.alert');
                         alert.classList.remove('alert-info');
                         alert.classList.add('alert-danger');
                         // unsuccessful response (ie. there was an error)
-                        output.innerHTML = `There was an error. Status code ${response.status}`;
+                        let msg = ""
+                        
+                        msg = `There was an error. Status code ${response.status}`;
+                        if (response.description) msg += ` : ${response.description}`;
+                        console.log(msg);
+                        output.innerHTML = msg;
                         return ""
                     }
                     
@@ -136,11 +141,11 @@
                         let alert = document.querySelector('.alert');
                         alert.classList.remove('alert-info', 'alert-danger');
                         alert.classList.add('alert-success');
-                        console.log(response);
+                        //console.log(response);
                         if (response.data) {
 
                             let result = response.data//JSON.parse(response);
-                            console.log(JSON.stringify(result.events[0]));
+                            //console.log(JSON.stringify(result.events[0]));
 
                             // generating events
                             /*
@@ -150,7 +155,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title">Card title</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="#" class="btn btn-primary">View Event</a>
                                 </div>
                             </div>
                             </div>
@@ -162,9 +167,9 @@
                                 //text += JSON.stringify(result.events[event]) + " <br> ";
                                 text += event_card;
                             }
-                            console.log(text);
+                            //console.log(text);
                             // successful response
-                            output.innerHTML = `Congrats! You have now made a successful request with a JSON Web Token. Your result: <br> `;//${JSON.stringify(result)}.`;
+                            output.innerHTML = `Congrats! JSON Web Token request was successful.  Your result: <br> `;//${JSON.stringify(result)}.`;
                             event_output.innerHTML = text;
                         } else {
                             let alert = document.querySelector('.alert');
@@ -220,7 +225,12 @@
                         alert.classList.remove('alert-info');
                         alert.classList.add('alert-danger');
                         // unsuccessful response (ie. there was an error)
-                        output.innerHTML = `There was an error. Status code ${response.status}`;
+                        let msg = ""
+                        console.log(response);
+                        msg = `There was an error. Status code ${response.status}`;
+                        if (response.description) msg += ` : ${response.description}`;
+                        console.log(msg);
+                        output.innerHTML = msg;
                         return ""
                     }
                     
@@ -233,13 +243,13 @@
                         let alert = document.querySelector('.alert');
                         alert.classList.remove('alert-info', 'alert-danger');
                         alert.classList.add('alert-success');
-                        console.log(response);
+                        //console.log(response);
                         if (response.data) {
 
                             let result = response.data//JSON.parse(response);
 
                             if (result.events.length){
-                                    console.log(JSON.stringify(result.events[0]));
+                                    //console.log(JSON.stringify(result.events[0]));
 
                                 // generating events
                                 /*
@@ -249,7 +259,7 @@
                                     <div class="card-body">
                                     <h5 class="card-title">Card title</h5>
                                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    <a href="#" class="btn btn-primary">View Event</a>
                                     </div>
                                 </div>
                                 </div>
@@ -286,9 +296,9 @@
                                     </div>
                                 </div> </div> <br>`;
                                 }
-                                console.log(text);
+                                //console.log(text);
                                 // successful response
-                                output.innerHTML = `Congrats! You have now made a successful request with a JSON Web Token. Your result: <br> `;//${JSON.stringify(result)}.`;
+                                output.innerHTML = `Congrats! JSON Web Token request was successful.  Your result: <br> `;//${JSON.stringify(result)}.`;
                                 event_output.innerHTML = text;
 
                             }
@@ -431,11 +441,11 @@
                         let alert = document.querySelector('.alert');
                         alert.classList.remove('alert-info', 'alert-danger');
                         alert.classList.add('alert-success');
-                        console.log(response);
+                        //console.log(response);
                         if (response.data) {
 
                             let result = response.data//JSON.parse(response);
-                            console.log(JSON.stringify(result.events[0]));
+                            //console.log(JSON.stringify(result.events[0]));
 
                             // generating events
                             /*
@@ -445,7 +455,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title">Card title</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="#" class="btn btn-primary">View Event</a>
                                 </div>
                             </div>
                             </div>
@@ -468,13 +478,13 @@
                                 <p class="card-text">${result.events[event].description}.</p>
                                 <p class="card-text">${result.events[event].start_date}.</p>
                                 <p class="card-text">${result.events[event].end_date}.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="#" class="btn btn-primary">View Event</a>
                                 </div>
                             </div> </div> <br>`;
                             }
-                            console.log(text);
+                            //console.log(text);
                             // successful response
-                            output.innerHTML = `Congrats! You have now made a successful request with a JSON Web Token. Your result: <br> `;//${JSON.stringify(result)}.`;
+                            output.innerHTML = `Congrats! JSON Web Token request was successful.  Your result: <br> `;//${JSON.stringify(result)}.`;
                             event_output.innerHTML = text;
                         } else {
                             let alert = document.querySelector('.alert');
@@ -550,11 +560,11 @@
                         let alert = document.querySelector('.alert');
                         alert.classList.remove('alert-info', 'alert-danger');
                         alert.classList.add('alert-success');
-                        console.log(response);
+                        //console.log(response);
                         if (response.data) {
 
                             let result = response.data//JSON.parse(response);
-                            console.log(JSON.stringify(result.events[0]));
+                            //console.log(JSON.stringify(result.events[0]));
 
                             // generating events
                             /*
@@ -564,7 +574,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title">Card title</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="#" class="btn btn-primary">View Event</a>
                                 </div>
                             </div>
                             </div>
@@ -588,13 +598,13 @@
                                 <p class="card-text">${result.events[event].description}.</p>
                                 <p class="card-text">${result.events[event].start_date}.</p>
                                 <p class="card-text">${result.events[event].end_date}.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="#" class="btn btn-primary">View Event</a>
                                 </div>
                             </div> </div> <br>`;
                             }
-                            console.log(text);
+                            //console.log(text);
                             // successful response
-                            output.innerHTML = `Congrats! You have now made a successful request with a JSON Web Token. Your result: <br> `;//${JSON.stringify(result)}.`;
+                            output.innerHTML = `Congrats! JSON Web Token request was successful.  Your result: <br> `;//${JSON.stringify(result)}.`;
                             event_output.innerHTML = text;
                         } else {
                             let alert = document.querySelector('.alert');
@@ -668,11 +678,11 @@
                         let alert = document.querySelector('.alert');
                         alert.classList.remove('alert-info', 'alert-danger');
                         alert.classList.add('alert-success');
-                        console.log(response);
+                        //console.log(response);
                         if (response.data) {
 
                             let result = response.data//JSON.parse(response);
-                            console.log(JSON.stringify(result.events[0]));
+                            //console.log(JSON.stringify(result.events[0]));
 
                             // generating events
                             /*
@@ -682,7 +692,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title">Card title</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="#" class="btn btn-primary">View Event</a>
                                 </div>
                             </div>
                             </div>
@@ -705,13 +715,13 @@
                                 <p class="card-text">${result.events[event].description}.</p>
                                 <p class="card-text">${result.events[event].start_date}.</p>
                                 <p class="card-text">${result.events[event].end_date}.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="#" class="btn btn-primary">View Event</a>
                                 </div>
                             </div> </div> <br>`;
                             }
-                            console.log(text);
+                            //console.log(text);
                             // successful response
-                            output.innerHTML = `Congrats! You have now made a successful request with a JSON Web Token. Your result: <br> `;//${JSON.stringify(result)}.`;
+                            output.innerHTML = `Congrats! JSON Web Token request was successful.  Your result: <br> `;//${JSON.stringify(result)}.`;
                             event_output.innerHTML = text;
                         } else {
                             let alert = document.querySelector('.alert');
@@ -811,7 +821,7 @@
         // check user role. 
         if (usr_role === "Admin"){
             //If role is admin, call viewPendingEvent
-            alert("Admin is logged in");
+            //alert("Admin is logged in");
             viewEventsByStatus("Pending");
 
         } else if (usr_role === "Regular"){
