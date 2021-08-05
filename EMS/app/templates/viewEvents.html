@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 
 {% block main %}
+{% include 'flash_messages.html' %}
+
+<div id = "result" class="result alert alert-info">
+    No result loaded. 
+</div>
 
 <div>
-    <p>Nothing to see here :) yet</p>
+    <!-- <p>Nothing to see here :) yet</p> -->
     <!-- Search form for api-->
     <form id = "searchForm">
         <label for="search_event" >Choose a search type:</label>
@@ -12,23 +17,34 @@
           <option value="Date">Date</option>
           <option value="UID" >ID</option>
         </select>
-        <input id = "search_input" type  = "text" placeholder="Enter the event title">
+        <input id = "search_input" type  = "text" placeholder="Enter the event category">
         <input type="submit" onclick="searchEvent();">
       </form>
 
 </div>
 
 
-<div id = "result" class="result alert alert-info">
-    No result loaded. 
-</div>
 
-<div class="row" id = "event">
+
+<div class="row" id = "event" style="margin-top: 10px;">
     
         Sorry, You have no events.
 </div>
 
-<!-- <div class="card" style="width: 18rem;">
+<!-- Button for top feature -->
+<!-- Return to Top -->
+<a href="javascript:" id="return-to-top"><i class="icon-chevron-up"></i></a>
+
+
+<!-- ICON NEEDS FONT AWESOME FOR CHEVRON UP ICON -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+  
+<!-- Test the scroll -->
+<div style="height:2000px;">
+  
+
+  <!-- <div class="card" style="width: 18rem;">
     <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">Card title</h5>
@@ -44,7 +60,24 @@
 <script>
     // create token variable
     var token = "";
-
+    var usr_role = '{{ current_user.role}}'
+    // const event_card = `
+    //                             <div class="col-sm-3"  >
+    //                             <div class="card" style="width: 18rem;">
+    //                                 <div class="card-header text-center">
+    //                                     ${result.events[event].status}
+    //                                 </div>
+    //                             <img src="./static/uploads/${result.events[event].photo}" class="card-img-top" alt="Image not found" onerror="this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image';">
+    //                             <div class="card-body">
+    //                             <h5 class="card-title">${result.events[event].title}</h5>
+    //                             <p class="card-text">${result.events[event].description}.</p>
+    //                             <p class="card-text">${result.events[event].start_date}.</p>
+    //                             <p class="card-text">${result.events[event].end_date}.</p>
+    //                             <a href="#" class="btn btn-primary">Go somewhere</a>
+    //                             </div>
+    //                         </div> </div> <br>`;
+    
+    console.log(usr_role);
     // create and call getToken function
     function getToken(){
         fetch(`${window.origin}/token`)
@@ -127,16 +160,7 @@
                             let text = "";
                             for (let event = 0; event < result.events.length; event++) {
                                 //text += JSON.stringify(result.events[event]) + " <br> ";
-                                text += `
-                                <div class="col-sm-3"  >
-                                <div class="card" style="width: 18rem;">
-                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                <h5 class="card-title">${result.events[event].title}</h5>
-                                <p class="card-text">${result.events[event].description}.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div> </div> <br>`;
+                                text += event_card;
                             }
                             console.log(text);
                             // successful response
@@ -175,6 +199,166 @@
 
     }
 
+    // view events by status function
+    function viewEventsByStatus(status){
+        // https://www.youtube.com/watch?v=QKcVjdLEX_s&list=PLF2JzgCW6-YY_TZCmBrbOpgx5pSNBD0_L&index=11
+        event_output = document.getElementById("event");
+        output = document.getElementById("result");
+        fetch(`${window.origin}/api/events/${status}`, {
+                'headers': {
+                    // Try it with the `Basic` schema and you will see it gives an error message.
+                    // 'Authorization': 'Basic ' + localStorage.getItem('token')
+
+                    // JWT requires the Authorization schema to be `Bearer` instead of `Basic`
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            })
+                .then(function (response) {
+                    console.log(response.status);
+                    if (response.status !== 200){
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info');
+                        alert.classList.add('alert-danger');
+                        // unsuccessful response (ie. there was an error)
+                        output.innerHTML = `There was an error. Status code ${response.status}`;
+                        return ""
+                    }
+                    
+                    response.json().then(function (response) {
+                        // https://www.w3schools.com/js/js_object_display.asp
+                        // https://www.w3schools.com/js/js_json_arrays.asp
+                        // https://getbootstrap.com/docs/5.0/components/card/
+
+
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info', 'alert-danger');
+                        alert.classList.add('alert-success');
+                        console.log(response);
+                        if (response.data) {
+
+                            let result = response.data//JSON.parse(response);
+
+                            if (result.events.length){
+                                    console.log(JSON.stringify(result.events[0]));
+
+                                // generating events
+                                /*
+                                <div class="col-sm-6"  >
+                                <div class="card" style="width: 18rem;">
+                                    <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
+                                </div>
+
+
+                                    */
+                                let admin = false;
+                                if (usr_role === "Admin") admin = true;
+                                let text = "";
+                                for (let event = 0; event < result.events.length; event++) {
+                                    //text += JSON.stringify(result.events[event]) + " <br> ";
+                                    text += `
+                                    <div class="col-sm-3"  >
+                                    <div class="card" style="width: 18rem;">
+                                        <div class="card-header text-center">
+                                            ${result.events[event].status}
+                                        </div>
+                                    <img src="./static/uploads/${result.events[event].photo}" class="card-img-top" alt="Image not found" onerror="this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image';">
+                                    <div class="card-body">
+                                    <h5 class="card-title">${result.events[event].title}</h5>
+                                    <p class="card-text">${result.events[event].description}.</p>
+                                    <p class="card-text">${result.events[event].start_date}.</p>
+                                    <p class="card-text">${result.events[event].end_date}.</p>`;
+                                    if (admin){
+                                        text  += `<div class="d-grid gap-2 .btn-sm ">
+                                                <button class="btn btn-success" type="button" onclick = 'updateStatus("publish",${result.events[event].id});'>Publish</button>
+                                                <button class="btn btn-danger" type="button" onclick = 'updateStatus("reject",${result.events[event].id});'>Reject</button>
+                                                </div>`;
+                                    }
+                                    
+                                    text += `
+                                    <a href="#" class="btn btn-primary">View Event</a>
+                                    </div>
+                                </div> </div> <br>`;
+                                }
+                                console.log(text);
+                                // successful response
+                                output.innerHTML = `Congrats! You have now made a successful request with a JSON Web Token. Your result: <br> `;//${JSON.stringify(result)}.`;
+                                event_output.innerHTML = text;
+
+                            }
+                            
+                        } else {
+                            let alert = document.querySelector('.alert');
+                            alert.classList.remove('alert-info');
+                            alert.classList.add('alert-danger');
+
+                            // unsuccessful response (ie. there was an error)
+                            output.innerHTML = `There was an error. ${response.description}`;                        
+                        }
+                    })
+                    .catch(function (error) {
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info');
+                        alert.classList.add('alert-danger');
+                        // unsuccessful response (ie. there was an error)
+                        output.innerHTML = `There was an error.`;
+                    })
+
+
+
+
+
+                    //-----------------------
+                })
+                .catch(function (error) {
+                    let alert = document.querySelector('.alert');
+                    alert.classList.remove('alert-info');
+                    alert.classList.add('alert-danger');
+                    // unsuccessful response (ie. there was an error)
+                    output.innerHTML = `There was an error.`;
+                })
+
+    }
+
+    // update event status function
+
+    function updateStatus(status,id){
+        output = document.getElementById("result");
+        fetch(`${window.origin}/api/events/${status}/${id}`, {
+                method : 'PUT',
+                'headers': {
+                    // Try it with the `Basic` schema and you will see it gives an error message.
+                    // 'Authorization': 'Basic ' + localStorage.getItem('token')
+
+                    // JWT requires the Authorization schema to be `Bearer` instead of `Basic`
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function (response) {
+                    console.log(response.status);
+                    if (response.status !== 200){
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info');
+                        alert.classList.add('alert-danger');
+                        // unsuccessful response (ie. there was an error)
+                        output.innerHTML = `There was an error. Status code ${response.status}`;
+                        return ""
+                    } else{
+                        alert("Status was updated succesfully");
+                        window.location = "http://127.0.0.1:5000/viewEvents"
+
+                    }
+                
+            });
+
+
+    }
+
+
     // Search Event
 
     // Search event by title
@@ -183,7 +367,7 @@
         output = document.getElementById("result");
         formData = new FormData;
         formData.append("title",title);
-        alert(title);
+        //alert(title);
         fetch(`${window.origin}/api/events/search/title/${title}`, {
                 method : 'GET',
                 'headers': {
@@ -243,10 +427,15 @@
                                 text += `
                                 <div class="col-sm-3"  >
                                 <div class="card" style="width: 18rem;">
-                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                    <div class="card-header text-center">
+                                        ${result.events[event].status}
+                                    </div>
+                                <img src="./static/uploads/${result.events[event].photo}" class="card-img-top" alt="Image not found" onerror="this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image';">
                                 <div class="card-body">
                                 <h5 class="card-title">${result.events[event].title}</h5>
                                 <p class="card-text">${result.events[event].description}.</p>
+                                <p class="card-text">${result.events[event].start_date}.</p>
+                                <p class="card-text">${result.events[event].end_date}.</p>
                                 <a href="#" class="btn btn-primary">Go somewhere</a>
                                 </div>
                             </div> </div> <br>`;
@@ -297,7 +486,7 @@
         output = document.getElementById("result");
         formData = new FormData;
         formData.append("date",date);
-        alert(date);
+        //alert(date);
         fetch(`${window.origin}/api/events/search/date/${date}`, {
                 method : 'GET',
                 'headers': {
@@ -354,13 +543,19 @@
                             for (let event = 0; event < result.events.length; event++) {
                                 console.log("event -", event)
                                 //text += JSON.stringify(result.events[event]) + " <br> ";
+                                photo = result.events[event].photo //${result.events[event].photo}
                                 text += `
                                 <div class="col-sm-3"  >
                                 <div class="card" style="width: 18rem;">
-                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                    <div class="card-header text-center">
+                                        ${result.events[event].status}
+                                    </div>
+                                <img src="./static/uploads/${result.events[event].photo}" class="card-img-top" alt="Image not found" onerror="this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image';">
                                 <div class="card-body">
                                 <h5 class="card-title">${result.events[event].title}</h5>
                                 <p class="card-text">${result.events[event].description}.</p>
+                                <p class="card-text">${result.events[event].start_date}.</p>
+                                <p class="card-text">${result.events[event].end_date}.</p>
                                 <a href="#" class="btn btn-primary">Go somewhere</a>
                                 </div>
                             </div> </div> <br>`;
@@ -409,7 +604,7 @@
         output = document.getElementById("result");
         formData = new FormData;
         formData.append("uid",uid);
-        alert(uid);
+        //alert(uid);
         fetch(`${window.origin}/api/events/${uid}`, {
                 method : 'GET',
                 'headers': {
@@ -469,10 +664,15 @@
                                 text += `
                                 <div class="col-sm-3"  >
                                 <div class="card" style="width: 18rem;">
-                                <img src="http://placehold.it/280x180?text=Placeholder+Image" class="card-img-top" alt="...">
+                                    <div class="card-header text-center">
+                                        ${result.events[event].status}
+                                    </div>
+                                <img src="./static/uploads/${result.events[event].photo}" class="card-img-top" alt="Image not found" onerror="this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image';">
                                 <div class="card-body">
                                 <h5 class="card-title">${result.events[event].title}</h5>
                                 <p class="card-text">${result.events[event].description}.</p>
+                                <p class="card-text">${result.events[event].start_date}.</p>
+                                <p class="card-text">${result.events[event].end_date}.</p>
                                 <a href="#" class="btn btn-primary">Go somewhere</a>
                                 </div>
                             </div> </div> <br>`;
@@ -529,30 +729,30 @@
         
         var input = document.getElementById("search_input");
 
-        alert(`Searching ${option.value} :)`);
-        alert("Here 0");
+        //alert(`Searching ${option.value} :)`);
+        //alert("Here 0");
         console.log(input.value);
 
         if (!(input.value === "")){
-            alert("Here 1");
+            //alert("Here 1");
 
 
-            alert("Here");
+            //alert("Here");
             if (type === "Title"){
                 // searcg event by title
 
-                alert("Title was selected");
+                //alert("Title was selected");
                 console.log(input.value);
                 searchEventByTitle(input.value);
 
             }else if (type === "Date"){
-                alert("Date was selected");
+                //alert("Date was selected");
                 // search event by date
                 searchEventByDate(input.value);
 
 
             }else {
-                alert("UID was selected");
+                //alert("UID was selected");
                 // search event by user ID
                 searchEventByUID(input.value);
 
@@ -564,7 +764,7 @@
             input.setAttribute("placeholder","Please enter a value"); 
         }
 
-        alert("Here 2");
+        //alert("Here 2");
 
         
 
@@ -576,10 +776,39 @@
 
     window.onload = function(){
         getToken();
-        viewEvents();
+        // check user role. 
+        if (usr_role === "Admin"){
+            //If role is admin, call viewPendingEvent
+            alert("Admin is logged in");
+            viewEventsByStatus("Pending");
+
+        } else if (usr_role === "Regular"){
+            //If role is regular, call viewPublishedEvents
+            viewEventsByStatus("Published");
+
+        }
+      
+        //If role is regular, call viewPublishedEvents
+        //getToken();
+        //viewEvents();
         removeToken();
     }
 
+//Below is the code for the top button function
+
+// ===== Scroll to Top ==== 
+$(window).scroll(function() {
+    if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
+        $('#return-to-top').fadeIn(200);    // Fade in the arrow
+    } else {
+        $('#return-to-top').fadeOut(200);   // Else fade out the arrow
+    }
+});
+$('#return-to-top').click(function() {      // When arrow is clicked
+    $('body,html').animate({
+        scrollTop : 0                       // Scroll to top of body
+    }, 500);
+});
 </script>
 
 

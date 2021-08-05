@@ -74,6 +74,17 @@ def generate_token():
     return jsonify(error=None, data={'token': token}, message="Token Generated")
 
 
+def get_token():
+    global secret_key
+    # Under normal circumstances you would generate this token when a user
+    # logs into your web application and you send it back to the frontend
+    # where it can be stored in localStorage for any subsequent API requests.
+    payload = {'sub': '12345', 'name': 'John Doe'}
+    token = jwt.encode(payload, secret_key, algorithm='HS256').decode('utf-8')
+
+    return token
+
+
 # --------------- END OF JWT FUNCTIONS ---------------------
 
 
@@ -81,11 +92,12 @@ def generate_token():
 
 # This route requires a JWT in order to work. Note the @requires_auth
 
-@app.route("/api/create", methods=['POST'])
+@app.route("/api/events", methods=['POST'])
 @requires_auth
 def create():
     form = EventForm()
     errors = []
+    print("Creating new events")
     if request.method == 'POST':
         if form.validate_on_submit():
 
@@ -130,7 +142,7 @@ def create():
                         'photo' : filename,
                         'website_url' : website_url,
                         'status' : status,
-                        'uid' : g.current_user["id"],
+                        'uid' : current_user.get_id(),
                         'date' : date
                 }]
                 message = 'Event successfully created!'
@@ -138,7 +150,7 @@ def create():
                 return jsonify(data=data, message = message)
             else:
                 errors.append("Title already exists")
-    return jsonify(errors=form_errors(form))
+    return jsonify(errors=form_errors(form) + errors)
     
 
 
@@ -163,12 +175,13 @@ def api_events():
 
     for e in events:
         event = {
+            'id' : e.id,
             "title": e.title,
             "start_date": e.start_date,
             "end_date": e.end_date,
             "description": e.description,
             "venue": e.venue,
-            "image": e.photo,
+            "photo": e.photo,
             "url": e.website_url,
             "status": e.status,
             "uid": e.uid,
@@ -199,12 +212,13 @@ def api_events_by_uid(uid):
 
     for e in events:
         event = {
+            'id' : e.id,
             "title": e.title,
             "start_date": e.start_date,
             "end_date": e.end_date,
             "description": e.description,
             "venue": e.venue,
-            "image": e.photo,
+            'photo' : e.photo,
             "url": e.website_url,
             "status": e.status,
             "uid": e.uid,
@@ -214,6 +228,51 @@ def api_events_by_uid(uid):
         event_lst.append(event)
 
     return make_response(jsonify(error = None,data={"events": event_lst}, message="Success"),200)
+
+
+@app.route('/api/events/<string:status>', methods=['GET'])
+@requires_auth
+def api_events_by_status(status):
+    # This data was retrieved from the payload of the JSON Web Token
+    # take a look at the requires_auth decorator code to see how we decoded
+    # the information from the JWT.
+    status = status.capitalize()
+
+    '''
+    jwt token for postman -
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM
+    '''
+    
+    events = Events.query.filter_by(status = status).all()
+    event_lst = []
+
+    if events is None or events ==[]:
+        print("no event")
+        return make_response(jsonify(error = None,data={"events": event_lst}, message="Success"),200)
+
+
+    else:
+
+        print(events[0].title)
+
+        for e in events:
+            event = {
+                'id' : e.id,
+                "title": e.title,
+                "start_date": e.start_date,
+                "end_date": e.end_date,
+                "description": e.description,
+                "venue": e.venue,
+                'photo' : e.photo,
+                "url": e.website_url,
+                "status": e.status,
+                "uid": e.uid,
+                "created_at": e.created_at
+            }
+
+            event_lst.append(event)
+
+        return make_response(jsonify(error = None,data={"events": event_lst}, message="Success"),200)
 
 """
 Search by Date API Endpoint
@@ -246,7 +305,7 @@ def dateSearch(date):
                         'created' : result.created_at
                     }
                 output.append(event)
-            return jsonify(error = None,data={"events": output}, message="Success")
+            return make_response(jsonify(error = None,data={"events": output}, message="Success"),200)
         return  make_response(jsonify(error = None,data={"events": output}, message="No Events Found"),200)
 
 
@@ -284,19 +343,19 @@ def titleSearch(title):
         return make_response(jsonify(error = None,data={"events": output}, message="No Events Found"),200)
 
 
-@app.route("/api/events/publish/<int:id>", methods=["POST"])
+@app.route("/api/events/publish/<int:id>", methods=["PUT"])
 def publishEvent(id):
-    if request.method == "POST":
+    if request.method == "PUT":
         event = Events.query.filter_by(id = id).first()
-        event.status = 'published'
+        event.status = 'Published'
         db.session.commit()
         return make_response(jsonify(error = None, message="Success"),200)
 
-@app.route("/api/events/reject/<int:id>", methods=["POST"])
+@app.route("/api/events/reject/<int:id>", methods=["PUT"])
 def rejectEvent(id):
-    if request.method == "POST":
+    if request.method == "PUT":
         event = Events.query.filter_by(id = id).first()
-        event.status = 'rejected'
+        event.status = 'Rejected'
         db.session.commit()
         return make_response(jsonify(error = None, message="Success"),200)
 
@@ -327,7 +386,7 @@ def define_db():
     global roles
     db.drop_all()
     db.create_all()
-    date = datetime.datetime.now()
+    date = datetime.datetime.now().strftime('%Y-%m-%d')
     print("Date - ", date)
     admin = User("Admin User","Admin@example.com","Adminpassword","admin_pic.png",roles["admin"],date)
     regular = User("Regular User","Regular@example.com","Regularpassword","admin_pic.png",roles["regular"],date)
@@ -349,14 +408,16 @@ def define_db():
 
 @app.route('/')
 def home():
-    print(current_user)
-    print(current_user.get_id())
-
     if not current_user.is_authenticated:
         define_db()
+        return render_template('home.html')
     """Render website's home page."""
-    return render_template('home.html')
+    return render_template('viewEvents.html')
 
+@app.route('/about')
+def about():
+    """Render website's home page."""
+    return render_template('about.html')
 
 # @app.route('/event')
 # def event():
@@ -365,8 +426,9 @@ def home():
 
 
 @app.route('/viewEvents')
+@login_required
 def viewEvents():
-    return render_template('viewEvents.html')
+    return render_template('viewEvents.html', user = current_user)
 
 @app.route('/signup', methods = ['GET','POST'])
 def signup():
@@ -402,7 +464,7 @@ def signup():
 @app.route('/eventForm',methods=['GET'])
 def eventForm():
     form = EventForm()
-    return render_template('create.html', form=form)
+    return render_template('create.html', form=form, token = get_token())
 
 
 @app.route("/login", methods=["GET", "POST"])

@@ -1,0 +1,120 @@
+openapi: 3.1.0
+info:
+  title: What's Happening Events Manager
+  version: 1.0.0
+  description: An events manager web application for local parties and events
+paths:
+  api/events/search/title:
+    get:
+      summary: Searches for events based on Title
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string    
+                
+                start_date:
+                    type: datetime
+                end_date:
+                    type: datetime
+                description: 
+                    type: string
+                venue: 
+                    type: string
+                photo:
+                    type: string
+                website_url:
+                    type: string
+                status:
+                    type: string
+                uid:
+                    type: integer
+                created:
+                    type: datetime           
+              
+              example:   # Sample object
+                id: 10
+                name: Jessica Smith            
+                
+      responses:
+        '200':
+          description: OK
+    
+  api/events/search/date/{search_date}:
+    get:
+      summary: Searches for events taking place on the search date with format yyyy-mm-dd
+      description: 'Returns a list of events'
+      parameters:
+      - name: "search_date"
+        in: "path"
+        description: "Date of event"
+        required: true
+        type: "string"
+        format: "unicode"
+      requestBody:
+        content:
+          application/json:
+            schema:     
+              type: object
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string    
+                
+                start_date:
+                    type: datetime
+                end_date:
+                    type: datetime
+                description: 
+                    type: string
+                venue: 
+                    type: string
+                photo:
+                    type: string
+                website_url:
+                    type: string
+                status:
+                    type: string
+                uid:
+                    type: integer
+                created:
+                    type: datetime           
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid Date format
+      security:
+      - jwt token
+    /api/events/publish:
+        post:
+            summary: Changes the status of an event to published
+
+            requestBody:
+            content:
+            application/json:
+                schema:      # Request body contents
+                type: object
+                properties:
+                    id:
+                    type: integer
+                    name:
+                    type: string
+                example:   # Sample object
+                    id: 10
+                    name: Jessica Smith
+            responses:
+                '200':
+                description: OK
+
+
+
+
+
