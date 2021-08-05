@@ -276,7 +276,8 @@
                                     if (admin){
                                         text  += `<div class="d-grid gap-2 .btn-sm ">
                                                 <button class="btn btn-success" type="button" onclick = 'updateStatus("publish",${result.events[event].id});'>Publish</button>
-                                                <button class="btn btn-danger" type="button" onclick = 'updateStatus("reject",${result.events[event].id});'>Reject</button>
+                                                <button class="btn btn-warning" type="button" onclick = 'updateStatus("reject",${result.events[event].id});'>Reject</button>
+                                                <button class="btn btn-danger" type="button" onclick = 'deleteEvent(${result.events[event].id});'>Delete</button>
                                                 </div>`;
                                     }
                                     
@@ -355,6 +356,37 @@
                 
             });
 
+
+    }
+
+    // detelet event by ID function
+    function deleteEvent(id){
+        output = document.getElementById("result");
+        fetch(`${window.origin}/api/events/${id}`, {
+                method : 'DELETE',
+                'headers': {
+                    // Try it with the `Basic` schema and you will see it gives an error message.
+                    // 'Authorization': 'Basic ' + localStorage.getItem('token')
+
+                    // JWT requires the Authorization schema to be `Bearer` instead of `Basic`
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(function (response) {
+                    console.log(response.status);
+                    if (response.status !== 200){
+                        let alert = document.querySelector('.alert');
+                        alert.classList.remove('alert-info');
+                        alert.classList.add('alert-danger');
+                        // unsuccessful response (ie. there was an error)
+                        output.innerHTML = `There was an error. Status code ${response.status}`;
+                        return ""
+                    } else{
+                        alert("Event was deleted succesfully");
+                        window.location = "http://127.0.0.1:5000/viewEvents"
+
+                    }
+                
+            });
 
     }
 
