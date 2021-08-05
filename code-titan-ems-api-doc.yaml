@@ -1,0 +1,335 @@
+openapi: 3.0.1
+info:
+  title: Code Titan's Event Management System
+  version: 1.0.0
+  description: An API for a web-based Event Management System
+servers:
+  - url: 'http://127.0.0.1:5000'
+  
+paths:
+  /api/events:
+    summary: View all events
+    get:
+      summary: View all events
+      description: 'This api is responsible for generating all the events available'
+      operationId: viewEvents
+      security:
+        - BearerAuth: []
+      
+      responses:
+        '200':
+          description: Events were loaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      events:
+                        $ref: '#/components/schemas/Event'
+                      
+                   
+                          
+                  error:
+                    example :
+                      
+                      
+                  message:
+                    type: string
+                    example : "success"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      tags:
+        - View
+        
+    post:
+      summary: create new events
+      
+      responses:
+        '200':
+          description: New Event was created successfully
+      tags:
+        - Create
+        
+  /api/events/{uid}:
+    get:
+      summary: Filter and view all events by user ID
+      description: 'This api is responsible for generating all the events for a specific user'
+      operationId: viewEventsByUID
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: uid
+          description: The unique user ID of events 
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Events were loaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+              examples:
+                View Event:
+                  $ref: '#/components/examples/viewEvent'
+      tags:
+        - View
+        
+  /api/events/{event_id}:
+    delete:
+      summary: Delete event by event ID
+      description: ''
+      operationId: deleteEventsByID
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: event_id
+          description: The unique user ID of events 
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: ""
+          
+      tags:
+        - Delete
+        
+  /api/events/{status}:
+    get:
+      summary: Filter and view events by events status
+      description: ""
+      operationId: ""
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: status
+          description: "Event status to filter by "
+          schema:
+            type: string
+          required: true
+          
+      responses:
+        '200':
+          description: ""
+          
+      
+      tags:
+        - View
+        
+  /api/events/search/date/{search_date}:
+    get:
+      summary: Searches for events taking place on the search date with format yyyy-mm-dd
+      description: 'Returns a list of events'
+      parameters:
+      - name: "search_date"
+        in: "path"
+        description: "Date of event"
+        required: true
+        schema:
+          type: "string"
+          format: "unicode"
+      
+      responses:
+        '200':
+          description: ""
+          
+        '400':
+          description: Invalid Date format
+          
+      tags:
+        - Search
+        
+  /api/events/search/title/{title}:
+    get:
+      summary: Searches for events based on Title
+      description: ''
+      parameters:
+      - name: title
+        in: "path"
+        description: "Title of event"
+        required: true
+        schema:
+          type: "string"
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:      # Request body contents
+      #         type: object
+      #         properties:
+      #           id:
+      #             type: integer
+      #           title:
+      #             type: string    
+                
+      #           start_date:
+      #               type: datetime
+      #           end_date:
+      #               type: datetime
+      #           description: 
+      #               type: string
+      #           venue: 
+      #               type: string
+      #           photo:
+      #               type: string
+      #           website_url:
+      #               type: string
+      #           status:
+      #               type: string
+      #           uid:
+      #               type: integer
+      #           created:
+      #               type: datetime           
+              
+              # example:   # Sample object
+              #   id: 10
+              #   name: Jessica Smith            
+                
+      responses:
+        '200':
+          description: OK
+          
+      tags:
+        - Search
+        
+  /api/events/publish/{event_id}:
+    get:
+      summary: Changes the status of an event to published
+      description: ''
+      parameters:
+      - name: event_id
+        in: "path"
+        description: "Event ID"
+        required: true
+        schema:
+          type: integer
+      # requestBody:
+      #   content:
+      #       application/json:
+      #           schema:      # Request body contents
+      #           type: object
+      #           properties:
+      #               id:
+      #               name:
+      #               type: string
+      #           example:   # Sample object
+      #               id: 10
+      #               name: Jessica Smith    
+      responses:
+        '200':
+          description: OK     
+      tags:
+        - Update
+        
+  /api/events/reject/{event_id}:
+    get:
+      summary: Changes the status of an event to rejected
+      description: ''
+      parameters:
+      - name: event_id
+        in: "path"
+        description: "Event ID"
+        required: true
+        schema:
+          type: integer
+      # requestBody:
+      #   content:
+      #       application/json:
+      #           schema:      # Request body contents
+      #           type: object
+      #           properties:
+      #               id:
+      #               name:
+      #               type: string
+      #           example:   # Sample object
+      #               id: 10
+      #               name: Jessica Smith    
+      responses:
+        '200':
+          description: OK     
+      tags:
+        - Update
+      
+            
+      
+      
+  
+      
+  
+
+
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        start_date:
+          type: string
+          format: "Datetime"
+        end_date: 
+          type: string
+          format: "Datetime"
+        description : 
+          type: string
+        venue : 
+          type: string
+        photo : 
+          type: string
+        url : 
+          type: string
+        status:
+          type: "string"
+          description: "Event Statuses"
+          enum:
+            - "Pending"
+            - "Published"
+            - "Rejected"
+        uid: 
+          type: integer
+        created_at : 
+          type: string
+          format: "Datetime"
+          
+  examples:
+  
+    viewEvent:
+      value:
+        id : 1
+        title: "Event 1"
+        start_date: "Wed, 04 Aug 2021 00:00:00 GMT"
+        end_date: "Wed, 04 Aug 2021 00:00:00 GMT"
+        description : " description 1"
+        venue : "At home 1"
+        photo : "event_pic.png"
+        url : "youreventwebsite.com"
+        status : "Published"
+        uid: 2
+        created_at : "Wed, 04 Aug 2021 00:00:00 GMT"
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Enter your JWT Bearer Token
+      bearerFormat: JWT
+  
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid      
+  headers:
+    Authorization:
+      description: Authorization header with JWT using Bearer Schema
+      schema:
+        type: string
+      example: "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNjE3NjU1MjAxLCJleHAiOjE2MTc2NjUyMDF9.VDmMnIJzust0ykwP3d7p924VbwPyv0Db3gGiEW7fY7g"
