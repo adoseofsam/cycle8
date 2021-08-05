@@ -92,7 +92,7 @@ def get_token():
 
 # This route requires a JWT in order to work. Note the @requires_auth
 
-@app.route("/api/create", methods=['GET','POST'])
+@app.route("/api/events", methods=['POST'])
 @requires_auth
 def create():
     form = EventForm()
