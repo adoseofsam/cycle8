@@ -200,7 +200,7 @@ paths:
         - Search
         
   /api/events/publish/{event_id}:
-    get:
+    put:
       summary: Changes the status of an event to published
       description: ''
       parameters:
@@ -229,7 +229,7 @@ paths:
         - Update
         
   /api/events/reject/{event_id}:
-    get:
+    put:
       summary: Changes the status of an event to rejected
       description: ''
       parameters:
