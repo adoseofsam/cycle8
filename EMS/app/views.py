@@ -308,8 +308,8 @@ def deleteEvent(id):
         if not event:
             return make_response(jsonify(error = None, message="Event does not exist"), 404)
 
-        if current_user.get_role() != "Admin" or current_user.get_role() != "admin":
-            return make_response(jsonify(error = None, message = "You need admin privileges to delete an event"), 401)
+        # if current_user.get_role() != "Admin" or current_user.get_role() != "admin":
+        #     return make_response(jsonify(error = None, message = "You need admin privileges to delete an event"), 401)
 
         db.session.delete(event)
         db.session.commit()
