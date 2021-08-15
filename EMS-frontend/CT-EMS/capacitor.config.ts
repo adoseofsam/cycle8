@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'EMS-frontend',
+  appName: 'CT-EMS',
   webDir: 'build',
   bundledWebRuntime: false
 };
