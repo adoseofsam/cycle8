@@ -1,0 +1,7 @@
+{
+  "name": "EMS-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
