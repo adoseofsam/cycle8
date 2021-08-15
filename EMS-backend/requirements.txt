@@ -8,7 +8,7 @@ Flask-Script==2.0.6
 Flask-Login
 gunicorn==20.0.4
 itsdangerous==1.1.0
-Jinja2==2.11.1
+Jinja2==2.11.3
 MarkupSafe==1.1.0
 Werkzeug==1.0.0
 WTForms==2.2.1
