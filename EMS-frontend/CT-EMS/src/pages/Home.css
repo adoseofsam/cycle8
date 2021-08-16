@@ -1,0 +1,7 @@
+ion-card{
+    display: flex;
+    flex-direction: column;
+    width: 110% !important;
+    margin: 10% !important;
+    padding: 2%;
+  }
