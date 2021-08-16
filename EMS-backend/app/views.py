@@ -23,6 +23,17 @@ from sqlalchemy import Date, cast
 
 roles = {'admin' : "Admin", 'regular': "Regular"}
 
+
+# ----------------- CORS SETUP ------------------
+@app.after_request
+def add_header(response):
+    response.headers['Access-Control-Allow-Origin'] = "http://localhost:8100"
+    response.headers['Access-Control-Allow-Headers'] = "*"
+    response.headers['Access-Control-Methods'] = "GET"
+    response.headers['Access-Control-Allow-Credentials'] = "true"
+
+    return response
+
 # --------------- JWT FUNCTIONS ---------------------
 
 # Create a JWT @requires_auth decorator
@@ -89,6 +100,139 @@ def get_token():
 
 
 # --------------- APIs FUNCTIONS/ROUTES ---------------------
+
+@app.route("/api/logout", methods = ['GET'])
+#@login_required
+def api_logout():
+    errors = []
+    message = ""
+    try:
+
+        logout_user()
+        session.pop('is_authenticated',None)
+        flash('You have been logged out.', 'danger')
+        message = "You have been logged out."
+        return make_response(jsonify(errors= errors, message=message),200)
+
+
+    except Exception as e:
+        print(e)
+        message = "Something went wrong"
+        errors.append(e)
+        return make_response(jsonify(errors= errors, message=message),404)
+
+@app.route("/api/login", methods = ['POST'])
+def api_login():
+    errors = []
+
+    if current_user.is_authenticated:
+        token = get_token()
+        #print("Token", token)
+        data = [
+            {
+                # 'id' : user.get_id(),
+                # 'role': user.role,
+                'token' : token            
+
+        }]
+        message = 'User already logged in'
+
+        #return jsonify(data=data, message = message)
+        return make_response(jsonify(error = None,data=data, message=message),200)
+
+
+    form = LoginForm()
+    if request.method == "POST":
+        # change this to actually validate the entire form submission
+        # and not just one field
+        #if form.username.data:
+        
+        if form.validate_on_submit():
+
+            email = request.form['email']
+            password = form.password.data
+            
+            
+            # using your model, query database for a user based on the username
+            # and password submitted. Remember you need to compare the password hash.
+            # You will need to import the appropriate function to do so.
+            # Then store the result of that query to a `user` variable so it can be
+            # passed to the login_user() method below.
+
+
+
+            user = User.query.filter_by(email=email).first()
+
+            if user is not None and check_password_hash(user.password,password):
+                
+                # get user id, load into session
+                login_user(user)
+                # remember to flash a message to the user
+                
+                session['is_authenticated'] = True #current_user.is_authenticated
+                token = get_token()
+                print("Token", token)
+
+                data = [
+                    {
+                        'id' : user.get_id(),
+                        'role': user.role,
+                        'token' : token
+
+                }]
+                message = 'Login successful!'
+
+                #return jsonify(data=data, message = message)
+                return make_response(jsonify(error = None,data=data, message=message),200)
+                
+            else:
+                errors.append('Invalid credentials.')
+
+    message = 'Login failed!'
+    #return jsonify(errors=form_errors(form) + errors) 
+    return make_response(jsonify(errors=form_errors(form) + errors, message=message),404)
+
+
+
+@app.route('/api/signup', methods = ['POST'])
+def api_signup():
+    errors = []
+    signupForm = SignUpForm()
+
+    if request.method == "POST":
+        print("here")
+        try:
+
+        
+            role = signupForm.role.data
+            FullName = signupForm.FullName.data
+            email = signupForm.email.data
+            password = signupForm.password.data
+            Profile_Photo = signupForm.Profile_Photo.data
+            filename = secure_filename(Profile_Photo.filename)
+            Profile_Photo.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+
+            date = datetime.datetime.now()
+            user = User(FullName,email,password,filename,role,date)
+
+
+        
+            db.session.add(user)
+            db.session.commit()
+
+            message = 'Account created successfully!'
+            return make_response(jsonify(errors= errors, message=message),200)
+
+        except Exception as e:
+
+            message = 'Account was not created successfully.'
+            print(e)
+            errors.append(e)
+            return make_response(jsonify(errors= errors, message=message),404)
+
+    message = "Access denied!"
+    return make_response(jsonify(errors= errors, message=message),403)
+
 
 # This route requires a JWT in order to work. Note the @requires_auth
 
