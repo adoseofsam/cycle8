@@ -7,9 +7,10 @@ import { star } from 'ionicons/icons';
 import { Toast } from '../toast';
 import { useHistory } from "react-router-dom";
 import { Menu } from '../components/Menu';
+import { NavButtons } from '../components/NavButtons';
 
 var Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM";
-
+const img_url = "http://127.0.0.1:5000/uploads/"
 // Here we create a Typescript Interface
 interface Event {
     created_at: string;
@@ -116,14 +117,14 @@ const ReviewEvent: React.FC = () => {
 
 
   return (
-    <IonContent>
-    <IonSplitPane contentId="main">
-    <Menu/>
+    // <IonContent>
+    // <IonSplitPane contentId="main">
+    // <Menu/>
     <IonPage id="main">
       <IonHeader>
         <IonToolbar>
         <IonButtons slot="end">
-          <IonMenuButton></IonMenuButton>
+        <NavButtons/> {/*    <IonMenuButton></IonMenuButton> */}
         </IonButtons>
           <IonTitle>Review</IonTitle>
         </IonToolbar>
@@ -134,7 +135,9 @@ const ReviewEvent: React.FC = () => {
             <IonCol size="4" key={ index }>
               <IonCard>
               {/* <img src="{{ev.url || 'http://placehold.it/280x180?text=Placeholder+Image'}}" /> */}
-              <img src={'http://placehold.it/280x180?text=Placeholder+Image'} />
+              {/* <img src={'http://placehold.it/280x180?text=Placeholder+Image'} /> */}
+              <img onError={(event:any)=> event.target.src = 'http://placehold.it/280x180?text=Placeholder+Image'} 
+              src={ img_url + ev.photo}/>
               {/* <img src={ ev.url } alt="Image not found" (ionError) = "this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image'; /> */}
               <IonCardHeader>
                 <IonCardSubtitle>{ ev.status }</IonCardSubtitle>
@@ -154,8 +157,8 @@ const ReviewEvent: React.FC = () => {
         </IonRow>
       </IonContent>
     </IonPage>
-    </IonSplitPane>
-    </IonContent>
+    // </IonSplitPane>
+    // </IonContent>
   );
 };
 

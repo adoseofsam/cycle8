@@ -20,7 +20,7 @@ export const Menu =()=> {
         <IonMenu side = "end" contentId = "main">
             <IonHeader>
                 <IonToolbar>
-                   <IonTitle> Menu</IonTitle>
+                   <IonTitle> Menu </IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent>
@@ -45,7 +45,7 @@ export const Menu =()=> {
 
                     <IonMenuToggle auto-hide="false">
                         <IonItem button routerLink = {"/login"} routerDirection="none">
-                            <IonLabel>Login</IonLabel>
+                            <IonLabel>Logout</IonLabel>
                         </IonItem>
                     </IonMenuToggle>
                 </IonList>

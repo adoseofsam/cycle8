@@ -12,7 +12,8 @@ Jinja2==2.11.3
 MarkupSafe==1.1.0
 Werkzeug==1.0.0
 WTForms==2.2.1
-# mariadb
+#mariadb
 mysql-connector-python
 python-dotenv==0.15.0
 PyJWT == 1.7.1
+Flask-Cors

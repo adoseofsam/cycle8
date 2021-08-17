@@ -1,13 +1,14 @@
-import { useIonViewWillEnter, IonRow, IonCol, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonCardContent, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonImg, IonSplitPane, IonItem, IonMenu, IonButtons, IonMenuButton } from '@ionic/react';
+import { useIonViewWillEnter, IonRow, IonCol, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonCardContent, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonImg, IonSplitPane, IonItem, IonMenu, IonButtons, IonMenuButton, IonLabel, IonThumbnail } from '@ionic/react';
 import React, { useState } from 'react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
 
 import { Link } from 'react-router-dom';
 import { Menu } from '../components/Menu';
+import { NavButtons } from '../components/NavButtons';
 
 var Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM";
-
+const img_url = "http://127.0.0.1:5000/uploads/"
 // Here we create a Typescript Interface
 interface Events {
   created_at: string;
@@ -23,6 +24,11 @@ interface Events {
   venue: string;
 }
 
+type Item = {
+  src: string;
+  text: string;
+};
+const items: Item[] = [{ src: 'http://placekitten.com/g/200/300', text: 'a picture of a cat' }];
 
 // Api call
 
@@ -57,28 +63,28 @@ const Home: React.FC = () => {
   }, []);
   console.log(event);
   return (
-    <IonContent>
-    <IonSplitPane contentId="main">
-    <Menu/>
-    {/* <IonMenu contentId="main">
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Menu</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent>
-            <IonList>
-              <IonItem routerLink="/home">Home</IonItem>
-              <IonItem routerLink="/createEvent">Create Event</IonItem>
-              <IonItem routerLink="/reviewEvent">Review Event</IonItem>
-            </IonList>
-          </IonContent>
-        </IonMenu> */}
-    <IonPage id="main">
+    // <IonContent>
+    // <IonSplitPane contentId="main">
+    // <Menu/>
+    // {/* <IonMenu contentId="main">
+    //       <IonHeader>
+    //         <IonToolbar>
+    //           <IonTitle>Menu</IonTitle>
+    //         </IonToolbar>
+    //       </IonHeader>
+    //       <IonContent>
+    //         <IonList>
+    //           <IonItem routerLink="/home">Home</IonItem>
+    //           <IonItem routerLink="/createEvent">Create Event</IonItem>
+    //           <IonItem routerLink="/reviewEvent">Review Event</IonItem>
+    //         </IonList>
+    //       </IonContent>
+    //     </IonMenu> */}
+    <IonPage >
       <IonHeader>
         <IonToolbar>
         <IonButtons slot="end">
-            <IonMenuButton></IonMenuButton>
+          <NavButtons/>{/* <IonMenuButton></IonMenuButton> */}
         </IonButtons>
           <IonTitle>Home</IonTitle>
         </IonToolbar>
@@ -86,10 +92,14 @@ const Home: React.FC = () => {
       <IonContent fullscreen>
         <IonRow>
           {event.map((ev:Events, index:number)=>(
-            <IonCol size="4" key={ index }>
+            <IonCol size="3" key={ index }>
               <IonCard>
+              {/* { ev.url ? <img src={ ev.url } alt="Image" /> : <img src="https://via.placeholder.com/150" alt="Image not Found" /> } */}
               {/* <img src="{{ev.url || 'http://placehold.it/280x180?text=Placeholder+Image'}}" /> */}
-              <img src={'http://placehold.it/280x180?text=Placeholder+Image'} />
+              {/* <IonImg src={ev.url} onIonError={ (e:any) => {<img src={'http://placehold.it/280x180?text=Placeholder+Image'} />} }></IonImg> */}
+              <img onError={(event:any)=> event.target.src = 'http://placehold.it/280x180?text=Placeholder+Image'} 
+              src={ img_url + ev.photo}/> 
+              {/* <img src={'http://placehold.it/280x180?text=Placeholder+Image'} /> */}
               {/* <img src={ ev.url } alt="Image not found" (ionError) = "this.onerror=null;this.src='http://placehold.it/280x180?text=Placeholder+Image'; /> */}
               <IonCardHeader>
                 <IonCardSubtitle>{ ev.status }</IonCardSubtitle>
@@ -103,9 +113,23 @@ const Home: React.FC = () => {
           ))}
         </IonRow>
       </IonContent>
+    {/* <IonContent>
+    <IonList>
+      {items.map((image, i) => (
+        <IonItem key={i}>
+          <IonThumbnail slot="start">
+            <IonImg src={image.src} />
+          </IonThumbnail>
+          <IonLabel>{image.text}</IonLabel>
+        </IonItem>
+      ))}
+    </IonList>
+  </IonContent> */}
+
+
     </IonPage>
-    </IonSplitPane>
-    </IonContent>
+    // {/* </IonSplitPane>
+    // </IonContent> */}
   );
 };
 
