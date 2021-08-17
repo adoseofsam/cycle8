@@ -6,6 +6,7 @@ import { Toast } from '../toast';
 import { useHistory } from "react-router-dom";
 import { useState } from 'react';
 import { Menu } from '../components/Menu';
+import { NavButtons } from '../components/NavButtons';
 
 var Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM";
 
@@ -85,14 +86,14 @@ const CreateEvent: React.FC = () => {
     //console.log(form);
   }
   return (
-    <IonContent>
-    <IonSplitPane contentId="main">
-    <Menu/>
+    // <IonContent>
+    // <IonSplitPane contentId="main">
+    // <Menu/>
     <IonPage id="main">
       <IonHeader>
         <IonToolbar>
         <IonButtons slot="end">
-          <IonMenuButton></IonMenuButton>
+          <NavButtons/> {/* <IonMenuButton></IonMenuButton> */}
         </IonButtons>
           <IonTitle>Create Event</IonTitle>
         </IonToolbar>
@@ -137,8 +138,8 @@ const CreateEvent: React.FC = () => {
           <IonButton color="primary" onClick={ (e) => HandleSubmit(e) }>Submit Event</IonButton>
       </IonContent>
     </IonPage>
-    </IonSplitPane>
-    </IonContent>
+    // </IonSplitPane>
+    // </IonContent>
   );
 };
 

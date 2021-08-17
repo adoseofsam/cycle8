@@ -25,15 +25,16 @@ roles = {'admin' : "Admin", 'regular': "Regular"}
 
 
 # ----------------- CORS SETUP ------------------
+'''
 @app.after_request
 def add_header(response):
     response.headers['Access-Control-Allow-Origin'] = "http://localhost:8100"
     response.headers['Access-Control-Allow-Headers'] = "*"
-    response.headers['Access-Control-Methods'] = "GET"
+    response.headers['Access-Control-Methods'] = "GET,POST,PUT,PATCH,DELETE"
     response.headers['Access-Control-Allow-Credentials'] = "true"
 
     return response
-
+'''
 # --------------- JWT FUNCTIONS ---------------------
 
 # Create a JWT @requires_auth decorator
@@ -715,6 +716,21 @@ def send_text_file(file_name):
     """Send your static text file."""
     file_dot_text = file_name + '.txt'
     return app.send_static_file(file_dot_text)
+
+# os.path.join(app.config['UPLOAD_FOLDER'],filename)
+# r'C:\Users\Camille\OneDrive\Desktop\Info 3180 -Labs\NCB-UWI\cycle8\EMS-backend\app\static\uploads\\'
+
+@app.route("/uploads/<path:name>")
+def download_file(name):
+    rootdir = os.getcwd()
+    #print(rootdir)
+    path = '/app/static/uploads'
+    dir = rootdir + app.config['UPLOAD_FOLDER'] #path
+    #print(dir)
+    #print("in files - ", name)
+    return send_from_directory(
+        dir, filename=name, as_attachment=False
+    )
 
 
 @app.after_request
