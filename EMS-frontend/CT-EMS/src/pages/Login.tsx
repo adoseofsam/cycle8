@@ -2,7 +2,7 @@ import { IonContent, IonList, IonHeader, IonPage,
          IonTitle, IonToolbar, IonText, IonInput,
          IonButton,IonButtons, IonIcon, IonItem, IonLabel,IonBackButton,
          IonSplitPane, IonMenu ,IonGrid,IonRow,
-         IonCol,IonFooter,IonCardTitle,IonRouterLink, IonAlert} from '@ionic/react';
+         IonCol,IonFooter,IonCardTitle,IonRouterLink, IonAlert,useIonViewWillEnter } from '@ionic/react';
 import { arrowBack, shapesOutline } from "ionicons/icons";
          import React, { useState, useEffect } from 'react';
 import './Login.scss';

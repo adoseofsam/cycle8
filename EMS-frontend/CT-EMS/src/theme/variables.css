@@ -236,8 +236,6 @@ http://ionicframework.com/docs/theming/ */
   }
 }
 
-<<<<<<< HEAD
-=======
 
 body.dark {
   --ion-color-primary: #428cff;
@@ -391,4 +389,3 @@ body.dark {
 
   --ion-card-background: #1e1e1e;
 }
->>>>>>> main
