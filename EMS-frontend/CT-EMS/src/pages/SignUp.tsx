@@ -1,9 +1,11 @@
-import { IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonDatetime, IonMenu, IonSplitPane } from '@ionic/react';
+import { IonButtons,IonBackButton,IonCardTitle,IonCardSubtitle,IonCardHeader,IonCard,IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonDatetime, IonMenu, IonSplitPane } from '@ionic/react';
 import './Home.css';
-
+import './Signup.css'
 import { Toast } from '../toast';
-import { useHistory } from "react-router-dom";
+// import { Link } from 'react-router-dom';
+import { useHistory,Link } from "react-router-dom";
 import { useState } from 'react';
+
 
 const SignUp: React.FC = () => {
   const [FullName, setFullName] = useState<string>("")
@@ -13,6 +15,8 @@ const SignUp: React.FC = () => {
   const [Role, setRole] = useState<string>("")
   const [Photo, setPhoto] = useState<any>()
   const history = useHistory();
+  
+  
 
 
   async function HandleSubmit(form:any){
@@ -58,8 +62,9 @@ const SignUp: React.FC = () => {
 
 
   return (
-    <IonContent>
-    <IonSplitPane contentId="main">
+    <IonContent className = "signupPage">
+      
+    {/* <IonSplitPane contentId="main">
         <IonMenu contentId="main">
           <IonHeader>
             <IonToolbar>
@@ -72,7 +77,7 @@ const SignUp: React.FC = () => {
               <IonItem routerLink="/signup">Sign Up</IonItem>
             </IonList>
           </IonContent>
-        </IonMenu>
+        </IonMenu> */}
         <IonPage id="main">
       <IonHeader>
         <IonToolbar>
@@ -80,39 +85,46 @@ const SignUp: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+      <IonCard className ="card-center">
+      
+        <IonCardHeader >
+              <IonCardTitle className ="signupTitle">Sign Up</IonCardTitle>
+        </IonCardHeader>
+        
         <IonItem>
-          <IonLabel>Full Name</IonLabel>
-          <IonInput value={FullName} placeholder="Enter FullName" onIonChange={(e:any) => setFullName(e.target.value)}></IonInput>
+          <IonLabel className ="signupLabel" position="stacked">Full Name </IonLabel>
+          <IonInput value={FullName} placeholder="Jane Doe" onIonChange={(e:any) => setFullName(e.target.value)}></IonInput>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Email</IonLabel>
-          <IonInput value={Email} placeholder="Enter Email" onIonChange={e => setEmail(e.detail.value!)}></IonInput>
+          <IonLabel position="stacked">Email</IonLabel>
+          <IonInput value={Email} placeholder="sample@example.com" onIonChange={e => setEmail(e.detail.value!)}></IonInput>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Profile Picture </IonLabel>
-          <input type = "file" onChange = {(e:any) => setPhoto(e.target.files[0])}/>
+          <IonLabel position="stacked">Password</IonLabel>
+          <input type = "password" placeholder="Password" onChange = {(e) => setPassword(e.target.value)}/>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Password</IonLabel>
-          <input type = "password" placeholder="Enter Password" onChange = {(e) => setPassword(e.target.value)}/>
-        </IonItem>
-
-        <IonItem>
-          <IonLabel>Re-Password</IonLabel>
+          <IonLabel position="stacked">Re-Enter Password</IonLabel>
           <input type = "password" placeholder="Confirm Password" onChange = {(e) => setConfirm(e.target.value)}/>
         </IonItem>
 
+        <IonItem>
+          <IonLabel position="stacked">Profile Picture </IonLabel>
+          <input type = "file" onChange = {(e:any) => setPhoto(e.target.files[0])}/>
+        </IonItem>
 
-        
+          <br></br>
+          <IonButton color="primary" onClick={ (e) => HandleSubmit(e) }>CREATE ACCOUNT</IonButton>
+          <p>Already have an account?<Link to="/login">Login</Link></p>
 
 
-          <IonButton color="primary" onClick={ (e) => HandleSubmit(e) }>Submit Event</IonButton>
+          </IonCard>
+
       </IonContent>
     </IonPage>
-    </IonSplitPane>
     </IonContent>
   );
 };

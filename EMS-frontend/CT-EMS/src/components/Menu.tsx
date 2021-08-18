@@ -14,9 +14,11 @@ import {
 } from "@ionic/react";
 
 import React from "react";
+import Tabs from "./NavTabs";
 
 export const Menu =()=> {
     return (
+        <>
         <IonMenu side = "end" contentId = "main">
             <IonHeader>
                 <IonToolbar>
@@ -51,5 +53,7 @@ export const Menu =()=> {
                 </IonList>
             </IonContent>
         </IonMenu>
+        
+        </>
     )
 };

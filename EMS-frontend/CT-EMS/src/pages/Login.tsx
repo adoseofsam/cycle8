@@ -29,6 +29,24 @@ const Login: React.FC = () => {
 
     const history = useHistory();
 
+    useIonViewWillEnter(() => {
+        // console.log('ionViewDidEnter event fired');
+        getData();
+    
+        // we will use async/await to fetch this data
+        async function getData() {
+          console.log("here");
+          const response = await fetch("http://127.0.0.1:5000/api/logout", {
+          });
+
+          const data = await response.json();
+          console.log(data);
+          
+        }
+        
+        
+      }, []);
+
     async function login(){
         let res = true;
         let form_data = new FormData();
