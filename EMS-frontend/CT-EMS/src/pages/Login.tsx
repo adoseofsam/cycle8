@@ -92,16 +92,15 @@ const Login: React.FC = () => {
           */}
         <IonPage >
             <IonHeader>
-            <IonToolbar>
+            <IonToolbar className="login-Toolbar">
+                 {/** 
                     <IonButtons slot="start" >
                         <IonButton className="custom-back" routerLink = "/home">
                             <IonIcon icon={ arrowBack } />
                         </IonButton>
-
-                        
-
-
-                    </IonButtons>
+                        </IonButtons>
+                   */
+                 }
                     <IonButtons slot="end" className="signUpHeader">
                             <IonButton  routerLink="/home/">
                                 Home
