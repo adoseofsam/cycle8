@@ -27,10 +27,7 @@ app.config['WTF_CSRF_ENABLED'] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-<<<<<<< HEAD
-=======
 #cors = CORS(app, resources = {'/api/*': {'origins':'*'}})
->>>>>>> 3e27a10dd3c7088d6255f8d2a16b1ceb8fa8932e
 CORS(app)
 
 # Flask-Login login manager
