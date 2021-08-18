@@ -1,9 +1,11 @@
-import { IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonDatetime, IonMenu, IonSplitPane } from '@ionic/react';
+import { IonButtons,IonBackButton,IonCardTitle,IonCardSubtitle,IonCardHeader,IonCard,IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonDatetime, IonMenu, IonSplitPane } from '@ionic/react';
 import './Home.css';
-import styles from './SignUp.module.scss'
+import './Signup.css'
 import { Toast } from '../toast';
-import { useHistory } from "react-router-dom";
+// import { Link } from 'react-router-dom';
+import { useHistory,Link } from "react-router-dom";
 import { useState } from 'react';
+
 
 const SignUp: React.FC = () => {
   const [FullName, setFullName] = useState<string>("")
@@ -60,8 +62,9 @@ const SignUp: React.FC = () => {
 
 
   return (
-    <IonContent>
-    <IonSplitPane contentId="main">
+    <IonContent className = "signupPage">
+      
+    {/* <IonSplitPane contentId="main">
         <IonMenu contentId="main">
           <IonHeader>
             <IonToolbar>
@@ -74,14 +77,23 @@ const SignUp: React.FC = () => {
               <IonItem routerLink="/signup">Sign Up</IonItem>
             </IonList>
           </IonContent>
-        </IonMenu>
-        <IonPage id="main" className={ styles.signupPage }>
+        </IonMenu> */}
+        <IonPage id="main">
       <IonHeader>
         <IonToolbar>
           <IonTitle>Sign Up</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+      <IonCard className ="card-center">
+      
+        <IonCardHeader >
+          {/* <IonCardSubtitle >ems</IonCardSubtitle> */}
+              <IonCardTitle className ="signupTitle">Sign Up</IonCardTitle>
+        </IonCardHeader>
+        <IonButtons slot="start">
+          <IonBackButton text="buttonText" icon="buttonIcon" />
+        </IonButtons>
         <IonItem>
           <IonLabel>Full Name</IonLabel>
           <IonInput value={FullName} placeholder="Enter FullName" onIonChange={(e:any) => setFullName(e.target.value)}></IonInput>
@@ -108,13 +120,14 @@ const SignUp: React.FC = () => {
         </IonItem>
 
 
-        
+          <IonButton color="primary" onClick={ (e) => HandleSubmit(e) }>CREATE ACCOUNT</IonButton>
+          <p>Already have an account?<Link to="/login">Login</Link></p>
 
 
-          <IonButton color="primary" onClick={ (e) => HandleSubmit(e) }>Submit Event</IonButton>
+          </IonCard>
+
       </IonContent>
     </IonPage>
-    </IonSplitPane>
     </IonContent>
   );
 };

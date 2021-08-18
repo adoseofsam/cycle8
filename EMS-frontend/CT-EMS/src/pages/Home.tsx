@@ -1,5 +1,6 @@
-import { useIonViewWillEnter, IonRow, IonCol, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonCardContent, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonImg, IonSplitPane, IonItem, IonMenu, IonButtons, IonMenuButton, IonLabel, IonThumbnail, useIonRouter, IonGrid, IonSearchbar, IonFab, IonFabButton, IonIcon, IonAvatar, useIonViewDidEnter, IonRouterLink, IonModal, IonButton, IonDatetime } from '@ionic/react';
+import { IonToggle,useIonViewWillEnter, IonRow, IonCol, IonCard, IonCardTitle, IonCardHeader, IonCardSubtitle, IonCardContent, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonImg, IonSplitPane, IonItem, IonMenu, IonButtons, IonMenuButton, IonLabel, IonThumbnail, useIonRouter, IonGrid, IonSearchbar, IonFab, IonFabButton, IonIcon, IonAvatar, useIonViewDidEnter, IonRouterLink, IonModal, IonButton, IonDatetime } from '@ionic/react';
 import React, { useRef, useState } from 'react';
+import { moon } from "ionicons/icons";
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
 
@@ -34,6 +35,11 @@ type Item = {
   src: string;
   text: string;
 };
+
+const toggleDarkModeHandler = () => {
+  document.body.classList.toggle("dark");
+};
+
 const items: Item[] = [{ src: 'http://placekitten.com/g/200/300', text: 'a picture of a cat' }];
 
 // Api call
@@ -200,7 +206,17 @@ const Home: React.FC<any> = (props) => {
       </IonHeader>
       <IonContent fullscreen>
       <IonGrid>
-
+      <IonList className="ion-margin-top">
+          <IonItem>
+            <IonIcon slot="start" icon={moon} />
+            <IonLabel>Dark Mode</IonLabel>
+            <IonToggle
+              slot="end"
+              name="darkMode"
+              onIonChange={toggleDarkModeHandler}
+            />
+          </IonItem>
+        </IonList>
       <IonToolbar className="inner-toolbar">
 						<IonRow className="ion-no-padding ion-no-margin" class = "ion-hide-sm-down">
 							<IonCol size="9" >
