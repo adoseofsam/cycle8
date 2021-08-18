@@ -73,6 +73,9 @@ class User(db.Model):
     def get_role(self):
         return str(self.role)
 
+    def get_photo(self):
+        return str(self.profile_photo)
+
     def __repr__(self):
         return '<User %r>' % (self.full_name)
 

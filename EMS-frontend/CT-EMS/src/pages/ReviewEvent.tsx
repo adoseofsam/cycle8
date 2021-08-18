@@ -8,6 +8,7 @@ import { Toast } from '../toast';
 import { useHistory } from "react-router-dom";
 import { Menu } from '../components/Menu';
 import { NavButtons } from '../components/NavButtons';
+import NoEventsContainer from '../components/NoEventsContainer';
 
 var Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM";
 const img_url = "http://127.0.0.1:5000/uploads/"
@@ -131,7 +132,7 @@ const ReviewEvent: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen>
         <IonRow>
-          {result.map((ev:Event, index:number)=>(
+          {result.length? result.map((ev:Event, index:number)=>(
             <IonCol size="4" key={ index }>
               <IonCard>
               {/* <img src="{{ev.url || 'http://placehold.it/280x180?text=Placeholder+Image'}}" /> */}
@@ -153,7 +154,7 @@ const ReviewEvent: React.FC = () => {
               </IonButtons>
             </IonCard>
             </IonCol>
-          ))}
+          )) : <NoEventsContainer/>}
         </IonRow>
       </IonContent>
     </IonPage>
