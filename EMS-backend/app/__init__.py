@@ -2,7 +2,6 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_cors import CORS
 
 
 # Config Values
@@ -28,8 +27,6 @@ app.config['WTF_CSRF_ENABLED'] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-#cors = CORS(app, resources = {'/api/*': {'origins':'*'}})
-CORS(app)
 
 # Flask-Login login manager
 login_manager = LoginManager()

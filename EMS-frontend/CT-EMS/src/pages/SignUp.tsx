@@ -1,6 +1,6 @@
 import { IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonDatetime, IonMenu, IonSplitPane } from '@ionic/react';
 import './Home.css';
-
+import styles from './SignUp.module.scss'
 import { Toast } from '../toast';
 import { useHistory } from "react-router-dom";
 import { useState } from 'react';
@@ -13,6 +13,8 @@ const SignUp: React.FC = () => {
   const [Role, setRole] = useState<string>("")
   const [Photo, setPhoto] = useState<any>()
   const history = useHistory();
+  
+  
 
 
   async function HandleSubmit(form:any){
@@ -73,7 +75,7 @@ const SignUp: React.FC = () => {
             </IonList>
           </IonContent>
         </IonMenu>
-        <IonPage id="main">
+        <IonPage id="main" className={ styles.signupPage }>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Sign Up</IonTitle>
