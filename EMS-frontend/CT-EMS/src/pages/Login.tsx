@@ -75,7 +75,7 @@ const Login: React.FC = () => {
         <IonPage >
             <IonHeader>
             <IonToolbar>
-                    <IonButtons slot="start">
+                    <IonButtons slot="start" >
                         <IonButton className="custom-back" routerLink = "/home">
                             <IonIcon icon={ arrowBack } />
                         </IonButton>
@@ -119,6 +119,13 @@ const Login: React.FC = () => {
 
                                 <IonButton className="custom-button" expand="block" onClick={ login }>Login</IonButton>
                             </IonCol>
+                    </IonRow>
+                    <IonRow className="ion-text-center ion-justify-content-center" id="toup">
+                        <IonCol size="12">
+                            <p>Don't have an account?
+                             <IonRouterLink color = "success"  className="custom-link"  routerLink = "/signup" > Sign Up </IonRouterLink>
+                            </p>
+                        </IonCol>
                     </IonRow>
                     
                 </IonGrid>
