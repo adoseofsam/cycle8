@@ -103,12 +103,16 @@ const SignUp: React.FC = () => {
 
         <IonItem>
           <IonLabel position="stacked">Password</IonLabel>
-          <input type = "password" placeholder="Password" onChange = {(e) => setPassword(e.target.value)}/>
+          <IonInput value = {Password} onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput>
+
+          {/* <input type = "password" placeholder="Password" onChange = {(e) => setPassword(e.target.value)}/> */}
         </IonItem>
 
         <IonItem>
           <IonLabel position="stacked">Re-Enter Password</IonLabel>
-          <input type = "password" placeholder="Confirm Password" onChange = {(e) => setConfirm(e.target.value)}/>
+          <IonInput value = { Password} onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput>
+
+          {/* <input type = "password" placeholder="Confirm Password" onChange = {(e) => setConfirm(e.target.value)}/> */}
         </IonItem>
 
         <IonItem>
