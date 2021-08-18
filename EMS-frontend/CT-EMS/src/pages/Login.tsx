@@ -5,7 +5,7 @@ import { IonContent, IonList, IonHeader, IonPage,
          IonCol,IonFooter,IonCardTitle,IonRouterLink, IonAlert,useIonViewWillEnter } from '@ionic/react';
 import { arrowBack, shapesOutline } from "ionicons/icons";
          import React, { useState, useEffect } from 'react';
-import './Login.scss';
+ import './Login.scss';
 
 
 import { Toast } from '../toast';
@@ -114,10 +114,10 @@ const Login: React.FC = () => {
 				</IonToolbar>            
             </IonHeader>
 
-            <IonContent  fullscreen className="ion-padding">
+            <IonContent   className="ion-padding" id="login-content">
                      
                 
-                <IonGrid className="ion-padding">
+                <IonGrid className="ion-padding" id="login-grid">
                         <IonRow>
                             <IonCol>
                                 <IonCardTitle>Log in</IonCardTitle>
@@ -148,7 +148,7 @@ const Login: React.FC = () => {
                     
                 </IonGrid>
             </IonContent >
-            <IonFooter  >
+            <IonFooter  className="login-footer">
                 <IonGrid>
                     <IonRow className="ion-text-center ion-justify-content-center">
                         <IonCol size="12">

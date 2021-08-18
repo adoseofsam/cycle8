@@ -12,21 +12,22 @@ $laptop:992px;
   
 
 @media(min-width:$tablet){
-    ion-footer, .custom-back{
+
+    .login-footer, .custom-back{
         opacity: 0;
     }
 
-    ion-content{
+    #login-content{
         justify-content: center;
         align-items: center;
         place-content: center;
 
     }
-    ion-grid{
+    #login-grid{
         padding: 5%;
         width: 30rem;
     }
-    
+  
 }
 @media(max-width:$tablet){
 
@@ -40,7 +41,7 @@ $laptop:992px;
 
 
 
-ion-toolbar {
+.login-Toolbar{
 
     --border-style: none;
     --border-color: transparent;
@@ -50,7 +51,7 @@ ion-toolbar {
     --padding-end: 1rem;
 }
 
-ion-grid{
+#login-grid{
     justify-content: center;
     align-items: center;
     place-content: center;
@@ -63,7 +64,7 @@ ion-grid{
     margin-bottom: 1rem !important;
 }
 
-
+.form-field{
 ion-label {
 
         padding-left: 0.2rem;
@@ -77,6 +78,7 @@ ion-label {
 
 }
 
+
 .customInput {
 
     --background: #157ec4;
@@ -89,10 +91,6 @@ ion-label {
     transition: all 0.2s linear;
 }
 
-
-.form-field:not(:last-child) {
-
-    margin-bottom: 1rem !important;
 }
 
 .custom-button {
