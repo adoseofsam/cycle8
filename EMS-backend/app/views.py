@@ -125,7 +125,7 @@ def api_logout():
 @app.route("/api/login", methods = ['POST'])
 def api_login():
     errors = []
-
+    print(current_user.is_authenticated)
     if current_user.is_authenticated:
         token = get_token()
         #print("Token", token)
@@ -133,7 +133,9 @@ def api_login():
             {
                 # 'id' : user.get_id(),
                 # 'role': user.role,
-                'token' : token            
+                'photo': current_user.get_photo(),
+                'token' : token
+
 
         }]
         message = 'User already logged in'
@@ -178,6 +180,7 @@ def api_login():
                     {
                         'id' : user.get_id(),
                         'role': user.role,
+                        'photo': user.get_photo(),
                         'token' : token
 
                 }]

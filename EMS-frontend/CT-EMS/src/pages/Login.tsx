@@ -1,4 +1,4 @@
-import { IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonSplitPane, IonMenu } from '@ionic/react';
+import { IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonSplitPane, IonMenu, useIonViewWillEnter } from '@ionic/react';
 import { star } from 'ionicons/icons';
 import { useState, useEffect } from 'react';
 import ExploreContainer from '../components/ExploreContainer';
@@ -22,6 +22,24 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState<string>('')
     const [result, setResult] = useState<any>([]);
     const history = useHistory();
+
+    useIonViewWillEnter(() => {
+        // console.log('ionViewDidEnter event fired');
+        getData();
+    
+        // we will use async/await to fetch this data
+        async function getData() {
+          console.log("here");
+          const response = await fetch("http://127.0.0.1:5000/api/logout", {
+          });
+
+          const data = await response.json();
+          console.log(data);
+          
+        }
+        
+        
+      }, []);
 
     async function login(){
         let res = true;

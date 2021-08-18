@@ -1,11 +1,13 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import Homepage from './pages/Home';
 import Login from './pages/Login';
 import ReviewEvent from './pages/ReviewEvent';
 import CreateEvent from './pages/CreateEvent';
 import SignUp from './pages/SignUp';
+
+import Tabs from "./components/NavTabs";
 
 import { Menu } from './components/Menu';
 
@@ -34,17 +36,21 @@ const App: React.FC = () => (
       <Menu/>
       <IonRouterOutlet id = "main">
         <Route exact path="/home">
-          <Home />
+          <Homepage />
         </Route>
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
+        {/* <Route path="/tabs" render={ () => <Tabs />} /> */}
         <Route exact path = "/login" component = {Login}></Route>
         <Route exact path = "/reviewEvent" component = {ReviewEvent}></Route>
         <Route exact path = "/createEvent" component = {CreateEvent}></Route>
         <Route exact path = "/signup" component = {SignUp}></Route>
+        
       </IonRouterOutlet>
+      
     </IonReactRouter>
+    
   </IonApp>
 );
 
