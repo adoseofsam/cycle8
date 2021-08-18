@@ -88,38 +88,35 @@ const SignUp: React.FC = () => {
       <IonCard className ="card-center">
       
         <IonCardHeader >
-          {/* <IonCardSubtitle >ems</IonCardSubtitle> */}
               <IonCardTitle className ="signupTitle">Sign Up</IonCardTitle>
         </IonCardHeader>
-        <IonButtons slot="start">
-          <IonBackButton text="buttonText" icon="buttonIcon" />
-        </IonButtons>
+        
         <IonItem>
-          <IonLabel>Full Name</IonLabel>
-          <IonInput value={FullName} placeholder="Enter FullName" onIonChange={(e:any) => setFullName(e.target.value)}></IonInput>
+          <IonLabel className ="signupLabel" position="stacked">Full Name </IonLabel>
+          <IonInput value={FullName} placeholder="Jane Doe" onIonChange={(e:any) => setFullName(e.target.value)}></IonInput>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Email</IonLabel>
-          <IonInput value={Email} placeholder="Enter Email" onIonChange={e => setEmail(e.detail.value!)}></IonInput>
+          <IonLabel position="stacked">Email</IonLabel>
+          <IonInput value={Email} placeholder="sample@example.com" onIonChange={e => setEmail(e.detail.value!)}></IonInput>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Profile Picture </IonLabel>
-          <input type = "file" onChange = {(e:any) => setPhoto(e.target.files[0])}/>
+          <IonLabel position="stacked">Password</IonLabel>
+          <input type = "password" placeholder="Password" onChange = {(e) => setPassword(e.target.value)}/>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Password</IonLabel>
-          <input type = "password" placeholder="Enter Password" onChange = {(e) => setPassword(e.target.value)}/>
-        </IonItem>
-
-        <IonItem>
-          <IonLabel>Re-Password</IonLabel>
+          <IonLabel position="stacked">Re-Enter Password</IonLabel>
           <input type = "password" placeholder="Confirm Password" onChange = {(e) => setConfirm(e.target.value)}/>
         </IonItem>
 
+        <IonItem>
+          <IonLabel position="stacked">Profile Picture </IonLabel>
+          <input type = "file" onChange = {(e:any) => setPhoto(e.target.files[0])}/>
+        </IonItem>
 
+          <br></br>
           <IonButton color="primary" onClick={ (e) => HandleSubmit(e) }>CREATE ACCOUNT</IonButton>
           <p>Already have an account?<Link to="/login">Login</Link></p>
 

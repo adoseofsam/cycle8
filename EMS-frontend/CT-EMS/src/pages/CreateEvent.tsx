@@ -1,5 +1,6 @@
-import { IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonDatetime, IonSplitPane, IonButtons, IonMenuButton } from '@ionic/react';
+import { IonBackButton,IonCardTitle,IonCardHeader,IonCard,IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonDatetime, IonSplitPane, IonButtons, IonMenuButton } from '@ionic/react';
 import './Home.css';
+import './CreateEvent.css'
 
 
 import { Toast } from '../toast';
@@ -99,43 +100,53 @@ const CreateEvent: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+      <IonCard className ="create-card-center">
+      
+      <IonCardHeader >
+            <IonCardTitle className ="createTitle">Add a New Event</IonCardTitle>
+      </IonCardHeader>
+
         <IonItem>
-          <IonLabel>Title</IonLabel>
-          <IonInput value={Title} placeholder="Enter Title" onIonChange={(e:any) => setTitle(e.target.value)}></IonInput>
+          <IonLabel position="stacked">Title </IonLabel>
+          <IonInput value={Title} placeholder="Title" onIonChange={(e:any) => setTitle(e.target.value)}></IonInput>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Description</IonLabel>
-          <IonInput value={Desc} placeholder="Enter Description" onIonChange={e => setDesc(e.detail.value!)}></IonInput>
+          <IonLabel position="stacked">Description </IonLabel>
+          <IonInput value={Desc} placeholder="Description" onIonChange={e => setDesc(e.detail.value!)}></IonInput>
         </IonItem>
 
         <IonItem>
-            <IonLabel>Start Date: MM DD YY</IonLabel>
+            <IonLabel position="stacked">Start Date </IonLabel>
             <IonDatetime displayFormat="DDDD MMM D, YYYY" placeholder="Select Start Date" value={StartDate} onIonChange={e => setStartDate(e.detail.value!)}></IonDatetime>
         </IonItem>
 
         <IonItem>
-            <IonLabel>End Date: MM DD YY</IonLabel>
+            <IonLabel position="stacked">End Date </IonLabel>
             <IonDatetime displayFormat="DDDD MMM D, YYYY" placeholder="Select End Date" value={EndDate} onIonChange={e => setEndDate(e.detail.value!)}></IonDatetime>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Venue</IonLabel>
-          <IonInput value={Venue} placeholder="Enter Venue" onIonChange={e => setVenue(e.detail.value!)}></IonInput>
+          <IonLabel position="stacked">Venue </IonLabel>
+          <IonInput value={Venue} placeholder="Venue" onIonChange={e => setVenue(e.detail.value!)}></IonInput>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Website Url</IonLabel>
-          <IonInput value={Url} placeholder="Enter event web url" onIonChange={e => setUrl(e.detail.value!)}></IonInput>
+          <IonLabel position="stacked">Website Url </IonLabel>
+          <IonInput value={Url} placeholder="Event's Website URL" onIonChange={e => setUrl(e.detail.value!)}></IonInput>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Event Flyer </IonLabel>
+          <IonLabel position="stacked">Event Flyer </IonLabel>
           <input type = "file" onChange = {(e:any) => setPhoto(e.target.files[0])}/>
         </IonItem>
 
-
-          <IonButton color="primary" onClick={ (e) => HandleSubmit(e) }>Submit Event</IonButton>
+          <br></br>
+          <IonButtons slot = "start">
+            <IonBackButton />
+          </IonButtons>
+          <IonButton className="text-center" color="primary" onClick={ (e) => HandleSubmit(e) }>Submit Event</IonButton>
+          </IonCard>
       </IonContent>
     </IonPage>
     // </IonSplitPane>
