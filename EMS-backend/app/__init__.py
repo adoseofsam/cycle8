@@ -30,6 +30,9 @@ migrate = Migrate(app, db)
 #cors = CORS(app, resources = {'/api/*': {'origins':'*'}})
 CORS(app)
 
+#cors = CORS(app, resources = {'/api/*': {'origins':'*'}})
+CORS(app)
+
 # Flask-Login login manager
 login_manager = LoginManager()
 login_manager.init_app(app)

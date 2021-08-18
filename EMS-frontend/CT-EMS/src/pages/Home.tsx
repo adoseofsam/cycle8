@@ -307,10 +307,12 @@ const Home: React.FC<any> = (props) => {
           <IonPage>
           
           <IonContent>
-          <p>Model body</p>
+          <IonToolbar>
           <IonButtons slot ="end">
             <IonButton onClick = {() => setshowFilterModal(false)}>Close</IonButton>
           </IonButtons>
+          </IonToolbar>
+            <p>Model body</p>
             <p>Filter for events that occurs on : <strong>{StartDate.split("T")[0]}</strong></p>
           
           <IonItem>
