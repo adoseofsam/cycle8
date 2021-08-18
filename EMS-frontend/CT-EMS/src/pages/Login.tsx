@@ -1,8 +1,12 @@
-import { IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonSplitPane, IonMenu, useIonViewWillEnter } from '@ionic/react';
-import { star } from 'ionicons/icons';
-import { useState, useEffect } from 'react';
-import ExploreContainer from '../components/ExploreContainer';
-import './Home.css';
+import { IonContent, IonList, IonHeader, IonPage,
+         IonTitle, IonToolbar, IonText, IonInput,
+         IonButton,IonButtons, IonIcon, IonItem, IonLabel,IonBackButton,
+         IonSplitPane, IonMenu ,IonGrid,IonRow,
+         IonCol,IonFooter,IonCardTitle,IonRouterLink, IonAlert,useIonViewWillEnter } from '@ionic/react';
+import { arrowBack, shapesOutline } from "ionicons/icons";
+         import React, { useState, useEffect } from 'react';
+ import './Login.scss';
+
 
 import { Toast } from '../toast';
 import { useHistory } from "react-router-dom";
@@ -21,6 +25,8 @@ const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [result, setResult] = useState<any>([]);
+    const [error, setErrors] = useState<string>();
+
     const history = useHistory();
 
     useIonViewWillEnter(() => {
@@ -44,6 +50,7 @@ const Login: React.FC = () => {
     async function login(){
         let res = true;
         let form_data = new FormData();
+        
         form_data.append("email",email);
         form_data.append("password",password);
 
@@ -57,9 +64,12 @@ const Login: React.FC = () => {
 
         if (response.status === 200){
             Toast('You have logged in!')
+
             history.push("/home");
         }else{
+            setErrors(results.errors[0])
             console.log(results.errors[0])
+
             Toast(results.errors[0]);
         }
         // console.log(results);
@@ -71,8 +81,97 @@ const Login: React.FC = () => {
     }
 
     return (
-        <IonContent>
-        <IonSplitPane contentId="main">
+
+        <React.Fragment>
+            { /** 
+            <IonAlert 
+            isOpen={!!error} 
+            message={error}
+            buttons={[{text:'Ok',handler: ()=> setErrors("")}]}
+            />  
+          */}
+        <IonPage >
+            <IonHeader>
+            <IonToolbar className="login-Toolbar">
+                 {/** 
+                    <IonButtons slot="start" >
+                        <IonButton className="custom-back" routerLink = "/home">
+                            <IonIcon icon={ arrowBack } />
+                        </IonButton>
+                        </IonButtons>
+                   */
+                 }
+                    <IonButtons slot="end" className="signUpHeader">
+                            <IonButton  routerLink="/home/">
+                                Home
+                            </IonButton>
+                            <IonButton  routerLink="/signup/">
+                                Sign Up
+                            </IonButton>
+
+                    </IonButtons>
+				</IonToolbar>            
+            </IonHeader>
+
+            <IonContent   className="ion-padding" id="login-content">
+                     
+                
+                <IonGrid className="ion-padding" id="login-grid">
+                        <IonRow>
+                            <IonCol>
+                                <IonCardTitle>Log in</IonCardTitle>
+                                <h5>Please enter your login credentials</h5>
+                            </IonCol>
+                        </IonRow>
+                        <IonRow className="ion-margin-top ion-padding-top">
+                            <IonCol size="12">
+                            <div className="form-field">
+                                    <IonLabel >Email </IonLabel>
+                                    <IonInput  value = {email} className="customInput" onIonChange = {(e:any) => setEmail(e.target.value)} id = "input" placeholder = "joh.doe@example.com" ></IonInput>
+                            </div>
+                            <div className="form-field">
+                                    <IonLabel >Password</IonLabel>
+                                    <IonInput value = {password} className="customInput" onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput>
+                            </div>
+
+                                <IonButton className="custom-button" expand="block" onClick={ login }>Login</IonButton>
+                            </IonCol>
+                    </IonRow>
+                    <IonRow className="ion-text-center ion-justify-content-center" id="toup">
+                        <IonCol size="12">
+                            <p>Don't have an account?
+                             <IonRouterLink color = "success"  className="custom-link"  routerLink = "/signup" > Sign Up </IonRouterLink>
+                            </p>
+                        </IonCol>
+                    </IonRow>
+                    
+                </IonGrid>
+            </IonContent >
+            <IonFooter  className="login-footer">
+                <IonGrid>
+                    <IonRow className="ion-text-center ion-justify-content-center">
+                        <IonCol size="12">
+                            <p>Don't have an account?
+                             <IonRouterLink color = "success"  className="custom-link"  routerLink = "/signup" > Sign Up </IonRouterLink>
+                            </p>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+                
+            </IonFooter>
+        </IonPage>
+        </React.Fragment>
+
+    );
+
+};
+
+export default Login;
+
+
+/**
+ * 
+ * <IonSplitPane contentId="main">
         <IonMenu contentId="main">
           <IonHeader>
             <IonToolbar>
@@ -86,40 +185,8 @@ const Login: React.FC = () => {
             </IonList>
           </IonContent>
         </IonMenu>
-        <IonPage id="main">
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>
-                        Login
-                    </IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent className ="ion-padding">
-                <p>Please enter your login credentials:</p>
-                <IonItem>
-                <IonLabel>Email</IonLabel>
-                <IonInput className ="ion-padding" value = {email} onIonChange = {(e:any) => setEmail(e.target.value)} id = "input" placeholder = "Enter email " ></IonInput>
-                </IonItem>
-                <IonItem>
-                <IonLabel>Password</IonLabel>
-                <IonInput className ="ion-padding" value = {password} onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "Enter password " type = "password"></IonInput>
-                </IonItem>
+                        </IonSplitPane>
 
-                {/* routerLink = "/home" */}
-                <IonButton  expand = "full" color = "primary"  onClick = {login}> 
-                    <IonIcon slot="start" icon={star} ></IonIcon>
-                    Login</IonButton>
+        
 
-                <p>Not a member? Sign Up!</p>
-                <IonButton color = "success" routerLink = "/signup">Signup</IonButton>
-
-            </IonContent >
-        </IonPage>
-        </IonSplitPane>
-    </IonContent>
-    );
-
-};
-
-export default Login;
-
+ */
