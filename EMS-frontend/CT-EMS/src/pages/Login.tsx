@@ -108,7 +108,10 @@ const Login: React.FC<loginProps> = (props) => {
           */}
         <IonPage >
             <IonHeader>
+
             <IonToolbar className="login-Toolbar">
+            <IonTitle>Login</IonTitle>
+
                  {/** 
                     <IonButtons slot="start" >
                         <IonButton className="custom-back" routerLink = "/home">
@@ -135,7 +138,7 @@ const Login: React.FC<loginProps> = (props) => {
                 <IonGrid className="ion-padding" id="login-grid">
                         <IonRow>
                             <IonCol>
-                                <IonCardTitle>Log in</IonCardTitle>
+                                {/* <IonCardTitle>Log in</IonCardTitle> */}
                                 <h5>Please enter your login credentials</h5>
                             </IonCol>
                         </IonRow>
@@ -156,7 +159,7 @@ const Login: React.FC<loginProps> = (props) => {
                     <IonRow className="ion-text-center ion-justify-content-center" id="toup">
                         <IonCol size="12">
                             <p>Don't have an account?
-                             <IonRouterLink color = "success"  className="custom-link"  routerLink = "/signup" > Sign Up </IonRouterLink>
+                             <IonRouterLink color = "primary"  className="custom-link"  routerLink = "/signup" > Sign Up </IonRouterLink>
                             </p>
                         </IonCol>
                     </IonRow>
@@ -168,7 +171,7 @@ const Login: React.FC<loginProps> = (props) => {
                     <IonRow className="ion-text-center ion-justify-content-center">
                         <IonCol size="12">
                             <p>Don't have an account?
-                             <IonRouterLink color = "success"  className="custom-link"  routerLink = "/signup" > Sign Up </IonRouterLink>
+                             <IonRouterLink color = "primary"  className="custom-link"  routerLink = "/signup" > Sign Up </IonRouterLink>
                             </p>
                         </IonCol>
                     </IonRow>

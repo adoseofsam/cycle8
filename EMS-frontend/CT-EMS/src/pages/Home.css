@@ -47,3 +47,8 @@ margin-bottom: 5px;
 background: var(--ion-color-step-850, #27323e);
 color: var(--ion-item-background, #fff);
 }
+
+.dateModal{
+  height: 40% !important;
+  
+}

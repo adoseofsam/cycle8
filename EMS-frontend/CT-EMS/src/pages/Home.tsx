@@ -190,9 +190,16 @@ const Home: React.FC<any> = (props) => {
     <IonPage >
       <IonHeader>
         <IonToolbar>
+        <IonIcon slot="end" icon={moon} class = "ion-hide-sm-down" />
+            <IonToggle
+              slot="end"
+              name="darkMode"
+              onIonChange={toggleDarkModeHandler}
+            />
         <IonButtons slot="end">
           <NavButtons userInfo ={props.userInfo}/>{/* <IonMenuButton></IonMenuButton> */}
         </IonButtons>
+        
           <IonTitle> {props.userInfo.role? `Home: ${props.userInfo.role}` : "Home"}</IonTitle>
 
           <IonButtons slot="start">
@@ -211,26 +218,18 @@ const Home: React.FC<any> = (props) => {
       </IonHeader>
       <IonContent fullscreen>
       <IonGrid>
-      <IonList className="ion-margin-top">
-          <IonItem class = "ion-hide-sm-down">
-            <IonIcon slot="start" icon={moon} />
-            <IonLabel>Dark Mode</IonLabel>
-            <IonToggle
-              slot="end"
-              name="darkMode"
-              onIonChange={toggleDarkModeHandler}
-            />
-          </IonItem>
-        </IonList>
+      
+            
+ 
       <IonToolbar className="inner-toolbar">
 						<IonRow className="ion-no-padding ion-no-margin" class = "ion-hide-sm-down">
 							<IonCol size="9" >
-								<h1 className="main-heading">Find the best event near you</h1>
+								<h3 className="main-heading">Find the best event near you</h3>
 							</IonCol>
 						</IonRow>
             <IonRow class = "ion-hide-sm-up">
             <div className = "center" >
-              <h1 > Find the best event near you </h1>
+              <h3 > Find the best event near you </h3>
             </div>
             </IonRow>
 					</IonToolbar>
@@ -301,7 +300,7 @@ const Home: React.FC<any> = (props) => {
           </IonFabButton>
         </IonFab>
 
-        <IonModal
+        <IonModal 
           isOpen={showFilterModal}
           onDidDismiss={() => {
             // results(getKids());
@@ -309,9 +308,9 @@ const Home: React.FC<any> = (props) => {
           }}>
           {/* <searchByDate onClose={() => setShowAddKidModal(false)} /> */}
           
-          <IonPage>
+          <IonPage >
           
-          <IonContent>
+          <IonContent className="dateModal">
           <IonToolbar>
           <IonButtons slot ="end">
             <IonButton onClick = {() => setshowFilterModal(false)}>Close</IonButton>
@@ -325,7 +324,7 @@ const Home: React.FC<any> = (props) => {
               <IonDatetime displayFormat="DDDD MMM D, YYYY" placeholder="Select Start Date" value={StartDate} onIonChange={e => setStartDate(e.detail.value!)}></IonDatetime>
           </IonItem>
 
-          <IonButton color="primary" onClick={ (e) => {getEventByDate(); setshowFilterModal(false)}}>Submit Event</IonButton>
+          <IonButton color="warning" onClick={ (e) => {getEventByDate(); setshowFilterModal(false)}}>Submit Date</IonButton>
           </IonContent>
           </IonPage>
 

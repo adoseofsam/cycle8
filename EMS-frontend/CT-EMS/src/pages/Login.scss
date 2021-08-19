@@ -82,7 +82,7 @@ ion-label {
 
 .customInput {
 
-    --background: #157ec4;
+    // --background: #157ec4;
     --padding-bottom: 1rem;
     --padding-top: 1rem;
     --padding-start: 1rem;
@@ -96,18 +96,18 @@ ion-label {
 
 .custom-button {
 
-    --border-radius: 5px !important;
-    --background: rgb(170, 121, 226);
+    // --border-radius: 5px !important;
+    --background: #fcba03;
     --background-activated: rgb(154, 101, 185);
     --background-focused: rgb(154, 101, 185);
     font-size: 1.2rem;
     margin-top: 1rem;
   }
 
-  .custom-link {
+//   .custom-link {
 
-    color: rgb(170, 121, 226);
-  }
+//     color: rgb(170, 121, 226);
+//   }
   
 
   .custom-back {
