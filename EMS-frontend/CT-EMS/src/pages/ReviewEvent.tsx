@@ -27,7 +27,7 @@ interface Event {
     venue: string;
   }
 
-const ReviewEvent: React.FC = () => {
+const ReviewEvent: React.FC<any> = (props) => {
     const [result, setResult] = useState<any>([]);
     const history = useHistory();
     let apiKey = Token;
@@ -125,7 +125,7 @@ const ReviewEvent: React.FC = () => {
       <IonHeader>
         <IonToolbar>
         <IonButtons slot="end">
-        <NavButtons/> {/*    <IonMenuButton></IonMenuButton> */}
+        <NavButtons userInfo ={props.userInfo}/> {/*    <IonMenuButton></IonMenuButton> */}
         </IonButtons>
           <IonTitle>Review</IonTitle>
         </IonToolbar>

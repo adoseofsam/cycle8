@@ -21,13 +21,27 @@ interface response {
 
 }
 
-const Login: React.FC = () => {
-    const [email, setEmail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const [result, setResult] = useState<any>([]);
-    const [error, setErrors] = useState<string>();
+interface loginProps {
+    loginUser : any;
+    setUserInfo: any; 
+    setEmail : any; 
+    setPassword: any; 
+    email : string; 
+    password : string;
+    history : any;
+
+}
+
+const Login: React.FC<loginProps> = (props) => {
+    // const [email, setEmail] = useState<string>('')
+    // const [password, setPassword] = useState<string>('')
+    // const [result, setResult] = useState<any>([]);
+    // const [error, setErrors] = useState<string>();
 
     const history = useHistory();
+
+
+    
 
     useIonViewWillEnter(() => {
         // console.log('ionViewDidEnter event fired');
@@ -41,44 +55,46 @@ const Login: React.FC = () => {
 
           const data = await response.json();
           console.log(data);
+          console.log(history);
           
         }
         
         
       }, []);
 
-    async function login(){
-        let res = true;
-        let form_data = new FormData();
+    // async function login(){
+    //     let res = true;
+    //     let form_data = new FormData();
         
-        form_data.append("email",email);
-        form_data.append("password",password);
+    //     form_data.append("email",email);
+    //     form_data.append("password",password);
 
-        const response = await fetch("http://127.0.0.1:5000/api/login", {
-            method : 'POST',
-            body : form_data
-        });
+    //     const response = await fetch("http://127.0.0.1:5000/api/login", {
+    //         method : 'POST',
+    //         body : form_data
+    //     });
 
-        const results = await response.json();
-        console.log(response.status);
+    //     const results = await response.json();
+    //     console.log(response.status);
+    //     console.log(results);
 
-        if (response.status === 200){
-            Toast('You have logged in!')
+    //     if (response.status === 200){
+    //         Toast('You have logged in!')
 
-            history.push("/home");
-        }else{
-            setErrors(results.errors[0])
-            console.log(results.errors[0])
+    //         history.push("/home");
+    //     }else{
+    //         setErrors(results.errors[0])
+    //         console.log(results.errors[0])
 
-            Toast(results.errors[0]);
-        }
-        // console.log(results);
-        // console.log(`${res ? 'Login successful' : 'Logon failed'}`)
-        // if(res){
-        //     //Toast('You have logged in!')
-        //     //history.push("/home");
-        // }
-    }
+    //         Toast(results.errors[0]);
+    //     }
+    //     // console.log(results);
+    //     // console.log(`${res ? 'Login successful' : 'Logon failed'}`)
+    //     // if(res){
+    //     //     //Toast('You have logged in!')
+    //     //     //history.push("/home");
+    //     // }
+    // }
 
     return (
 
@@ -127,14 +143,14 @@ const Login: React.FC = () => {
                             <IonCol size="12">
                             <div className="form-field">
                                     <IonLabel >Email </IonLabel>
-                                    <IonInput  value = {email} className="customInput" onIonChange = {(e:any) => setEmail(e.target.value)} id = "input" placeholder = "joh.doe@example.com" ></IonInput>
+                                    <IonInput  value = {props.email} className="customInput" onIonChange = {(e:any) => props.setEmail(e.target.value)} id = "input" placeholder = "joh.doe@example.com" ></IonInput>
                             </div>
                             <div className="form-field">
                                     <IonLabel >Password</IonLabel>
-                                    <IonInput value = {password} className="customInput" onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput>
+                                    <IonInput value = {props.password} className="customInput" onIonChange = {(e:any) => props.setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput>
                             </div>
 
-                                <IonButton className="custom-button" expand="block" onClick={ login }>Login</IonButton>
+                                <IonButton className="custom-button" expand="block" onClick={ props.loginUser }>Login</IonButton>
                             </IonCol>
                     </IonRow>
                     <IonRow className="ion-text-center ion-justify-content-center" id="toup">

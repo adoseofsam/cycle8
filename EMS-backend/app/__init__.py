@@ -7,9 +7,10 @@ from flask_cors import CORS
 # Config Values
 UPLOAD_FOLDER = './app/static/uploads/'
 
-USERNAME = 'codeTitan'
-PASSWORD = 'password'
-DATABASE = 'cycle8'
+USERNAME = 'root' #'codeTitan'
+PASSWORD = ''#'password'
+DATABASE = 'emsdb' #'cycle8'
+
 
 # SECRET_KEY is needed for session security, the flash() method in this case stores the message in a session
 SECRET_KEY = 'CodeTitiansSup3r$3cretkey'
@@ -19,14 +20,17 @@ app = Flask(__name__)
 
 # Flask-SQLAlchemy
 app.config['SECRET_KEY'] = SECRET_KEY
-#app.config['SQLALCHEMY_DATABASE_URI'] = "mariadb+mariadbconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
+app.config['SQLALCHEMY_DATABASE_URI'] = "mariadb+mariadbconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
+#app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # added just to suppress a warning
 
 app.config['WTF_CSRF_ENABLED'] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+#cors = CORS(app, resources = {'/api/*': {'origins':'*'}})
+CORS(app)
+
 #cors = CORS(app, resources = {'/api/*': {'origins':'*'}})
 CORS(app)
 

@@ -4,11 +4,11 @@ $tablet:768px;
 $laptop:992px;
 
 
-@media (prefers-color-scheme: light) {
-    p {
-      color: #111;
-    }
-}
+// @media (prefers-color-scheme: light) {
+//     p {
+//       color: #111;
+//     }
+// }
   
 
 @media(min-width:$tablet){
