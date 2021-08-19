@@ -8,7 +8,7 @@ from flask_cors import CORS
 UPLOAD_FOLDER = './app/static/uploads/'
 
 USERNAME = 'codeTitan'
-PASSWORD = 'password'
+PASSWORD = ''
 DATABASE = 'cycle8'
 
 # SECRET_KEY is needed for session security, the flash() method in this case stores the message in a session
@@ -19,8 +19,9 @@ app = Flask(__name__)
 
 # Flask-SQLAlchemy
 app.config['SECRET_KEY'] = SECRET_KEY
-#app.config['SQLALCHEMY_DATABASE_URI'] = "mariadb+mariadbconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
+app.config['SQLALCHEMY_DATABASE_URI'] = "mariadb+mariadbconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
+# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://root:!believ3@localhost/emsdb"
+# app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://%s:%s@localhost/%s" % (USERNAME,PASSWORD,DATABASE)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # added just to suppress a warning
 
 app.config['WTF_CSRF_ENABLED'] = False

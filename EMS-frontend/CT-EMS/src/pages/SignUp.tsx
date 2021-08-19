@@ -1,6 +1,8 @@
-import { IonButtons,IonBackButton,IonCardTitle,IonCardSubtitle,IonCardHeader,IonCard,IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonDatetime, IonMenu, IonSplitPane } from '@ionic/react';
+import { IonRow,IonGrid,IonImg,IonButtons,IonBackButton,IonCardTitle,IonCardSubtitle,IonCardHeader,IonCard,IonContent, IonList, IonHeader, IonPage, IonTitle, IonToolbar, IonText, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonDatetime, IonMenu, IonSplitPane, IonCol, IonCardContent } from '@ionic/react';
 import './Home.css';
-import './Signup.css'
+import './Signup.css';
+import eventPhoto from '../imgs/event.jpg';
+
 import { Toast } from '../toast';
 // import { Link } from 'react-router-dom';
 import { useHistory,Link } from "react-router-dom";
@@ -62,70 +64,73 @@ const SignUp: React.FC = () => {
 
 
   return (
-    <IonContent className = "signupPage">
-      
-    {/* <IonSplitPane contentId="main">
-        <IonMenu contentId="main">
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Menu</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent>
-            <IonList>
-              <IonItem routerLink="/home">Home</IonItem>
-              <IonItem routerLink="/signup">Sign Up</IonItem>
-            </IonList>
-          </IonContent>
-        </IonMenu> */}
-        <IonPage id="main">
+    <IonContent fullscreen className = "signupPage">
+        <IonPage className="signupMain">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Sign Up</IonTitle>
+          <IonTitle className="signupMain">Sign Up</IonTitle>
+          <IonButtons slot="end" className="signUpHeader"  >
+              <IonButton  routerLink="/login">
+                  Home
+              </IonButton>
+          </IonButtons>
         </IonToolbar>
+
       </IonHeader>
-      <IonContent fullscreen>
-      <IonCard className ="card-center">
+      <IonContent>
       
+      <IonCard className= "signupCard">
+        <IonGrid>
+          <IonRow>
+            <IonCol class="ion-hide-sm-down">
+            <img className="photo" src={eventPhoto} alt="Event" />
+            </IonCol>
+
+        <IonCol>
         <IonCardHeader >
-              <IonCardTitle className ="signupTitle">Sign Up</IonCardTitle>
-        </IonCardHeader>
-        
+              <IonCardTitle className ="signupTitle">Let's Get Started</IonCardTitle>
+        </IonCardHeader> 
+        <IonCardContent className="cardContent">
+
         <IonItem>
           <IonLabel className ="signupLabel" position="stacked">Full Name </IonLabel>
           <IonInput value={FullName} placeholder="Jane Doe" onIonChange={(e:any) => setFullName(e.target.value)}></IonInput>
         </IonItem>
 
         <IonItem>
-          <IonLabel position="stacked">Email</IonLabel>
+          <IonLabel className="signupLabel" position="stacked">Email</IonLabel>
           <IonInput value={Email} placeholder="sample@example.com" onIonChange={e => setEmail(e.detail.value!)}></IonInput>
         </IonItem>
 
         <IonItem>
-          <IonLabel position="stacked">Password</IonLabel>
-          <IonInput value = {Password} onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput>
+          <IonLabel className="signupLabel" position="stacked">Password</IonLabel>
+          <IonInput value = {Password} onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput> 
 
-          {/* <input type = "password" placeholder="Password" onChange = {(e) => setPassword(e.target.value)}/> */}
         </IonItem>
 
         <IonItem>
-          <IonLabel position="stacked">Re-Enter Password</IonLabel>
-          <IonInput value = { Password} onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput>
+          <IonLabel className="signupLabel" position="stacked">ConfirmPassword</IonLabel>
+          <IonInput value = {ConfirmPassword} onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput>
+          </IonItem>
 
-          {/* <input type = "password" placeholder="Confirm Password" onChange = {(e) => setConfirm(e.target.value)}/> */}
-        </IonItem>
 
         <IonItem>
-          <IonLabel position="stacked">Profile Picture </IonLabel>
+          <IonLabel className="signupLabel" position="stacked">Profile Picture </IonLabel>
           <input type = "file" onChange = {(e:any) => setPhoto(e.target.files[0])}/>
         </IonItem>
-
           <br></br>
-          <IonButton color="primary" onClick={ (e) => HandleSubmit(e) }>CREATE ACCOUNT</IonButton>
-          <p>Already have an account?<Link to="/login">Login</Link></p>
+          <IonButton color="warning" className="submitBtn"onClick={ (e) => HandleSubmit(e) }>CREATE ACCOUNT</IonButton>
+          <br></br>
+          <p>Already have an account?<Link to="/login">Login</Link></p> 
 
 
-          </IonCard>
+          </IonCardContent>
+          </IonCol>
+          </IonRow>
+          </IonGrid>
+      </IonCard>
+    
+          
 
       </IonContent>
     </IonPage>

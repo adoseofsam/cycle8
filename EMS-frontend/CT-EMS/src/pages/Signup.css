@@ -1,22 +1,107 @@
-.card-center{
+/* .card-center{
         display: block;
         flex-direction: column;
-        width: 50% !important;
+        width: 40% !important;
         height: 500px;
-        margin: 0 auto !important;
+        margin: 0  !important;
         align-items: center;
         justify-content: center;
+        padding-top: 2rem;
+
+} */
+/* @media (min-width: 576px){
+
+.ion-hide-sm-down { 
+    display: none !important;
+}
+} */
+.signupCard{
+    /* display: block;
+    flex-direction: column; */
+    width: 90% !important;
+    height: 500px;
+    /* margin: 0 auto !important; */
+    align-items: center;
+    justify-content: center;
+    margin: 5em !important;
+    /* padding-top: 2rem; */
+
+}
+.submitBtn{
+    width: 40em;
+    height: 3em;
+    /* font-size: smaller; */
+}
+
+.photo{
+    padding-top: 1.5rem;
+    height: 450px;
+}
+/* .left-content {
+    width: 50%;
+    float: left;
+  }
+  .right-content {
+    width: 50%;
+    float: left;
+  } */
+/* .inline-block-child{
+    display: inline-block;
+} */
+
+/* .inline-flex-parent {
+    display: inline-flex;
+    max-width: 200px;
+} */
+
+/* .photo{
 
 }
 
+.cardContent{
+
+} */
 .signupTitle{
     text-align: center;
-    font-size: large;
+    /* font-size: large; */
     font-weight: bold;
+    font-size: 1.3rem;
+
 }
+/* 
 .signupLabel{
-    font-size: medium !important;
+    ion-label {
+    
+            padding-left: 0.2rem;
+            padding-right: 0.5rem;
+            color: #1b41e9;
+            display: flex;
+            justify-content: space-between;
+            align-content: center;
+            align-items: center;
+    
+    
+    }
+} */
+/* #photo{
+    float: left;
+    margin: 0px 15px 15px 0px;
+    display: block;
+        flex-direction: column;
+        width: 40% !important;
+        height: 500px;
+        margin:  0 !important;
+        align-items: center;
+        justify-content: center;
+} */
+/* .signupMain{
+    background: red !important;
 }
+
+.signupPage{
+    background: red !important;
+} */
+
 
 
 
