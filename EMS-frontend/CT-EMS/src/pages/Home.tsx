@@ -234,20 +234,12 @@ const Home: React.FC<any> = (props) => {
       <IonToolbar className="inner-toolbar">
 						<IonRow className="ion-no-padding ion-no-margin" class = "ion-hide-sm-down">
 							<IonCol size="9" >
-<<<<<<< HEAD
-								<h3 className="main-heading">Find the best event near you</h3>
-=======
 								<h1 className="main-heading">Find the best event near you!</h1>
->>>>>>> Chanderpaul: Added event modal
 							</IonCol>
 						</IonRow>
             <IonRow class = "ion-hide-sm-up">
             <div className = "center" >
-<<<<<<< HEAD
-              <h3 > Find the best event near you </h3>
-=======
               <h1 > Find the best event near you !</h1>
->>>>>>> Chanderpaul: Added event modal
             </div>
             </IonRow>
 					</IonToolbar>
