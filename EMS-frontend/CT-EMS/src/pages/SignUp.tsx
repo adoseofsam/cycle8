@@ -109,8 +109,8 @@ const SignUp: React.FC = () => {
         </IonItem>
 
         <IonItem>
-          <IonLabel className="signupLabel" position="stacked">ConfirmPassword</IonLabel>
-          <IonInput value = {ConfirmPassword} onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput>
+          <IonLabel className="signupLabel" position="stacked">Confirm Password</IonLabel>
+          <IonInput value = {Password} onIonChange = {(e:any) => setPassword(e.target.value)} id = "input" placeholder = "**********" type = "password"></IonInput>
           </IonItem>
 
 

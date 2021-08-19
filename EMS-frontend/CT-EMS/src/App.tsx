@@ -29,29 +29,106 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { useState } from 'react';
+import { Toast } from './toast';
+import { useHistory } from "react-router";
+import { withRouter } from 'react-router-dom';
 
-const App: React.FC = () => (
+interface user {
+  id?: string;
+  role?: string;
+  photo: string;
+  token: string;
+
+
+}
+
+
+
+
+const App: React.FC = () => {
+
+  
+  const [userInfo, setUserInfo] = useState<any>([]);
+  
+  // ------------- LOGIN FUNCTIONS -----------------
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [error, setErrors] = useState<string>();
+    
+  const history = useHistory();
+
+  //console.log("History - ",useHistory())
+  
+ const n = "Tesing";
+  
+  
+  async function login(){
+
+    
+    let res = true;
+    let form_data = new FormData();
+    //let history = useHistory();
+    
+    form_data.append("email",email);
+    form_data.append("password",password);
+  
+    const response = await fetch("http://127.0.0.1:5000/api/login", {
+        method : 'POST',
+        body : form_data
+    });
+  
+    const results = await response.json();
+    //console.log(response.status);
+    //console.log(results);
+    //console.log(history);
+
+    if (response.status === 200){
+        Toast('You have logged in successfully!')
+        //console.log(useHistory());
+        setUserInfo(results.data[0])
+        // console.log("results",results.data[0].photo);
+        history.push("/");
+        //  window.history.pushState('/');
+
+        //console.log(n);
+    }else{
+        setErrors(results.errors[0])
+        console.log(results.errors[0])
+  
+        Toast(results.errors[0]);
+    }
+    // console.log(results);
+    // console.log(`${res ? 'Login successful' : 'Logon failed'}`)
+    if(res){
+        //Toast('You have logged in!')
+        //history.push("/home");
+    }
+  }
+  return (
   <IonApp>
-    <IonReactRouter>
-      <Menu/>
+    {/* <IonReactRouter> */}
+      <Menu userInfo ={userInfo}/>
       <IonRouterOutlet id = "main">
         <Route exact path="/home">
-          <Homepage />
+          <Homepage userInfo ={userInfo}/>
         </Route>
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
         {/* <Route path="/tabs" render={ () => <Tabs />} /> */}
-        <Route exact path = "/login" component = {Login}></Route>
-        <Route exact path = "/reviewEvent" component = {ReviewEvent}></Route>
-        <Route exact path = "/createEvent" component = {CreateEvent}></Route>
+        <Route exact path = "/login">
+          <Login history = {history}loginUser = {login} setUserInfo = {setUserInfo} setEmail = {setEmail}  setPassword = {setPassword} email = {email} password = {password}/>
+        </Route>
+        <Route exact path = "/reviewEvent" component = {ReviewEvent}><ReviewEvent userInfo ={userInfo}/></Route>
+        <Route exact path = "/createEvent" component = {CreateEvent}><CreateEvent userInfo ={userInfo}/></Route>
         <Route exact path = "/signup" component = {SignUp}></Route>
         
       </IonRouterOutlet>
       
-    </IonReactRouter>
-    
+    {/* </IonReactRouter> */}
   </IonApp>
-);
+  )
+};
 
-export default App;
+export default (App);

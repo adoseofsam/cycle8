@@ -26,7 +26,7 @@ interface response {
 
 
 
-const CreateEvent: React.FC = () => {
+const CreateEvent: React.FC<any> = (props) => {
   const [form, setForm] = useState<response>()
   const [Title, setTitle] = useState<string>("")
   const [Desc, setDesc] = useState<string>("")
@@ -51,11 +51,11 @@ const CreateEvent: React.FC = () => {
       console.log("no file");
 
     }else{
-      console.log("file exist");
-      console.log(Photo);
-      console.log(Title);
-      console.log(EndDate.split("T")[0]);
-      console.log(Url);
+      // console.log("file exist");
+      // console.log(Photo);
+      // console.log(Title);
+      // console.log(EndDate.split("T")[0]);
+      // console.log(Url);
       form_data.append("title", Title);
       form_data.append("start_date",StartDate.split("T")[0]);
       form_data.append("end_date", EndDate.split("T")[0]);
@@ -73,7 +73,7 @@ const CreateEvent: React.FC = () => {
         });
 
         const results = await response.json();
-        console.log(response.status);
+        // console.log(response.status);
 
         if (response.status === 200){
           Toast('Event Created Successful!')
@@ -94,7 +94,7 @@ const CreateEvent: React.FC = () => {
       <IonHeader>
         <IonToolbar>
         <IonButtons slot="end">
-          <NavButtons/> {/* <IonMenuButton></IonMenuButton> */}
+          <NavButtons userInfo ={props.userInfo}/> {/* <IonMenuButton></IonMenuButton> */}
         </IonButtons>
           <IonTitle>Create Event</IonTitle>
         </IonToolbar>

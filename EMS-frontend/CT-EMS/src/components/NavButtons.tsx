@@ -1,9 +1,12 @@
-import { IonButton, IonMenuButton } from "@ionic/react";
-import { logoWindows } from "ionicons/icons";
+import { IonButton, IonIcon, IonItem, IonLabel, IonList, IonMenuButton, IonToggle } from "@ionic/react";
+import { logoWindows, moon } from "ionicons/icons";
 import React, {useEffect, useState} from "react";
 
 
-export const NavButtons = () =>{
+
+
+export const NavButtons = (props:any) =>{
+    const [show, setShow] = useState<boolean>(props.userInfo.role == 'Admin' ? false : true);
     const [mQuery, setMQuery] = React.useState<any>({
         matches: window.innerWidth > 600 ? true :false,
         
@@ -37,9 +40,12 @@ return (
         {mQuery && !wSize ? (
             <IonMenuButton/> ) : (
                 <>
+                
                 <IonButton  color = "none" routerLink={"/home"}>Home</IonButton>
                 <IonButton  color = "none" routerLink={"/createEvent"}>Create Event</IonButton>
+                { show && props.userInfo.role === 'Admin'?
                 <IonButton  color = "none" routerLink={"/reviewEvent"}>Review Event</IonButton>
+                : ""}
                 <IonButton  color = "none" routerLink={"/login"}>Logout</IonButton>
                 </>
             )
