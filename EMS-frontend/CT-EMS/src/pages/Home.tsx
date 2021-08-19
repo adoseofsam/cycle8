@@ -49,6 +49,7 @@ const Home: React.FC<any> = (props) => {
 
   const searchRef = useRef();
 
+
   const router = useIonRouter();
   const [event, setEvent] = useState<any>([]); //useState<any>();
   const [user, setUser] = useState<any>([]);
@@ -66,10 +67,10 @@ const Home: React.FC<any> = (props) => {
 		if (searchTerm !== "") {
 
 			const searchTermLower = searchTerm.toLowerCase();
-      console.log(searchTermLower);
+      // console.log(searchTermLower);
 
 			const newResults = event.filter((e:any) => e.title.toLowerCase().includes(searchTermLower));
-      console.log(newResults);
+      // console.log(newResults);
 			setResults(newResults);
 		} else {
 
@@ -85,23 +86,24 @@ const Home: React.FC<any> = (props) => {
 
     // we will use async/await to fetch this data
     async function getData() {
-      console.log("here");
+      // console.log("here");
       const response = await fetch("http://127.0.0.1:5000/api/events/published", {
         headers: {
           "Authorization": `Bearer ${apiKey}`
         }
       });
-      console.log("Here 2");
+      // console.log("Here 2");
 
       // 'Content-Type': 'application/json',
       //   'Accept': 'application/json'
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       // store the data into our news state variable
       setEvent(data.data.events);
       
-      console.log(event);
-      console.log(event.length ? "true" : "false");
+      // console.log(event);
+      // console.log(event.length ? "true" : "false");
+      
 
     }
 
@@ -117,9 +119,10 @@ const Home: React.FC<any> = (props) => {
       });
       
       const Logindata = await Loginresponse.json();
-      console.log(Logindata);
+      // console.log(Logindata);
 
-      console.log(Logindata.data? "True":"False");
+      // console.log(Logindata.data? "True":"False");
+
 
 
       
@@ -130,13 +133,14 @@ const Home: React.FC<any> = (props) => {
   }, []);
 
   useIonViewDidEnter(() => {
-    console.log("entered")
+    // console.log("entered")
     setResults(event)
   })
-  console.log(event);
-  console.log(event.length);
-  console.log(event.length ? "Yes" : "No");
-  console.log("queried - ",queried)
+  // console.log(event);
+  // console.log(event.length);
+  // console.log(event.length ? "Yes" : "No");
+  // console.log("queried - ",queried)
+  // console.log(props.userInfo? props.userInfo.photo : "nope");
 
   const [StartDate, setStartDate] = useState<string>("")
 
@@ -145,22 +149,22 @@ const Home: React.FC<any> = (props) => {
     let date = StartDate.split("T")[0];
 
 
-    console.log("here");
+    // console.log("here");
     const response = await fetch(`http://127.0.0.1:5000/api/events/search/date/${date}`, {
       headers: {
         "Authorization": `Bearer ${apiKey}`
       }
     });
-    console.log("Here 2");
+    // console.log("Here 2");
 
     // 'Content-Type': 'application/json',
     //   'Accept': 'application/json'
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     // store the data into our news state variable
     setResults(data.data.events);
     
-    console.log(results);
+    // console.log(results);
     setQueried(true);
     // console.log(event.length ? "true" : "false");
   }
@@ -187,9 +191,9 @@ const Home: React.FC<any> = (props) => {
       <IonHeader>
         <IonToolbar>
         <IonButtons slot="end">
-          <NavButtons/>{/* <IonMenuButton></IonMenuButton> */}
+          <NavButtons userInfo ={props.userInfo}/>{/* <IonMenuButton></IonMenuButton> */}
         </IonButtons>
-          <IonTitle>Home</IonTitle>
+          <IonTitle> {props.userInfo.role? `Home: ${props.userInfo.role}` : "Home"}</IonTitle>
 
           <IonButtons slot="start">
 						{/* <div className="button-container-img">
@@ -199,7 +203,8 @@ const Home: React.FC<any> = (props) => {
               {/* <img className = "profile_pic" src='http://placekitten.com/g/200/300' alt="avatar"    /> */}
 
               <img onError={(event:any)=> event.target.src = 'http://placehold.it/280x180?text=Placeholder+Image'} 
-              src={ img_url +"pic.jpg"}/> 
+              src={ props.userInfo.photo? img_url + props.userInfo.photo : img_url +"pic.jpg"  }/> 
+              {/* img_url +"pic.jpg" */}
             </IonAvatar>
 					</IonButtons>
         </IonToolbar>
@@ -207,7 +212,7 @@ const Home: React.FC<any> = (props) => {
       <IonContent fullscreen>
       <IonGrid>
       <IonList className="ion-margin-top">
-          <IonItem>
+          <IonItem class = "ion-hide-sm-down">
             <IonIcon slot="start" icon={moon} />
             <IonLabel>Dark Mode</IonLabel>
             <IonToggle
@@ -312,7 +317,7 @@ const Home: React.FC<any> = (props) => {
             <IonButton onClick = {() => setshowFilterModal(false)}>Close</IonButton>
           </IonButtons>
           </IonToolbar>
-            <p>Model body</p>
+            {/* <p>Model body</p> */}
             <p>Filter for events that occurs on : <strong>{StartDate.split("T")[0]}</strong></p>
           
           <IonItem>

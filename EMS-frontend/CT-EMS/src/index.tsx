@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { IonReactRouter } from '@ionic/react-router';
 
 ReactDOM.render(
   <React.StrictMode>
+    <IonReactRouter>
     <App />
+    </IonReactRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
@@ -15,6 +18,7 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
 serviceWorkerRegistration.unregister();
+//serviceWorkerRegistration.register();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
