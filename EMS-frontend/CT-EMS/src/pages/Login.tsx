@@ -121,7 +121,7 @@ const Login: React.FC<loginProps> = (props) => {
                             <IonButton  routerLink="/home/">
                                 Home
                             </IonButton>
-                            <IonButton  routerLink="/signup/">
+                            <IonButton  routerLink="/signup">
                                 Sign Up
                             </IonButton>
 

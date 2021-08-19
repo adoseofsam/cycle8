@@ -729,7 +729,7 @@ def download_file(name):
     #print(rootdir)
     path = '/app/static/uploads'
     dir = rootdir + app.config['UPLOAD_FOLDER'] #path
-    #print(dir)
+    # print(dir)
     #print("in files - ", name)
     return send_from_directory(
         dir, filename=name, as_attachment=False
