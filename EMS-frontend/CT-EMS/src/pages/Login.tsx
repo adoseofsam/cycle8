@@ -12,6 +12,7 @@ import { Toast } from '../toast';
 import { useHistory } from "react-router-dom";
 
 var Token = "";
+let url = "http://127.0.0.1:5000/" //"http://0.0.0.0:5000/"
 
 // Here we create a Typescript Interface
 interface response {
@@ -50,7 +51,7 @@ const Login: React.FC<loginProps> = (props) => {
         // we will use async/await to fetch this data
         async function getData() {
           console.log("here");
-          const response = await fetch("http://127.0.0.1:5000/api/logout", {
+          const response = await fetch(url + "/api/logout", {
           });
 
           const data = await response.json();
