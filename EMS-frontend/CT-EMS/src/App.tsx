@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import ReviewEvent from './pages/ReviewEvent';
 import CreateEvent from './pages/CreateEvent';
 import SignUp from './pages/SignUp';
+import ViewEvent from './pages/ViewEvent';
 
 import Tabs from "./components/NavTabs";
 
@@ -122,6 +123,7 @@ const App: React.FC = () => {
         </Route>
         <Route exact path = "/reviewEvent" component = {ReviewEvent}><ReviewEvent userInfo ={userInfo}/></Route>
         <Route exact path = "/createEvent" component = {CreateEvent}><CreateEvent userInfo ={userInfo}/></Route>
+        <Route exact path = "/viewEvent/:event" component = {ViewEvent}><ViewEvent userInfo ={userInfo}/></Route>
         <Route exact path = "/signup" component = {SignUp}></Route>
         
       </IonRouterOutlet>

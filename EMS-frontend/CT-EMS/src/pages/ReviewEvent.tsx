@@ -72,6 +72,7 @@ const ReviewEvent: React.FC<any> = (props) => {
       }else{
         console.log(results.errors[0])
         Toast(results.errors[0]);
+        history.push("/ReviewEvent");
     }
 
     }
@@ -92,6 +93,7 @@ const ReviewEvent: React.FC<any> = (props) => {
     }else{
       console.log(results.errors[0])
       Toast(results.errors[0]);
+      history.push("/ReviewEvent");
   }
 
   }
@@ -112,6 +114,7 @@ const ReviewEvent: React.FC<any> = (props) => {
   }else{
     console.log(results.errors[0])
     Toast(results.errors[0]);
+    history.push("/ReviewEvent");
 }
 
 }
