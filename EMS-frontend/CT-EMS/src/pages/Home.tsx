@@ -15,7 +15,11 @@ import ViewEvent from './ViewEvent';
 
 var Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM";
 const img_url =  "http://127.0.0.1:5000/uploads/" // "http://0.0.0.0:5000/"
+<<<<<<< HEAD
 let url =  "http://127.0.0.1:5000/"; // "http://0.0.0.0:5000/"
+=======
+let url = "http://0.0.0.0:5000/" //http://127.0.0.1:5000/
+>>>>>>> 2f860b13024937d4c8086473a79e09097bdddf13
 
 
 // Here we create a Typescript Interface
@@ -253,7 +257,7 @@ const Home: React.FC<any> = (props) => {
 					</IonRow>
 
           <IonRow className="outer-heading ion-justify-content-between ion-align-items-center">
-						<h4 className="heading">Upcoming Events</h4>
+						<h4 className="heading">Upcoming Events !</h4>
 						
 						{/* <IonRouterLink color="main" routerLink="/coffees"> */}
 							 <IonButtons onClick = { () => setshowFilterModal(true)}> <div >Filter Event By Date </div> <Filter/>   </IonButtons>  
@@ -304,11 +308,19 @@ const Home: React.FC<any> = (props) => {
               <IonCardContent>
                 { ev.description }
                 <IonCol size="8">
+<<<<<<< HEAD
                     <IonButton expand = "full"  onClick ={ () => {setCurr_ev(ev);setshowEventModal(true);}} >View &rarr;
                     {/* <ViewEvent userInfo = {props.userInfo} event = {ev} />  routerLink={ `/viewEvent/${ev.id}`}*/}
                     </IonButton>
                 </IonCol>
                 </IonCardContent>
+=======
+                    <IonButton  onClick ={ () => {setCurr_ev(ev);setshowEventModal(true);}} >View &rarr;
+                    {/* <ViewEvent userInfo = {props.userInfo} event = {ev} />  routerLink={ `/viewEvent/${ev.id}`}*/}
+                    </IonButton>
+                </IonCol>
+              </IonCardContent>
+>>>>>>> 2f860b13024937d4c8086473a79e09097bdddf13
             </IonCard>
             </IonCol>
           )) : <NoEventsContainer/>}
@@ -432,7 +444,72 @@ const Home: React.FC<any> = (props) => {
 
         </IonModal>
 
+<<<<<<< HEAD
         
+=======
+        <IonModal
+          isOpen={showEventModal}
+          onDidDismiss={() => {
+            // results(getKids());
+            setshowEventModal(false);
+          }}>
+          {/* <searchByDate onClose={() => setShowAddKidModal(false)} /> */}
+          
+          <IonPage>
+          <IonHeader collapse="condense" className="custom-margin-left animate__animated animate__fadeIn">
+					
+						
+					
+				</IonHeader>
+          <IonContent className ="viewEvent">
+
+          <IonToolbar>
+          <IonButtons slot ="end">
+            <IonButton onClick = {() => setshowFilterModal(false)}>Close</IonButton>
+          </IonButtons>
+          </IonToolbar>
+
+          
+          
+          <IonRow >
+							<IonCol size="9" >
+								<h1 className="main-heading">{ curr_ev.title }</h1>
+								{/* <IonCardSubtitle>{ curr_ev.description }</IonCardSubtitle> */}
+							</IonCol>
+						</IonRow>
+
+
+            <IonRow className="search-container">
+						<IonCol size="6">
+
+							<IonCard className="coffee-card">
+								<img src={img_url + curr_ev.photo } alt="coffee type" />
+							</IonCard>
+						</IonCol>
+
+						
+					</IonRow>
+
+          <IonCol size="6" className="ion-margin-top ion-padding-top ion-padding-end">
+								<IonCardSubtitle>Description</IonCardSubtitle>
+								<p>{  curr_ev.description }</p>
+								<InfoSquare set="bold"  />
+						</IonCol>
+
+          	<p>{  curr_ev.description }</p>
+            <p>{  curr_ev.start_date }</p>
+            <p>{  curr_ev.end_date }</p>
+            <p>{  curr_ev.venue }</p>
+            <p>{  curr_ev.url }</p>
+            <p>{  curr_ev.status }</p>
+
+
+
+          </IonContent>
+          </IonPage>
+
+        </IonModal>
+>>>>>>> 2f860b13024937d4c8086473a79e09097bdddf13
 
 
         
