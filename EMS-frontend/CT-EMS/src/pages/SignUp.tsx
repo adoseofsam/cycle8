@@ -78,6 +78,8 @@ const SignUp: React.FC = () => {
 
       </IonHeader>
       <IonContent>
+
+      
       
       <IonCard className= "signupCard">
         <IonGrid>
@@ -91,6 +93,8 @@ const SignUp: React.FC = () => {
               <IonCardTitle className ="signupTitle">Let's Get Started</IonCardTitle>
         </IonCardHeader> 
         <IonCardContent className="cardContent">
+
+        <IonCard className ="create-card-center">
 
         <IonItem>
           <IonLabel className ="signupLabel" position="stacked">Full Name </IonLabel>
@@ -118,17 +122,30 @@ const SignUp: React.FC = () => {
           <IonLabel className="signupLabel" position="stacked">Profile Picture </IonLabel>
           <input type = "file" onChange = {(e:any) => setPhoto(e.target.files[0])}/>
         </IonItem>
-          <br></br>
-          <IonButton color="warning" className="submitBtn"onClick={ (e) => HandleSubmit(e) }>CREATE ACCOUNT</IonButton>
-          <br></br>
-          <p>Already have an account?<Link to="/login">Login</Link></p> 
 
+
+        <br/>
+        <IonItem>
+          
+          <IonButton color="warning" className="submitBtn"onClick={ (e) => HandleSubmit(e) }>CREATE ACCOUNT</IonButton>
+
+        </IonItem>
+          {/* <br></br> */}
+          <IonItem>
+          <p>Already have an account?<Link to="/login">Login</Link></p> 
+          </IonItem>
+
+          </IonCard>
 
           </IonCardContent>
           </IonCol>
           </IonRow>
           </IonGrid>
       </IonCard>
+
+    
+
+      
     
           
 

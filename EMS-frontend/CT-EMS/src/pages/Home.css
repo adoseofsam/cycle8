@@ -48,8 +48,5 @@ background: var(--ion-color-step-850, #27323e);
 color: var(--ion-item-background, #fff);
 }
 
-.modal-wrapper {
-  --height: 40% !important;
-  --width: 30% !important;
-  position: absolute;
-}
+
+

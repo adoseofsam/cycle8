@@ -15,7 +15,7 @@ import ViewEvent from './ViewEvent';
 
 var Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSJ9.ei0eGg3aZqEoaQ7UOe6WvXodb6chhu6RnoS--fpfcMM";
 const img_url =  "http://127.0.0.1:5000/uploads/" // "http://0.0.0.0:5000/"
-let url = "http://0.0.0.0:5000/" //http://127.0.0.1:5000/
+let url =  "http://127.0.0.1:5000/"; // "http://0.0.0.0:5000/"
 
 
 // Here we create a Typescript Interface
@@ -205,6 +205,7 @@ const Home: React.FC<any> = (props) => {
               slot="end"
               name="darkMode"
               onIonChange={toggleDarkModeHandler}
+              class = "ion-hide-sm-down"
             />
         <IonButtons slot="end">
           <NavButtons userInfo ={props.userInfo}/>{/* <IonMenuButton></IonMenuButton> */}
@@ -252,7 +253,7 @@ const Home: React.FC<any> = (props) => {
 					</IonRow>
 
           <IonRow className="outer-heading ion-justify-content-between ion-align-items-center">
-						<h4 className="heading">Upcoming Events !</h4>
+						<h4 className="heading">Upcoming Events</h4>
 						
 						{/* <IonRouterLink color="main" routerLink="/coffees"> */}
 							 <IonButtons onClick = { () => setshowFilterModal(true)}> <div >Filter Event By Date </div> <Filter/>   </IonButtons>  
@@ -277,11 +278,17 @@ const Home: React.FC<any> = (props) => {
               </IonCardHeader>
               <IonCardContent>
                 { ev.description }
-              </IonCardContent>
+              
+              <IonCol size="8">
+                    <IonButton expand = "full"  onClick ={ () => {setCurr_ev(ev);setshowEventModal(true);}} >View &rarr;
+                    {/* <ViewEvent userInfo = {props.userInfo} event = {ev} />  routerLink={ `/viewEvent/${ev.id}`}*/}
+                    </IonButton>
+                </IonCol>
+                </IonCardContent>
             </IonCard>
             </IonCol>
           )) :  (event.length && !queried) ? event.map((ev:Events, index:number)=>(
-            <IonCol size="3" key={ index }>
+            <IonCol size="4" key={ index }>
               <IonCard>
               {/* { ev.url ? <img src={ ev.url } alt="Image" /> : <img src="https://via.placeholder.com/150" alt="Image not Found" /> } */}
               {/* <img src="{{ev.url || 'http://placehold.it/280x180?text=Placeholder+Image'}}" /> */}
@@ -297,11 +304,11 @@ const Home: React.FC<any> = (props) => {
               <IonCardContent>
                 { ev.description }
                 <IonCol size="8">
-                    <IonButton  onClick ={ () => {setCurr_ev(ev);setshowEventModal(true);}} >View &rarr;
+                    <IonButton expand = "full"  onClick ={ () => {setCurr_ev(ev);setshowEventModal(true);}} >View &rarr;
                     {/* <ViewEvent userInfo = {props.userInfo} event = {ev} />  routerLink={ `/viewEvent/${ev.id}`}*/}
                     </IonButton>
                 </IonCol>
-              </IonCardContent>
+                </IonCardContent>
             </IonCard>
             </IonCol>
           )) : <NoEventsContainer/>}
@@ -325,12 +332,13 @@ const Home: React.FC<any> = (props) => {
           
           <IonPage >
           
-          <IonContent className="dateModal">
+          <IonContent >
           <IonToolbar>
           <IonButtons slot ="end">
             <IonButton onClick = {() => setshowFilterModal(false)}>Close</IonButton>
           </IonButtons>
           </IonToolbar>
+          <IonCard className ="create-card-center">
             {/* <p>Model body</p> */}
             <p>Filter for events that occurs on : <strong>{StartDate.split("T")[0]}</strong></p>
           
@@ -340,10 +348,13 @@ const Home: React.FC<any> = (props) => {
           </IonItem>
 
           <IonButton color="warning" onClick={ (e) => {getEventByDate(); setshowFilterModal(false)}}>Submit Date</IonButton>
+
+          </IonCard>
           </IonContent>
           </IonPage>
 
         </IonModal>
+
 
         <IonModal
           isOpen={showEventModal}
@@ -363,11 +374,11 @@ const Home: React.FC<any> = (props) => {
 
           <IonToolbar>
           <IonButtons slot ="end">
-            <IonButton onClick = {() => setshowFilterModal(false)}>Close</IonButton>
+            <IonButton onClick = {() => setshowEventModal(false)}>Close</IonButton>
           </IonButtons>
           </IonToolbar>
 
-          
+          <IonCard className ="create-card-center">
           
           <IonRow >
 							<IonCol size="9" >
@@ -378,7 +389,7 @@ const Home: React.FC<any> = (props) => {
 
 
             <IonRow className="search-container">
-						<IonCol size="6">
+						<IonCol size="10">
 
 							<IonCard className="coffee-card">
 								<img src={img_url + curr_ev.photo } alt="coffee type" />
@@ -391,22 +402,37 @@ const Home: React.FC<any> = (props) => {
           <IonCol size="6" className="ion-margin-top ion-padding-top ion-padding-end">
 								<IonCardSubtitle>Description</IonCardSubtitle>
 								<p>{  curr_ev.description }</p>
-								<InfoSquare set="bold"  />
+								{/* <InfoSquare set="bold"  /> */}
 						</IonCol>
 
-          	<p>{  curr_ev.description }</p>
+            
+          	{/* <p>{  curr_ev.description }</p> */}
+            <IonCol>
+            <IonLabel position="stacked">Start Date </IonLabel>
             <p>{  curr_ev.start_date }</p>
+            </IonCol>
+            <IonLabel position="stacked">End Date </IonLabel>
             <p>{  curr_ev.end_date }</p>
-            <p>{  curr_ev.venue }</p>
-            <p>{  curr_ev.url }</p>
-            <p>{  curr_ev.status }</p>
 
+            <IonLabel position="stacked">Venue </IonLabel>
+            <IonCol>
+            <div>  {curr_ev.venue } </div>
+            </IonCol>
+            <IonCol>
+            <div>
+            <p><a href = {"https://www." + curr_ev.url }> Click here to learn more!</a></p>
+            </div>
+            </IonCol>
+
+            </IonCard>
 
 
           </IonContent>
           </IonPage>
 
         </IonModal>
+
+        
 
 
         
